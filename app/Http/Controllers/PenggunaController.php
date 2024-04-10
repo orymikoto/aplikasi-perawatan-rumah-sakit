@@ -15,6 +15,11 @@ class PenggunaController extends Controller
     //
   }
 
+  public function login()
+  {
+    return view('auth.login');
+  }
+
   /**
    * Show the form for creating a new resource.
    */

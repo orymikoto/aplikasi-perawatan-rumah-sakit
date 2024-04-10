@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       fontFamily: {
         "comfortaa": ["Comfortaa", "sans-serif"],
+        "josefin-sans": ["Josefin Sans", "sans-serif"],
         "jakarta-sans": ["Plus Jakarta Sans", "sans-serif"]
       }
     },
