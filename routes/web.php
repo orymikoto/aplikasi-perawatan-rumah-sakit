@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PenggunaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,3 +20,6 @@ Route::get('/', function () {
 });
 
 Route::get('login', [AuthController::class, 'login_view'])->name('login_view');
+
+Route::get('login', [PenggunaController::class, 'login'])->name('login');
+Route::resource('pengguna', PenggunaController::class);
