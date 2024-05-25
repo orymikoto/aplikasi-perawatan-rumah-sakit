@@ -23,8 +23,7 @@
 
     <main class="flex gap-4 w-full">
         <x-sidebar />
-        <div class="flex flex-col h-full min-h-[80vh] p-4 bg-white shadow-md rounded-[2rem] flex-1">
-
+        <div class="flex flex-col h-full min-h-[80vh] p-8 bg-white shadow-md rounded-[2rem] flex-1">
             @yield('content')
         </div>
     </main>

@@ -1,4 +1,4 @@
-@props(['placeholder' => '', 'name' => '', 'title' => 'Title', 'type' => 'text', 'value' => ''])
+{{-- @props(['placeholder' => '', 'name' => '', 'title' => 'Title', 'type' => 'text', 'value' => '']) --}}
 
 <div class="flex flex-col gap-2 w-full">
     <p class="font-jakarta-sans font-medium text-lg text-neutral-900 ml-2">{{ $title }}</p>

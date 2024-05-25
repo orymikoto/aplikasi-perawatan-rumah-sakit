@@ -12,7 +12,7 @@ class PenggunaController extends Controller
    */
   public function index()
   {
-    //
+    return view('petugas.index');
   }
 
   public function login()
@@ -25,7 +25,7 @@ class PenggunaController extends Controller
    */
   public function create()
   {
-    //
+    return view('petugas.create');
   }
 
   /**
@@ -49,7 +49,7 @@ class PenggunaController extends Controller
    */
   public function edit(Pengguna $pengguna)
   {
-    //
+    return view('petugas.edit');
   }
 
   /**

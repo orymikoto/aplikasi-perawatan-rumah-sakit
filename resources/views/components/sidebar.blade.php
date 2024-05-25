@@ -13,12 +13,14 @@
     {{-- Menu --}}
     <div class="flex flex-col gap-2">
         <div
-            class="flex items-center gap-4 rounded-lg px-2 py-2 text-neutral-400 hover:text-emerald-600 hover:bg-neutral-200 duration-200">
+            class="flex items-center gap-4 rounded-lg px-2 py-2  {{ url()->current() == '/' ? 'text-emerald-600 bg-emerald-300/50' : 'text-neutral-400 hover:text-emerald-600 hover:bg-neutral-200 duration-200' }}">
             <i class="fa-solid fa-house fa-lg w-8"></i>
             <a href="" class="font-jakarta-sans font-semibold">Dashboard</a>
         </div>
         <div
-            class="flex items-center gap-4 rounded-lg px-2 py-2 text-neutral-400 hover:text-emerald-600 hover:bg-neutral-200 duration-200">
+            class="flex items-center gap-4 rounded-lg px-2 py-2 {{ url()->current() == '/'
+                ? 'text-emerald-600 bg-emerald-300/50'
+                : 'text-neutral-400 hover:text-emerald-600 hover:bg-neutral-200 duration-200' }}"">
             <i class="fa-solid fa-users fa-lg w-8 "></i>
             <a href="" class="font-jakarta-sans font-semibold">Data Petugas</a>
         </div>
