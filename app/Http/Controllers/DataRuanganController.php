@@ -29,7 +29,12 @@ class DataRuanganController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    DataRuangan::create([
+      'nama_ruangan' => $request->nama_ruangan,
+      'jumlah_tempat_tidur' => $request->jumlah_tempat_tidur,
+      'kelas' => $request->kelas
+    ]);
+    return redirect('/ruangan');
   }
 
   /**

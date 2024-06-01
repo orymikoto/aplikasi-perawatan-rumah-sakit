@@ -8,8 +8,9 @@
         <p>Kembali ke halaman daftar petugas</p>
       </div>
     </a>
-    <form class="flex flex-col gap-4 p-4 rounded-2xl shadow-md xl:w-[480px] ">
-      <x-input.text title="Nama ruangan" name="nama_ruang" placeholder="Nama Ruangan..." value="" />
+    <form class="flex flex-col gap-4 p-4 rounded-2xl shadow-md xl:w-[480px]" action="{{ route('ruangan.store') }}" method="POST">
+      @csrf
+      <x-input.text title="Nama ruangan" name="nama_ruangan" placeholder="Nama Ruangan..." value="" />
       <x-input.number title="Jumlah tempat tidur" name="jumlah_tempat_tidur" placeholder="Jumlah tempat tidur..." value="" />
       <x-input.select title="Kelas" name="kelas" placeholder="Pilih jenis kelas" value="" :options="['Kelas 1', 'Kelas 2', 'Kelas 3']" />
       <div class="flex items-center self-end gap-4">
