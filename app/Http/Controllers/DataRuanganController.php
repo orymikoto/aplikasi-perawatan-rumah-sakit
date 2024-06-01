@@ -12,7 +12,8 @@ class DataRuanganController extends Controller
    */
   public function index()
   {
-    //
+    $data_ruangans = DataRuangan::all();
+    return view('ruangan.index', compact('data_ruangans'));
   }
 
   /**
@@ -20,7 +21,7 @@ class DataRuanganController extends Controller
    */
   public function create()
   {
-    //
+    return view('ruangan.create');
   }
 
   /**
@@ -42,9 +43,9 @@ class DataRuanganController extends Controller
   /**
    * Show the form for editing the specified resource.
    */
-  public function edit(DataRuangan $dataRuangan)
+  public function edit($id)
   {
-    //
+    return view('ruangan.edit');
   }
 
   /**

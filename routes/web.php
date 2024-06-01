@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DataRuanganController;
+use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PenggunaController;
+use App\Models\DataRuangan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,3 +26,5 @@ Route::get('login', [AuthController::class, 'login_view'])->name('login_view');
 
 Route::get('login', [PenggunaController::class, 'login'])->name('login');
 Route::resource('pengguna', PenggunaController::class);
+Route::resource('ruangan', DataRuanganController::class);
+Route::resource('pasiens', PasienController::class);

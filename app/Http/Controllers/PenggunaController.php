@@ -12,7 +12,8 @@ class PenggunaController extends Controller
    */
   public function index()
   {
-    return view('petugas.index');
+    $penggunas = Pengguna::all();
+    return view('petugas.index', compact('penggunas'));
   }
 
   public function login()
@@ -33,7 +34,14 @@ class PenggunaController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    Pengguna::create([
+      'nama' => $request->nama,
+      'email' => $request->email,
+      'role' => $request->role,
+      'password' => $request->password,
+      'foto_profil' => ''
+    ]);
+    return redirect('/pengguna');
   }
 
   /**
@@ -47,7 +55,7 @@ class PenggunaController extends Controller
   /**
    * Show the form for editing the specified resource.
    */
-  public function edit(Pengguna $pengguna)
+  public function edit($id)
   {
     return view('petugas.edit');
   }

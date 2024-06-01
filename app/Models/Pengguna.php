@@ -12,7 +12,7 @@ class Pengguna extends User
 {
   use HasApiTokens, HasFactory, Notifiable;
 
-  protected $table = 'pengguna';
+  protected $table = 'penggunas';
   // protected $primary_key = 'id';
   protected $fillable = [
     'nama',

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pasien;
+use App\Models\PasienDirawat;
 use Illuminate\Http\Request;
 
 class PasienController extends Controller
@@ -12,7 +13,9 @@ class PasienController extends Controller
    */
   public function index()
   {
-    //
+    $pasien_dirawats = PasienDirawat::with('pasien', 'penyakit', 'jenisPembayaran')->get();
+
+    return view('pasien.masuk.index', compact('pasien_dirawats'));
   }
 
   /**
@@ -20,7 +23,7 @@ class PasienController extends Controller
    */
   public function create()
   {
-    //
+    return view('pasien.masuk.create');
   }
 
   /**
@@ -42,9 +45,9 @@ class PasienController extends Controller
   /**
    * Show the form for editing the specified resource.
    */
-  public function edit(Pasien $pasien)
+  public function edit($id)
   {
-    //
+    return view('pasien.masuk.edit');
   }
 
   /**
