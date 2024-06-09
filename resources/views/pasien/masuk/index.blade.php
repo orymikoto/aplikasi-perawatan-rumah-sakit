@@ -27,11 +27,13 @@
             <td class="px-4">
               <div class="flex gap-2 mx-auto justify-center">
                 <button class="bg-red-600 text-white hover:bg-red-500 p-1 px-2 rounded-md">
-                  <i class="fa-solid fa-trash w-8"></i>
+                  <i class="fa-solid fa-trash w-6 h-6"></i>
                 </button>
-                <a href="{{ route('pasiens.edit', $pasien->id) }}" class="bg-teal-600 text-white hover:bg-teal-500 p-1 px-2 rounded-md">
-                  <i class="fa-solid fa-pen w-8"></i>
+                <a href="{{ route('pasiens.edit', $pasien->id) }}"
+                  class="bg-teal-600 flex items-center justify-center text-white hover:bg-teal-500 p-1 px-2 rounded-md">
+                  <i class="fa-solid fa-pen w-6 h-6 flex items-center justify-center"></i>
                 </a>
+                <x-popup.ruangan-table-action id="{{ 'modal_popup_' . $pasien->id }}" :id_pasien="$pasien->id" :daftar_ruangan="$daftar_ruangan" />
               </div>
             </td>
           </tr>

@@ -21,10 +21,10 @@ return new class extends Migration
       $table->foreignIdFor(JenisPembayaran::class)->nullable()->nullOnDelete();
       $table->string('kode_penyakit');
       $table->time('tanggal_masuk');
-      $table->time('tanggal_keluar');
-      $table->boolean('pasien_pindahan');
-      $table->boolean('pasien_mati');
-      $table->enum('keadaan_keluar', ['Sembuh', 'Belum Sembuh',  'Mati < 48 Jam', '> 48 Jam']);
+      $table->time('tanggal_keluar')->nullable();
+      $table->boolean('pasien_pindahan')->nullable();
+      $table->boolean('pasien_mati')->nullable();
+      $table->enum('keadaan_keluar', ['Sembuh', 'Belum Sembuh',  'Mati < 48 Jam', '> 48 Jam'])->nullable();
 
       // Foreign Key Relation
       $table->foreign('kode_penyakit')->references('kode_penyakit')->on('penyakits')->onDelete('cascade');

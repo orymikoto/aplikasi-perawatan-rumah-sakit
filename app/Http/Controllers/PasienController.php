@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataRuangan;
 use App\Models\Pasien;
 use App\Models\PasienDirawat;
 use Illuminate\Http\Request;
@@ -14,8 +15,9 @@ class PasienController extends Controller
   public function index()
   {
     $pasien_dirawats = PasienDirawat::with('pasien', 'penyakit', 'jenisPembayaran')->get();
+    $daftar_ruangan = DataRuangan::pluck('nama_ruangan');
 
-    return view('pasien.masuk.index', compact('pasien_dirawats'));
+    return view('pasien.masuk.index', compact('pasien_dirawats', 'daftar_ruangan'));
   }
 
   /**
@@ -31,7 +33,14 @@ class PasienController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    Pasien::create([
+      'no_RM' => $request->no_rm,
+      'nama' => $request->nama,
+      'jenis_kelamin' => $request->jenis_kelamin,
+      'jumlah_tempat_tidur' => $request->jumlah_tempat_tidur,
+      'kelas' => $request->kelas
+    ]);
+    return redirect('/pasien');
   }
 
   /**

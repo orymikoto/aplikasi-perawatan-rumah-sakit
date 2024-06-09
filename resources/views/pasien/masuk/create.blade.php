@@ -8,10 +8,16 @@
         <p>Kembali ke halaman daftar petugas</p>
       </div>
     </a>
-    <form class="flex flex-col gap-4 p-4 rounded-2xl shadow-md xl:w-[480px] ">
+    <form action="{{ route('pasiens.store') }}" class="flex flex-col gap-4 p-4 rounded-2xl shadow-md xl:w-[480px] ">
       <x-input.text title="No. RM" name="no_rm" placeholder="Nomor RM..." value="" />
       <x-input.text title="Nama Pasien" name="nama_pasien" placeholder="Nama Pasien ..." value="" />
-      <x-input.text title="Diagnosa" name="diagnosa" placeholder="Diagnosa ..." value="" />
+      <x-input.number title="Usia" name="umur" placeholder="Usia Pasien..." value="" />
+      <x-input.select title="Jenis Kelamin" name="jenis_kelamin" placeholder="Pilih jenis kelamin pasien" :options="["LAKI - LAKI", "PEREMPUAN"
+        ]" />
+      <x-input.date title="Tanggal Daftar Pasien" name="tanggal_daftar" placeholder="Tanggal Daftar Pasien..." value="" />
+      <x-input.text title="Alamat" name="alamat" placeholder="Alamat Pasien..." value="" />
+      <x-input.text title="Diagnosa" name="diagnosa" placeholder="Diagnosa..." value="" />
+      <x-input.select title="" name="" placeholder="" value="" :options="" />
       <x-input.select title="Jenis Pembayaran" name="jenis_pembayaran" placeholder="Pilih tipe jenis pembayaran" value="" :options="[
           'BPJS DINAS - ANGKATAN LAIN KELUARGA',
           'BPJS DINAS - ANGKATAN LAIN PNS',
