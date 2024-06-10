@@ -7,6 +7,7 @@ use App\Models\JenisPembayaran;
 use App\Models\Pasien;
 use App\Models\PasienDirawat;
 use App\Models\Penyakit;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PasienController extends Controller
@@ -20,6 +21,39 @@ class PasienController extends Controller
     $daftar_ruangan = DataRuangan::pluck('nama_ruangan');
 
     return view('pasien.masuk.index', compact('pasien_dirawats', 'daftar_ruangan'));
+  }
+
+  public function daftar_pindah()
+  {
+    $pasien_pindah = PasienDirawat::wherePasienPindahan(true)->get();
+
+    return view('pasien.pindah.index', compact('pasien_pindah'));
+  }
+
+  public function pasien_pindah(Request $request, $id)
+  {
+    $pasien_pindah = PasienDirawat::whereId($id)->update([
+      'pasien_pindahan' => true
+    ]);
+
+    return redirect('/pasiens');
+  }
+
+  public function daftar_keluar()
+  {
+    $pasien_keluar = PasienDirawat::whereNotNull('tanggal_keluar')->get();
+
+    return view('pasien.keluar.index', compact('pasien_keluar'));
+  }
+
+  public function pasien_keluar(Request $request, $id)
+  {
+    $pasien_pindah = PasienDirawat::whereId($id)->update([
+      'pasien_keluar' => true,
+      'tanggal_keluar' => Carbon::now()
+    ]);
+
+    return redirect('/pasiens');
   }
 
   /**
