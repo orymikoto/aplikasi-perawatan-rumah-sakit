@@ -9,12 +9,15 @@
                 <p>Kembali ke halaman daftar petugas</p>
             </div>
         </a>
-        <form class="flex flex-col gap-4 p-4 rounded-2xl shadow-md xl:w-[480px] ">
-            <x-input.text title="Nama" name="nama" placeholder="Nama..." value="" />
-            <x-input.text title="Email" name="email" placeholder="Email..." value="" />
-            <x-input.select title="Tipe" name="role" placeholder="Pilih tipe pengguna" value=""
-                :options="['kepala', 'perawat', 'petugas']" />
-            <x-input.password placeholder="Pasword Baru..." title="Password" name="password" />
+        <form class="flex flex-col gap-4 p-4 rounded-2xl shadow-md xl:w-[480px] "
+            action="{{ route('pengguna.update', $pengguna->id) }}" method="POST">
+            @method('PUT')
+            @csrf
+            <x-input.text title="Nama" name="nama" placeholder="Nama..." value="{{ $pengguna->nama }}" />
+            <x-input.text title="Email" name="email" placeholder="Email..." value="{{ $pengguna->email }}" />
+            <x-input.select title="Tipe" name="role" placeholder="Pilih tipe pengguna" value="{{ $pengguna->role }}"
+                :options="['ADMIN', 'KEPALA', 'PERAWAT', 'PETUGAS']" />
+            <x-input.password placeholder="Pasword Baru..." title="Password" name="password" :required="false" />
             <div class="flex items-center self-end gap-4">
                 <a href="{{ url()->previous() }}"
                     class="py-2 px-4 font-jakarta-sans font-semibold rounded-lg bg-red-600 text-white hover:shadow-md hover:bg-white hover:shadow-red-600/50 hover:text-red-600 duration-200">Batal</a>

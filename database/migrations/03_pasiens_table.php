@@ -16,7 +16,7 @@ return new class extends Migration
       $table->string("no_RM")->unique();
       $table->string("nama");
       $table->enum("jenis_kelamin", ["PEREMPUAN", "LAKI - LAKI"]);
-      $table->string("tanggal_daftar");
+      $table->date("tanggal_daftar");
       $table->string("alamat");
       $table->integer("umur");
       $table->timestamps();

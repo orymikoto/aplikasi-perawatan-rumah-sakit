@@ -50,7 +50,8 @@ class DataRuanganController extends Controller
    */
   public function edit($id)
   {
-    return view('ruangan.edit');
+    $data_ruangan = DataRuangan::whereId($id)->first();
+    return view('ruangan.edit', compact('data_ruangan'));
   }
 
   /**
@@ -58,7 +59,13 @@ class DataRuanganController extends Controller
    */
   public function update(Request $request, DataRuangan $dataRuangan)
   {
-    //
+    DataRuangan::whereId($dataRuangan->id)->update([
+      'nama_ruangan' => $request->nama_ruangan,
+      'jumlah_tempat_tidur' => $request->jumlah_tempat_tidur,
+      'kelas' => $request->kelas
+    ]);
+
+    redirect('/ruangan');
   }
 
   /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengguna;
+use Hash;
 use Illuminate\Http\Request;
 
 class PenggunaController extends Controller
@@ -38,7 +39,7 @@ class PenggunaController extends Controller
       'nama' => $request->nama,
       'email' => $request->email,
       'role' => $request->role,
-      'password' => $request->password,
+      'password' => Hash::make($request->password),
       'foto_profil' => ''
     ]);
     return redirect('/pengguna');
@@ -57,7 +58,8 @@ class PenggunaController extends Controller
    */
   public function edit($id)
   {
-    return view('petugas.edit');
+    $pengguna = Pengguna::whereId($id)->first();
+    return view('petugas.edit', compact('pengguna'));
   }
 
   /**
@@ -65,7 +67,16 @@ class PenggunaController extends Controller
    */
   public function update(Request $request, Pengguna $pengguna)
   {
-    //
+    // $old_pengguna = Pengguna::whereId($pengguna->id)->first();
+    $pengguna = Pengguna::whereId($pengguna->id)->update([
+      'nama' => $request->nama,
+      'email' => $request->email,
+      'role' => $request->role,
+      'password' => Hash::make($request->password),
+      'foto_profil' => ''
+    ]);
+
+    return redirect("/pengguna");
   }
 
   /**
