@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Pasien;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,7 +14,10 @@ return new class extends Migration
   {
     Schema::create('pasien_pindahs', function (Blueprint $table) {
       $table->id();
-
+      $table->unsignedInteger('ruangan_lama_id');
+      $table->unsignedInteger('ruangan_baru_id');
+      $table->foreignIdFor(Pasien::class)->constrained()->onDelete('cascade');
+      $table->date('tanggal_pindah');
       $table->timestamps();
     });
   }

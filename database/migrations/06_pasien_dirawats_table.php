@@ -20,6 +20,7 @@ return new class extends Migration
       $table->foreignIdFor(DataRuangan::class)->constrained()->onDelete('cascade');
       $table->foreignIdFor(JenisPembayaran::class)->nullable()->nullOnDelete();
       $table->string('kode_penyakit');
+      $table->string('nama_pentakit')->nullable();
       $table->date('tanggal_masuk');
       $table->date('tanggal_keluar')->nullable();
       $table->boolean('pasien_pindahan')->nullable();
