@@ -6,6 +6,7 @@ use App\Models\DataRuangan;
 use App\Models\JenisPembayaran;
 use App\Models\Pasien;
 use App\Models\PasienDirawat;
+use App\Models\PasienPindah;
 use App\Models\Penyakit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -32,11 +33,21 @@ class PasienController extends Controller
 
   public function pasien_pindah(Request $request, $id)
   {
+    $pasien_dirawat = PasienDirawat::whereId($id)->first();
+
+    $ruangan_baru = DataRuangan::whereNamaRuangan($request->ruangan)->first();
     $pasien_pindah = PasienDirawat::whereId($id)->update([
       'pasien_pindahan' => true
     ]);
 
-    return redirect('/pasiens');
+    $add_pasien_pindah = PasienPindah::create([
+      'pasien_dirawat_id' => $id,
+      'ruangan_lama_id' => $pasien_dirawat->data_ruangan_id,
+      'ruangan_baru_id' => $ruangan_baru->id,
+      'tanggal_pindah' => Carbon::now()->format('Y-m-d')
+    ]);
+
+    return redirect('/pasien-pindah');
   }
 
   public function daftar_keluar()
@@ -49,8 +60,8 @@ class PasienController extends Controller
   public function pasien_keluar(Request $request, $id)
   {
     $pasien_pindah = PasienDirawat::whereId($id)->update([
-      'pasien_keluar' => true,
-      'tanggal_keluar' => Carbon::now()
+      'tanggal_keluar' => Carbon::now()->format('Y-m-d'),
+      'keadaan_keluar' => $request->kondisi
     ]);
 
     return redirect('/pasiens');

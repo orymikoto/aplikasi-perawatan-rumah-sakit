@@ -40,14 +40,14 @@
             <i class="fa-solid fa-door-open fa-lg w-8"></i>
             <p class="font-jakarta-sans font-semibold">Pasien Masuk</p>
         </a>
-        <a href="{{ route('pasien_keluar') }}"
+        <a href="{{ route('daftar_pasien_keluar') }}"
             class="flex items-center gap-4 rounded-lg px-2 py-2 {{ explode('/', request()->path())[0] == 'pasien-keluar'
                 ? 'text-emerald-600 bg-emerald-300/50'
                 : 'text-neutral-400 hover:text-emerald-600 hover:bg-neutral-200 duration-200' }}">
             <i class="fa-solid fa-door-closed fa-lg w-8"></i>
             <p class="font-jakarta-sans font-semibold">Pasien Keluar</p>
         </a>
-        <a href="{{ route('pasien_pindah') }}"
+        <a href="{{ route('daftar_pasien_pindah') }}"
             class="flex items-center gap-4 rounded-lg px-2 py-2 {{ explode('/', request()->path())[0] == 'pasien-pindah'
                 ? 'text-emerald-600 bg-emerald-300/50'
                 : 'text-neutral-400 hover:text-emerald-600 hover:bg-neutral-200 duration-200' }}">

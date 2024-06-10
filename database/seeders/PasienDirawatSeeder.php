@@ -35,7 +35,7 @@ class PasienDirawatSeeder extends Seeder
         'tanggal_keluar' => now(),
         'pasien_pindahan' => false,
         'pasien_mati' => false,
-        'keadaan_keluar' => ['Sembuh', 'Belum Sembuh'][$faker->numberBetween(0, 1)]
+        'keadaan_keluar' => ['Keluar - Sembuh', 'Keluar - Belum Sembuh'][$faker->numberBetween(0, 1)]
       ]);
     }
     PasienDirawat::insert($data);

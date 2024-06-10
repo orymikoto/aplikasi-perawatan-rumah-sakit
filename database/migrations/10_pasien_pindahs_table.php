@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Pasien;
+use App\Models\PasienDirawat;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,10 +15,14 @@ return new class extends Migration
   {
     Schema::create('pasien_pindahs', function (Blueprint $table) {
       $table->id();
-      $table->unsignedInteger('ruangan_lama_id');
-      $table->unsignedInteger('ruangan_baru_id');
-      $table->foreignIdFor(Pasien::class)->constrained()->onDelete('cascade');
+      $table->unsignedBigInteger('ruangan_lama_id');
+      $table->unsignedBigInteger('ruangan_baru_id');
+      $table->foreignIdFor(PasienDirawat::class)->constrained()->onDelete('cascade');
       $table->date('tanggal_pindah');
+
+      $table->foreign('ruangan_lama_id')->references('id')->on('data_ruangans')->onDelete('cascade');
+      $table->foreign('ruangan_baru_id')->references('id')->on('data_ruangans')->onDelete('cascade');
+
       $table->timestamps();
     });
   }
