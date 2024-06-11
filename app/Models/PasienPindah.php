@@ -17,6 +17,10 @@ class PasienPindah extends Model
     'tanggal_pindah',
   ];
 
+  protected $casts = [
+    'tanggal_pindah' => 'datetime',
+  ];
+
   public function pasienDirawat(): BelongsTo
   {
     return $this->belongsTo(PasienDirawat::class);

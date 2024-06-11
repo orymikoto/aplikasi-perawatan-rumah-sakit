@@ -18,7 +18,7 @@ class PasienController extends Controller
    */
   public function index()
   {
-    $pasien_dirawats = PasienDirawat::with('pasien', 'penyakit', 'jenisPembayaran')->get();
+    $pasien_dirawats = PasienDirawat::with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
     $daftar_ruangan = DataRuangan::pluck('nama_ruangan');
 
     return view('pasien.masuk.index', compact('pasien_dirawats', 'daftar_ruangan'));
@@ -26,7 +26,7 @@ class PasienController extends Controller
 
   public function daftar_pindah()
   {
-    $pasien_pindah = PasienDirawat::wherePasienPindahan(true)->get();
+    $pasien_pindah = PasienPindah::with(['pasienDirawat', 'ruanganLama', 'ruanganBaru'])->orderBy('tanggal_pindah', 'desc')->paginate(10);
 
     return view('pasien.pindah.index', compact('pasien_pindah'));
   }
@@ -44,7 +44,7 @@ class PasienController extends Controller
       'pasien_dirawat_id' => $id,
       'ruangan_lama_id' => $pasien_dirawat->data_ruangan_id,
       'ruangan_baru_id' => $ruangan_baru->id,
-      'tanggal_pindah' => Carbon::now()->format('Y-m-d')
+      'tanggal_pindah' => Carbon::now()
     ]);
 
     return redirect('/pasien-pindah');
@@ -52,7 +52,7 @@ class PasienController extends Controller
 
   public function daftar_keluar()
   {
-    $pasien_keluar = PasienDirawat::whereNotNull('tanggal_keluar')->get();
+    $pasien_keluar = PasienDirawat::orderBy('tanggal_masuk', 'desc')->paginate(10);
 
     return view('pasien.keluar.index', compact('pasien_keluar'));
   }
@@ -60,8 +60,9 @@ class PasienController extends Controller
   public function pasien_keluar(Request $request, $id)
   {
     $pasien_pindah = PasienDirawat::whereId($id)->update([
-      'tanggal_keluar' => Carbon::now()->format('Y-m-d'),
-      'keadaan_keluar' => $request->kondisi
+      'tanggal_keluar' => Carbon::now(),
+      'keadaan_keluar' => $request->kondisi,
+      'rumah_sakit_baru' => $request->rumah_sakit ?? null
     ]);
 
     return redirect('/pasiens');
