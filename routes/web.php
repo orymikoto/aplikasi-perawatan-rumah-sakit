@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DataRuanganController;
+use App\Http\Controllers\Laporan;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PenggunaController;
 use App\Models\DataRuangan;
@@ -38,5 +39,5 @@ Route::post('pasien-keluar/{id}', [PasienController::class, 'pasien_keluar'])->n
 
 // Laporan
 Route::get('laporan/shri', 'Laporan@rekapitulasiSHRI')->name('laporan_shri');
-Route::get('laporan/ris', 'Laporan@rekapitulasiIndikatorRI')->name('laporan_ris');
+Route::get('laporan/ris', [Laporan::class, 'rekapitulasiIndikatorRI'])->name('laporan_ris');
 Route::get('laporan/penyakit', 'Laporan@rekapitulasiLaporanPenyakit')->name('laporan_penyakit');

@@ -13,7 +13,7 @@ return new class extends Migration
   {
     Schema::create('rekapitulasi_indikator_r_i_s', function (Blueprint $table) {
       $table->id();
-      $table->time('tanggal');
+      $table->dateTime('tanggal');
       $table->string('nama_fktl');
       $table->integer('jumlah_tempat_tidur');
       $table->float('nilai_bor');

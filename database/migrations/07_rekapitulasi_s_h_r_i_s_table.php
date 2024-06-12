@@ -13,7 +13,7 @@ return new class extends Migration
   {
     Schema::create('rekapitulasi_s_h_r_i_s', function (Blueprint $table) {
       $table->id();
-      $table->time('tanggal');
+      $table->dateTime('tanggal');
       $table->integer('pasien_awal');
       $table->integer('pasien_baru');
       $table->integer('pindahan');
