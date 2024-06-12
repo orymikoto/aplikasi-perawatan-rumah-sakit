@@ -11,9 +11,9 @@
           <tr class="text-white font-josefin-sans font-medium h-16 text-lg bg-emerald-600">
             <th class="px-4 text-start w-12">No.</th>
             <th class="px-4 text-start w-16">Nomor RM</th>
-            <th class="px-4 text-start">Nama Pasien</th>
-            <th class="px-4 text-center w-24">Ruangan Dirawat</th>
-            <th class="px-4 text-start w-16">Diagnosa</th>
+            <th class="px-4 text-start min-w-60">Nama Pasien</th>
+            <th class="px-4 text-start min-w-52">Ruangan Dirawat</th>
+            <th class="px-4 text-start min-w-20">Diagnosa</th>
             <th class="px-4 text-center min-w-52">Jenis Pembayaran</th>
             <th class="px-4 text-center min-w-32">Tgl Masuk</th>
             <th class="px-4 text-center w-16">Aksi</th>
@@ -27,8 +27,8 @@
               </td>
               <td class="px-4">{{ $pasien->pasien->no_RM }}</td>
               <td class="px-4">{{ $pasien->pasien->nama }}</td>
-              <td class="px-4 text-center">{{ $pasien->dataRuangan->nama_ruangan }}</td>
-              <td class="px-4">{{ $pasien->penyakit->kode_penyakit }}</td>
+              <td class="px-4 ">{{ $pasien->dataRuangan->nama_ruangan }}</td>
+              <td class="px-4 ">{{ $pasien->kode_penyakit }}</td>
               <td class="px-4">{{ $pasien->jenisPembayaran->nama_jenis_pembayaran }}</td>
               <td class="px-4">{{ $pasien->tanggal_masuk->toDateString() }}</td>
               <td class="px-4">
@@ -52,7 +52,7 @@
         </tbody>
       </table>
     </div>
-    {{ $pasien_dirawats->links('pagination::simple-tailwind') }}
+    {{ $pasien_dirawats->onEachSide(1)->links('pagination::simple-tailwind') }}
   </div>
 
 @stop

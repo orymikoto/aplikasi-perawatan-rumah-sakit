@@ -13,7 +13,7 @@
             <th class="px-4 text-start min-w-60">Nama Pasien</th>
             <th class="px-4 text-start min-w-52">Ruang Lama</th>
             <th class="px-4 text-start min-w-52">Ruang Baru</th>
-            <th class="px-4 text-start min-w-52">Diagnosa</th>
+            <th class="px-4 text-start min-w-20 ">Diagnosa</th>
             <th class="px-4 text-center min-w-48">Tgl Pindah</th>
           </tr>
         </thead>
@@ -27,7 +27,7 @@
               <td class="px-4">{{ $pasien->pasienDirawat->pasien->nama }}</td>
               <td class="px-4">{{ $pasien->ruanganLama->nama_ruangan }}</td>
               <td class="px-4">{{ $pasien->ruanganBaru->nama_ruangan }}</td>
-              <td class="px-4">{{ $pasien->pasienDirawat->jenis_penyakit }}</td>
+              <td class="px-4">{{ $pasien->pasienDirawat->kode_penyakit }}</td>
               <td class="px-4 text-center">{{ $pasien->tanggal_pindah->toDateString() }}</td>
               {{-- <td class="px-4">
                   <div class="flex gap-2 mx-auto justify-center">
@@ -52,7 +52,7 @@
         </tbody>
       </table>
     </div>
-    {{ $pasien_pindah->links('pagination::simple-tailwind') }}
+    {{ $pasien_pindah->onEachSide(1)->links('pagination::simple-tailwind') }}
 
   </div>
 @stop

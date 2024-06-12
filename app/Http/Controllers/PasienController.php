@@ -18,7 +18,7 @@ class PasienController extends Controller
    */
   public function index()
   {
-    $pasien_dirawats = PasienDirawat::with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
+    $pasien_dirawats = PasienDirawat::whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
     $daftar_ruangan = DataRuangan::pluck('nama_ruangan');
 
     return view('pasien.masuk.index', compact('pasien_dirawats', 'daftar_ruangan'));

@@ -11,7 +11,7 @@
             <th class="px-4 text-start w-12">No.</th>
             <th class="px-4 text-start w-16">Nomor RM</th>
             <th class="px-4 text-start min-w-60">Nama Pasien</th>
-            <th class="px-4 text-center w-32">Diagnosa</th>
+            <th class="px-4 text-start min-w-20">Diagnosa</th>
             <th class="px-4 text-center w-16">Lama Dirawat</th>
             <th class="px-4 text-center w-16">Hari Perawatan</th>
             <th class="px-4 text-center min-w-48">Tanggal Keluar</th>
@@ -26,14 +26,14 @@
               <td class="text-center">{{ ($pasien_keluar->currentPage() - 1) * $pasien_keluar->links()->paginator->perPage() + $loop->iteration }}
               <td class="px-4">{{ $pasien->pasien->no_RM }}</td>
               <td class="px-4">{{ $pasien->pasien->nama }}</td>
-              <td class="px-4 text-center">{{ $pasien->penyakit->kode_penyakit }}</td>
+              <td class="px-4 text-start">{{ $pasien->kode_penyakit }}</td>
               <td class="px-4 text-center">
-                {{ $pasien->tanggal_keluar ? $pasien->tanggal_keluar->diffInDays($pasien->tanggal_masuk) : Carbon::today()->diffInDays($pasien->tanggal_masuk) }}
+                {{ $pasien->tanggal_keluar ? $pasien->tanggal_keluar->diffInDays($pasien->tanggal_masuk) : \Carbon\Carbon::today()->diffInDays($pasien->tanggal_masuk) }}
               </td>
               <td class="px-4 text-center">
-                {{ $pasien->tanggal_keluar ? $pasien->tanggal_keluar->diffInDays($pasien->tanggal_masuk) + 1 : Carbon::today()->diffInDays($pasien->tanggal_masuk) + 1 }}
+                {{ $pasien->tanggal_keluar ? $pasien->tanggal_keluar->diffInDays($pasien->tanggal_masuk) + 1 : \Carbon\Carbon::today()->diffInDays($pasien->tanggal_masuk) + 1 }}
               </td>
-              <td class="px-4 text-center">{{ $pasien->tanggal_keluar->toDateString() ?? '-' }}</td>
+              <td class="px-4 text-center">{{ $pasien->tanggal_keluar ? $pasien->tanggal_keluar->toDateString() : '-' }}</td>
               <td class="px-4">{{ $pasien->keadaan_keluar ?? 'Dirawat' }}</td>
               {{-- <td class="px-4">
               <div class="flex gap-2 mx-auto justify-center">
@@ -58,7 +58,7 @@
         </tbody>
       </table>
     </div>
-    {{ $pasien_keluar->links('pagination::simple-tailwind') }}
+    {{ $pasien_keluar->onEachSide(1)->links('pagination::simple-tailwind') }}
 
   </div>
 @stop

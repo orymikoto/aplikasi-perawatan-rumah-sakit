@@ -17,7 +17,7 @@ class PasienSeeder extends Seeder
   {
     $faker = FakerFactory::create();
     $data = [];
-    for ($i = 0; $i < 20; $i++) {
+    for ($i = 0; $i < 175; $i++) {
       array_push($data, [
         "no_RM" => str($faker->numberBetween(100000, 999999)),
         "nama" => $faker->name(),
