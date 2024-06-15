@@ -11,7 +11,8 @@ class JenisPembayaran extends Model
   use HasFactory;
 
   protected $fillable = [
-    'nama_jenis_pembayaran'
+    'nama_jenis_pembayaran',
+    'kategori_pasien'
   ];
 
   public function pasienDirawat(): HasMany

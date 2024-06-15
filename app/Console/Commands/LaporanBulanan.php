@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\DataRuangan;
+use App\Models\LaporanPenyakitPasien;
 use App\Models\PasienDirawat;
 use App\Models\RekapitulasiIndikatorRI;
 use Carbon\Carbon;
@@ -87,6 +88,13 @@ class LaporanBulanan extends Command
             'nilai_ndr' => $NDR
         ]);
     }
+
+    // protected function penyakit() 
+    // {
+    //     $laporan = LaporanPenyakitPasien::create([
+    //         'icd' => 
+    //     ]);
+    // }
 
     public function handle()
     {

@@ -17,9 +17,9 @@ class PenyakitSeeder extends Seeder
   {
     $faker = FakerFactory::create();
     $data = [];
-    for ($i = 0; $i < 4; $i++) {
+    for ($i = 0; $i < 7; $i++) {
       array_push($data, [
-        "nama_penyakit" => "penyakit " . $faker->sentence(4),
+        "nama_penyakit" => "penyakit " . $faker->sentence(3),
         "kode_penyakit" => strtoupper($faker->randomLetter()) . "." . str($faker->numberBetween(10, 9999)),
       ]);
     }

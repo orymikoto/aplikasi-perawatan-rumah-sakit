@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DataRuangan;
 use App\Models\JenisPembayaran;
+use App\Models\LaporanPenyakitPasien;
 use App\Models\Pasien;
 use App\Models\PasienDirawat;
 use App\Models\PasienPindah;
@@ -100,9 +101,48 @@ class PasienController extends Controller
       'pasien_id' => $new_pasien->id,
       'data_ruangan_id' => $check_data_ruangan->id,
       'jenis_pembayaran_id' => $check_jenis_pembayaran->id,
-      'kode_penyakit' => $check_data_penyakit->kode_penyakit,
+      'kode_penyakit' => strtoupper($request->kode_penyakit),
+      'jenis_penyakit' => $request->jenis_penyakit,
       'tanggal_masuk' => $request->tanggal_masuk,
     ]);
+
+    // $check_column_pembayaran
+
+    $check_laporan_penyakit = LaporanPenyakitPasien::whereBetween('created_at', [
+      Carbon::now()->startOfMonth(),
+      Carbon::now()->endOfMonth()
+    ])->whereKodePenyakit(strtoupper($request->kode_penyakit))->first();
+
+    if ($check_laporan_penyakit) {
+      // dd($check_laporan_penyakit);
+      $check_laporan_penyakit->increment(
+        $check_jenis_pembayaran->kategori_pasien,
+        1
+      );
+      LaporanPenyakitPasien::whereBetween('created_at', [
+        Carbon::now()->startOfMonth(),
+        Carbon::now()->endOfMonth()
+      ])->whereKodePenyakit(strtoupper($request->kode_penyakit))->increment('jumlah_pasien', 1);
+    } else {
+      LaporanPenyakitPasien::create([
+        'kode_penyakit' => strtoupper($request->kode_penyakit),
+        'jenis_penyakit' =>  $request->jenis_penyakit,
+        'tni_ad_mil' => 0,
+        'tni_ad_kel' => 0,
+        'tni_ad_pns' => 0,
+        'tni_al_pns' => 0,
+        'tni_al_kel' => 0,
+        'tni_al_mil' => 0,
+        'bpjs' => 0,
+        'pasien_umum' => 0,
+        'jumlah_pasien' => 0,
+      ]);
+
+      LaporanPenyakitPasien::whereKodePenyakit(strtoupper($request->kode_penyakit))->increment(
+        $check_jenis_pembayaran->kategori_pasien,
+        1
+      );
+    }
 
     return redirect('/pasiens');
   }
@@ -145,14 +185,32 @@ class PasienController extends Controller
     ]);
 
     $check_data_ruangan = DataRuangan::whereNamaRuangan($request->ruangan)->first();
-    $check_data_penyakit = Penyakit::whereNamaPenyakit($request->kode_penyakit)->first();
     $check_jenis_pembayaran = JenisPembayaran::whereNamaJenisPembayaran($request->jenis_pembayaran)->first();
     $pasien_dirawat = PasienDirawat::whereId($id)->update([
       'data_ruangan_id' => $check_data_ruangan->id,
       'jenis_pembayaran_id' => $check_jenis_pembayaran->id,
-      'kode_penyakit' => $check_data_penyakit->kode_penyakit,
+      'kode_penyakit' => strtoupper($request->kode_penyakit),
+      'jenis_penyakit' => $request->jenis_penyakit,
       'tanggal_masuk' => $request->tanggal_masuk,
     ]);
+
+    $check_laporan_penyakit = LaporanPenyakitPasien::whereBetween('created_at', [
+      Carbon::now()->startOfMonth(),
+      Carbon::now()->endOfMonth()
+    ])->whereKodePenyakit(strtoupper($request->kode_penyakit))->first();
+
+    if ($check_laporan_penyakit) {
+      // dd($check_laporan_penyakit);
+      $old_jenis_pembayaran = JenisPembayaran::whereId($old_pasien_dirawats->jenis_pembayaran_id)->first();
+      $check_laporan_penyakit->decrement(
+        $old_jenis_pembayaran->kategori_pasien,
+        1
+      );
+      LaporanPenyakitPasien::whereBetween('created_at', [
+        Carbon::now()->startOfMonth(),
+        Carbon::now()->endOfMonth()
+      ])->whereKodePenyakit(strtoupper($request->kode_penyakit))->increment($check_jenis_pembayaran->kategori_pasien, 1);
+    }
 
     return redirect('/pasiens');
   }

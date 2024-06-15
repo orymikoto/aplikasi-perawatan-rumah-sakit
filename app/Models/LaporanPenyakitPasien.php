@@ -11,14 +11,14 @@ class LaporanPenyakitPasien extends Model
   use HasFactory;
 
   protected $fillable = [
-    'penyakit_id',
-    'icd',
-    'ad_mil',
-    'ad_pns',
-    'ad_kel',
-    'al_mil',
-    'al_pns',
-    'al_kel',
+    'kode_penyakit',
+    'jenis_penyakit',
+    'tni_ad_mil',
+    'tni_ad_pns',
+    'tni_ad_kel',
+    'tni_al_mil',
+    'tni_al_pns',
+    'tni_al_kel',
     'bpjs',
     'pasien_umum',
     'jumlah_pasien',

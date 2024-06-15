@@ -38,6 +38,6 @@ Route::post('pasien-keluar/{id}', [PasienController::class, 'pasien_keluar'])->n
 
 
 // Laporan
-Route::get('laporan/shri', 'Laporan@rekapitulasiSHRI')->name('laporan_shri');
+Route::get('laporan/shri', [Laporan::class, 'Laporan@rekapitulasiSHRI'])->name('laporan_shri');
 Route::get('laporan/ris', [Laporan::class, 'rekapitulasiIndikatorRI'])->name('laporan_ris');
-Route::get('laporan/penyakit', 'Laporan@rekapitulasiLaporanPenyakit')->name('laporan_penyakit');
+Route::get('laporan/penyakit', [Laporan::class, 'rekapitulasiLaporanPenyakit'])->name('laporan_penyakit');

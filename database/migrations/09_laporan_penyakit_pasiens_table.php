@@ -14,14 +14,14 @@ return new class extends Migration
   {
     Schema::create('laporan_penyakit_pasiens', function (Blueprint $table) {
       $table->id();
-      $table->foreignIdFor(Penyakit::class)->constrained()->cascadeOnDelete();
-      $table->string('icd');
-      $table->integer('ad_mil');
-      $table->integer('ad_pns');
-      $table->integer('ad_kel');
-      $table->integer('al_mil');
-      $table->integer('al_pns');
-      $table->integer('al_kel');
+      $table->string('kode_penyakit');
+      $table->string('jenis_penyakit');
+      $table->integer('tni_ad_mil');
+      $table->integer('tni_ad_pns');
+      $table->integer('tni_ad_kel');
+      $table->integer('tni_al_mil');
+      $table->integer('tni_al_pns');
+      $table->integer('tni_al_kel');
       $table->integer('bpjs');
       $table->integer('pasien_umum');
       $table->integer('jumlah_pasien');

@@ -42,6 +42,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property string $nama_jenis_pembayaran
+ * @property string $kategori_pasien
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PasienDirawat> $pasienDirawat
@@ -51,6 +52,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran query()
  * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran whereKategoriPasien($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran whereNamaJenisPembayaran($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran whereUpdatedAt($value)
  */
@@ -79,36 +81,36 @@ namespace App\Models{
  * 
  *
  * @property int $id
- * @property int $penyakit_id
- * @property string $icd
- * @property int $ad_mil
- * @property int $ad_pns
- * @property int $ad_kel
- * @property int $al_mil
- * @property int $al_pns
- * @property int $al_kel
+ * @property string $kode_penyakit
+ * @property string $jenis_penyakit
+ * @property int $tni_ad_mil
+ * @property int $tni_ad_pns
+ * @property int $tnis_ad_kel
+ * @property int $tni_al_mil
+ * @property int $tni_al_pns
+ * @property int $tni_al_kel
  * @property int $bpjs
  * @property int $pasien_umum
  * @property int $jumlah_pasien
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Penyakit $penyakit
+ * @property-read \App\Models\Penyakit|null $penyakit
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien query()
- * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereAdKel($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereAdMil($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereAdPns($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereAlKel($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereAlMil($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereAlPns($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereBpjs($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereIcd($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereJenisPenyakit($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereJumlahPasien($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereKodePenyakit($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien wherePasienUmum($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien wherePenyakitId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereTniAdMil($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereTniAdPns($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereTniAlKel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereTniAlMil($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereTniAlPns($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereTnisAdKel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereUpdatedAt($value)
  */
 	class LaporanPenyakitPasien extends \Eloquent {}
@@ -127,6 +129,8 @@ namespace App\Models{
  * @property int $umur
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PasienDirawat> $pasienDirawat
+ * @property-read int|null $pasien_dirawat_count
  * @method static \Illuminate\Database\Eloquent\Builder|Pasien newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Pasien newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Pasien query()
@@ -152,17 +156,19 @@ namespace App\Models{
  * @property int $data_ruangan_id
  * @property int|null $jenis_pembayaran_id
  * @property string $kode_penyakit
- * @property string $tanggal_masuk
- * @property string $tanggal_keluar
- * @property int $pasien_pindahan
- * @property int $pasien_mati
- * @property string $keadaan_keluar
+ * @property string $jenis_penyakit
+ * @property \Illuminate\Support\Carbon $tanggal_masuk
+ * @property \Illuminate\Support\Carbon|null $tanggal_keluar
+ * @property int|null $pasien_pindahan
+ * @property int|null $pasien_mati
+ * @property string|null $keadaan_keluar
+ * @property string|null $rumah_sakit_baru
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\DataRuangan $dataRuangan
  * @property-read \App\Models\JenisPembayaran|null $jenisPembayaran
  * @property-read \App\Models\Pasien $pasien
- * @property-read \App\Models\Penyakit $penyakit
+ * @property-read \App\Models\Penyakit|null $penyakit
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat query()
@@ -170,11 +176,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereDataRuanganId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereJenisPembayaranId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereJenisPenyakit($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereKeadaanKeluar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereKodePenyakit($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat wherePasienId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat wherePasienMati($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat wherePasienPindahan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereRumahSakitBaru($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereTanggalKeluar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereTanggalMasuk($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereUpdatedAt($value)
@@ -187,13 +195,24 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int $ruangan_lama_id
+ * @property int $ruangan_baru_id
+ * @property int $pasien_dirawat_id
+ * @property \Illuminate\Support\Carbon $tanggal_pindah
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\PasienDirawat $pasienDirawat
+ * @property-read \App\Models\DataRuangan $ruanganBaru
+ * @property-read \App\Models\DataRuangan $ruanganLama
  * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah query()
  * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah wherePasienDirawatId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah whereRuanganBaruId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah whereRuanganLamaId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah whereTanggalPindah($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah whereUpdatedAt($value)
  */
 	class PasienPindah extends \Eloquent {}
@@ -203,6 +222,14 @@ namespace App\Models{
 /**
  * 
  *
+ * @property int $id
+ * @property string $nama
+ * @property string $email
+ * @property string $role
+ * @property string $password
+ * @property string $foto_profil
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
@@ -210,6 +237,14 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Pengguna newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Pengguna newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Pengguna query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Pengguna whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pengguna whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pengguna whereFotoProfil($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pengguna whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pengguna whereNama($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pengguna wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pengguna whereRole($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pengguna whereUpdatedAt($value)
  */
 	class Pengguna extends \Eloquent {}
 }
