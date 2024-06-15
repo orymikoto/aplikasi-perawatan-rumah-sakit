@@ -4,14 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class RekapitulasiSHRI extends Model
 {
   use HasFactory;
 
+  protected $table = 'rekapitulasi_s_h_r_i_s';
+
   protected $fillable = [
+    'data_ruangan_id',
     'tanggal',
     'pasien_awal',
+    'pasien_baru',
     'pindahan',
     'jumlah_pasien_masuk',
     'pasien_keluar_hidup',
@@ -22,4 +27,9 @@ class RekapitulasiSHRI extends Model
     'lama_dirawat',
     'pasien_sisa',
   ];
+
+  public function dataRuangan(): BelongsTo
+  {
+    return $this->belongsTo(DataRuangan::class);
+  }
 }

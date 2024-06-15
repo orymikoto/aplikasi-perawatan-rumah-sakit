@@ -4,9 +4,8 @@
     <div class="flex flex-col justify-start items-start gap-6 h-full overflow-x-clip relative">
         <h1 class="font-josefin-sans font-semibold text-2xl text-emerald-600">Laporan</h1>
         <div class="w-full flex gap-x-4 ">
-            <a href="{{ route('laporan_shri') }}"
-                class="rounded-md bg-emerald-600 w-60 text-center py-2 text-white text-lg font-josefin-sans hover:bg-white hover:text-emerald-600 hover:shadow-md hover:shadow-teal-400/75 duration-200">
-                Rekapitulasi SHRI</a>
+            <x-popup.link_shri id="modal_link_shri" :daftar_ruangan="$data_ruangan" />
+
             <a href="{{ route('laporan_ris') }}"
                 class="rounded-md bg-emerald-600 w-60 text-center py-2 text-white text-lg font-josefin-sans hover:bg-white hover:text-emerald-600 hover:shadow-md hover:shadow-teal-400/75 duration-200">
                 Rekapatilasi Indikator RI</a>

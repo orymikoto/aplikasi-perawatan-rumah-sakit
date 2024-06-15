@@ -30,6 +30,7 @@ class PasienDirawatSeeder extends Seeder
     foreach ($pasien as $value) {
       $id_penyakit = $faker->numberBetween(0, $penyakit->count() - 1);
       $id_jenis_pembayaran = $faker->numberBetween(0, $jenis_pembayaran->count() - 1);
+      $tanggal_masuk = $faker->dateTimeBetween("-4 weeks", "-3 days");
       array_push($data, [
         'pasien_id' => $value->id,
         'data_ruangan_id' => $faker->numberBetween(1, 10),
