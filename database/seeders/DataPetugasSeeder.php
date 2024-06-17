@@ -6,7 +6,7 @@ use App\Models\Pengguna;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as FakerFactory;
-
+use Hash;
 
 class DataPetugasSeeder extends Seeder
 {
@@ -16,14 +16,14 @@ class DataPetugasSeeder extends Seeder
   public function run(): void
   {
     $faker = FakerFactory::create();
-    $role = ["ADMIN", "PERAWAT", "PETUGAS"];
+    $role = ["ADMIN", "KEPALA", "PERAWAT", "PETUGAS"];
     $data = [];
     for ($i = 0; $i < 8; $i++) {
       array_push($data, [
         'nama' => $faker->name(),
         'email' => $faker->email(),
         'role' => $role[$faker->numberBetween(0, 2)],
-        'password' => "12345678",
+        'password' => Hash::make('12345678'),
         'foto_profil' => $faker->imageUrl()
       ]);
     }

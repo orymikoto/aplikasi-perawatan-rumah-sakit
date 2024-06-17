@@ -85,7 +85,7 @@ namespace App\Models{
  * @property string $jenis_penyakit
  * @property int $tni_ad_mil
  * @property int $tni_ad_pns
- * @property int $tnis_ad_kel
+ * @property int $tni_ad_kel
  * @property int $tni_al_mil
  * @property int $tni_al_pns
  * @property int $tni_al_kel
@@ -105,12 +105,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereJumlahPasien($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereKodePenyakit($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien wherePasienUmum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereTniAdKel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereTniAdMil($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereTniAdPns($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereTniAlKel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereTniAlMil($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereTniAlPns($value)
- * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereTnisAdKel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereUpdatedAt($value)
  */
 	class LaporanPenyakitPasien extends \Eloquent {}
@@ -314,6 +314,7 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int $data_ruangan_id
  * @property string $tanggal
  * @property int $pasien_awal
  * @property int $pasien_baru
@@ -324,18 +325,18 @@ namespace App\Models{
  * @property int $pasien_mati_belum_48_jam
  * @property int $pasien_mati_sudah_48_jam
  * @property int $jumlah_pasien_keluar
- * @property int $lama_dirawat
  * @property int $pasien_sisa
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\DataRuangan $dataRuangan
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI query()
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI whereDataRuanganId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI whereJumlahPasienKeluar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI whereJumlahPasienMasuk($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI whereLamaDirawat($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI wherePasienAwal($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI wherePasienBaru($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI wherePasienDipindahkan($value)
