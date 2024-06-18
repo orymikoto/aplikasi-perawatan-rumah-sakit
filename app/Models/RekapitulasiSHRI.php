@@ -28,6 +28,10 @@ class RekapitulasiSHRI extends Model
     'pasien_sisa',
   ];
 
+  protected $casts = [
+    'tanggal' => 'datetime',
+  ];
+
   public function dataRuangan(): BelongsTo
   {
     return $this->belongsTo(DataRuangan::class);

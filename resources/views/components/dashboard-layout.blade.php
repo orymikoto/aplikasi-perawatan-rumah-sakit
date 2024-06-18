@@ -18,6 +18,7 @@
         <p class="font-semibold text-lg">RUMKIT TK. III BALADIKA HUSADA JEMBER</p>
       </div>
     </div>
+    <x-flash::message />
   </header>
 
   <main class="flex gap-4 overflow-x-clip relative">

@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Admin
+class Login
 {
   /**
    * Handle an incoming request.
@@ -15,12 +15,11 @@ class Admin
    */
   public function handle(Request $request, Closure $next): Response
   {
-    if (auth()->user()->role == "ADMIN") {
+    if (auth()->check()) {
       # code...
-      // dd(auth()->user()->role);
       return $next($request);
     }
-    flash()->error('Hak akses tidak diberikan!');
-    return redirect('/');
+    flash()->error('Silahkan login sebelum ');
+    return redirect('/login');
   }
 }
