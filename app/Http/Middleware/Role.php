@@ -15,6 +15,11 @@ class Role
    */
   public function handle(Request $request, Closure $next, ...$roles): Response
   {
+    if (!$request->user()) {
+      flash()->error('Silahkan login terlebih dahulu');
+      return redirect('login');
+    }
+
     $userRole = $request->user()->role;
 
     if (!$userRole || !in_array($userRole, $roles)) {
