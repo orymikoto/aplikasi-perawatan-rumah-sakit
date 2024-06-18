@@ -42,7 +42,7 @@ class AuthController extends Controller
   {
     auth()->logout();
 
-    flash()->info('Anda telah keluar dari sesi anda.');
+    flash()->success('Anda telah keluar dari sesi anda.');
     return redirect('login');
   }
 }
