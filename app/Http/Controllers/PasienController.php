@@ -9,6 +9,7 @@ use App\Models\Pasien;
 use App\Models\PasienDirawat;
 use App\Models\PasienPindah;
 use App\Models\Penyakit;
+use App\Models\RekapitulasiSHRI;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -38,7 +39,8 @@ class PasienController extends Controller
 
     $ruangan_baru = DataRuangan::whereNamaRuangan($request->ruangan)->first();
     $pasien_pindah = PasienDirawat::whereId($id)->update([
-      'pasien_pindahan' => true
+      'pasien_pindahan' => true,
+      'data_ruangan_id' => $ruangan_baru->id
     ]);
 
     $add_pasien_pindah = PasienPindah::create([
@@ -47,6 +49,8 @@ class PasienController extends Controller
       'ruangan_baru_id' => $ruangan_baru->id,
       'tanggal_pindah' => Carbon::now()
     ]);
+
+    RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($pasien_dirawat->data_ruangan_id)->first()->incrementEach(['pasien_dipindahkan' => 1, 'jumlah_pasien_keluar' => 1, 'pasien_sisa' => 1]);
 
     return redirect('/pasien-pindah');
   }
@@ -60,11 +64,21 @@ class PasienController extends Controller
 
   public function pasien_keluar(Request $request, $id)
   {
+    $pasien_dirawat = PasienDirawat::whereId($id)->first();
     $pasien_pindah = PasienDirawat::whereId($id)->update([
       'tanggal_keluar' => Carbon::now(),
       'keadaan_keluar' => $request->kondisi,
       'rumah_sakit_baru' => $request->rumah_sakit ?? null
     ]);
+
+    if ($request->kondisi == "Mati < 48 Jam") {
+      RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($pasien_dirawat->data_ruangan_id)->incrementEach(['pasien_mati_belum_48_jam' => 1, 'jumlah_pasien_keluar' => 1])->decrement('pasien_sisa', 1);
+    } else if ($request->kondisi == "Mati > 48 Jam") {
+      RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($pasien_dirawat->data_ruangan_id)->incrementEach(['pasien_mati_sudah_48_jam' => 1, 'jumlah_pasien_keluar' => 1])->decrement('pasien_sisa', 1);
+    } else {
+      RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($pasien_dirawat->data_ruangan_id)->incrementEach(['jumlah_pasien_keluar' => 1, 'jumlah_pasien_keluar' => 1])->decrement('pasien_sisa', 1);
+    }
+
 
     return redirect('/pasiens');
   }
@@ -144,6 +158,8 @@ class PasienController extends Controller
       );
     }
 
+    RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($check_data_ruangan->id)->incrementEach(['pasien_baru' => 1, 'jumlah_pasien_masuk' => 1, 'pasien_sisa' => 1]);
+
     return redirect('/pasiens');
   }
 
@@ -211,6 +227,9 @@ class PasienController extends Controller
         Carbon::now()->endOfMonth()
       ])->whereKodePenyakit(strtoupper($request->kode_penyakit))->increment($check_jenis_pembayaran->kategori_pasien, 1);
     }
+
+    RekapitulasiSHRI::whereDate('tanggal', $old_pasien_dirawats->tanggal_masuk)->whereDataRuanganId($old_pasien_dirawats->data_ruangan_id)->decrementEach(['pasien_baru' => 1, 'jumlah_pasien_masuk' => 1, 'pasien_sisa' => 1]);
+    RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($check_data_ruangan->id)->incrementEach(['pasien_baru' => 1, 'jumlah_pasien_masuk' => 1, 'pasien_sisa' => 1]);
 
     return redirect('/pasiens');
   }

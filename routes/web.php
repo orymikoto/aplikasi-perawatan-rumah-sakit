@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataRuanganController;
 use App\Http\Controllers\Laporan;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PenggunaController;
 use App\Models\DataRuangan;
@@ -19,9 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-  return view('welcome');
-})->middleware('auth');
+Route::get('/', [DashboardController::class, 'dashboard'])->middleware('auth');
 
 // Route::group(['middleware' => ['login', 'admin', 'kepala', ]])
 
@@ -42,6 +42,6 @@ Route::post('pasien-keluar/{id}', [PasienController::class, 'pasien_keluar'])->n
 
 
 // Laporan
-Route::get('laporan/shri/{id}', [Laporan::class, 'rekapitulasiSHRI'])->name('laporan_shri')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
-Route::get('laporan/ris', [Laporan::class, 'rekapitulasiIndikatorRI'])->name('laporan_ris')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
-Route::get('laporan/penyakit', [Laporan::class, 'rekapitulasiLaporanPenyakit'])->name('laporan_penyakit')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
+Route::get('laporan/shri/{id}', [LaporanController::class, 'rekapitulasiSHRI'])->name('laporan_shri')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
+Route::get('laporan/ris', [LaporanController::class, 'rekapitulasiIndikatorRI'])->name('laporan_ris')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
+Route::get('laporan/penyakit', [LaporanController::class, 'rekapitulasiLaporanPenyakit'])->name('laporan_penyakit')->middleware(['role:ADMIN,KEPALA,PETUGAS']);

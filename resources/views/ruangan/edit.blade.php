@@ -2,18 +2,18 @@
 
 @section('content')
     <div class="flex flex-col justify-start items-start gap-6">
-        <h1 class="font-josefin-sans font-semibold text-2xl text-emerald-600">Tambah Ruangan</h1>
+        <h1 class="font-josefin-sans font-semibold text-2xl text-emerald-600">Edit Ruangan</h1>
         <a href="{{ route('ruangan.index') }}"
             class="text-blue-600 hover:text-blue-500 font-jakarta-sans font-medium duration-200">
             <div class="flex items-center"> <i class="fa-solid fa-arrow-left w-8"></i>
-                <p>Kembali ke halaman daftar petugas</p>
+                <p>Kembali ke halaman daftar ruangan</p>
             </div>
         </a>
         <form class="flex flex-col gap-4 p-4 rounded-2xl shadow-md xl:w-[480px] "
             action="{{ route('ruangan.update', $data_ruangan->id) }}" method="POST">
-            @method('PUT')
             @csrf
-            <x-input.text title="Nama ruangan" name="nama_ruang" placeholder="Nama Ruangan..."
+            @method('PUT')
+            <x-input.text title="Nama ruangan" name="nama_ruangan" placeholder="Nama Ruangan..."
                 value="{{ $data_ruangan->nama_ruangan }}" />
             <x-input.number title="Jumlah tempat tidur" name="jumlah_tempat_tidur" placeholder="Jumlah tempat tidur..."
                 value="{{ $data_ruangan->jumlah_tempat_tidur }}" />

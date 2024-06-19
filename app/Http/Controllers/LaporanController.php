@@ -9,7 +9,7 @@ use App\Models\RekapitulasiSHRI;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class Laporan extends Controller
+class LaporanController extends Controller
 {
   //
   public function rekapitulasiSHRI($id_ruangan)
@@ -20,7 +20,7 @@ class Laporan extends Controller
         Carbon::now()->startOfMonth(),
         Carbon::now()->endOfMonth()
       ]
-    )->orderBy('tanggal')->get();
+    )->orderBy('tanggal', 'desc')->get();
 
     $data_ruangan = DataRuangan::all();
     $ruangan_saat_ini = DataRuangan::whereId($id_ruangan)->first();

@@ -65,7 +65,7 @@ class DataRuanganController extends Controller
       'kelas' => $request->kelas
     ]);
 
-    redirect('/ruangan');
+    return redirect('/ruangan');
   }
 
   /**
