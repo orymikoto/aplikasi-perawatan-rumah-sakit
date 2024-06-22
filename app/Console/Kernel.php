@@ -21,10 +21,10 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('laporan:cron')->lastDayOfMonth('23:50');
-        // $schedule->command('laporan:harian')->dailyAt('00:01');
-        $schedule->command('laporan:cron')->everyMinute();
-        $schedule->command('laporan:harian')->everyMinute();
+        $schedule->command('laporan:cron')->lastDayOfMonth('23:50');
+        $schedule->command('laporan:harian')->dailyAt('00:01');
+        // $schedule->command('laporan:cron')->everyMinute();
+        // $schedule->command('laporan:harian')->everyMinute();
         // $schedule->call('laporan');
     }
 

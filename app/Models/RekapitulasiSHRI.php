@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RekapitulasiSHRI extends Model
 {
   use HasFactory;
+  use SoftDeletes;
 
   protected $table = 'rekapitulasi_s_h_r_i_s';
 
@@ -34,6 +36,6 @@ class RekapitulasiSHRI extends Model
 
   public function dataRuangan(): BelongsTo
   {
-    return $this->belongsTo(DataRuangan::class);
+    return $this->belongsTo(DataRuangan::class)->withTrashed();
   }
 }

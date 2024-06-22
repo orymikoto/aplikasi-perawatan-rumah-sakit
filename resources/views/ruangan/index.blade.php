@@ -26,9 +26,14 @@
                         <td class="px-4">{{ $data_ruangan->kelas }}</td>
                         <td class="px-4">
                             <div class="flex gap-2 mx-auto justify-center">
-                                <button class="bg-red-600 text-white hover:bg-red-500 p-1 px-2 rounded-md">
-                                    <i class="fa-solid fa-trash w-8"></i>
-                                </button>
+                                <form action="{{ route('ruangan.destroy', [$data_ruangan->id]) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="bg-red-600 text-white hover:bg-red-500 p-1 px-2 rounded-md">
+                                        <i class="fa-solid fa-trash w-8"></i>
+                                    </button>
+                                </form>
                                 <a href="{{ route('ruangan.edit', $data_ruangan->id) }}"
                                     class="bg-teal-600 text-white hover:bg-teal-500 p-1 px-2 rounded-md">
                                     <i class="fa-solid fa-pen w-8"></i>

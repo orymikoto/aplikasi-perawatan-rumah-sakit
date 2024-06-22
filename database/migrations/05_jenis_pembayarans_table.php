@@ -16,6 +16,10 @@ return new class extends Migration
       $table->string('nama_jenis_pembayaran');
       $table->string('kategori_pasien');
       $table->timestamps();
+      // $table->dateTime('deleted_at')->nullable();
+
+
+      $table->softDeletes();
     });
   }
 

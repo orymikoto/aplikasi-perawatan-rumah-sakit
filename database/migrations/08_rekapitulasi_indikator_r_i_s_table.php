@@ -23,6 +23,8 @@ return new class extends Migration
       $table->float('nilai_gdr');
       $table->float('nilai_ndr');
       $table->timestamps();
+
+      $table->softDeletes();
     });
   }
 

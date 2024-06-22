@@ -12,13 +12,13 @@ use Illuminate\Http\Request;
 class LaporanController extends Controller
 {
   //
-  public function rekapitulasiSHRI($id_ruangan)
+  public function rekapitulasiSHRI(Request $request, $id_ruangan)
   {
     $laporan = RekapitulasiSHRI::whereDataRuanganId($id_ruangan)->whereBetween(
       'tanggal',
       [
-        Carbon::now()->startOfMonth(),
-        Carbon::now()->endOfMonth()
+        $request->query('tanggal') ? Carbon::parse($request->query('tanggal'))->startOfMonth()  : Carbon::now()->startOfMonth(),
+        $request->query('tanggal') ? Carbon::parse($request->query('tanggal'))->endOfMonth()  : Carbon::now()->endOfMonth(),
       ]
     )->orderBy('tanggal', 'desc')->get();
 
@@ -30,22 +30,28 @@ class LaporanController extends Controller
     return view('laporan.shri', compact('laporan', 'data_ruangan', 'ruangan_saat_ini'));
   }
 
-  public function rekapitulasiIndikatorRI()
+  public function rekapitulasiIndikatorRI(Request $request)
   {
-    $laporan = RekapitulasiIndikatorRI::where('created_at', '>=', Carbon::now()->subMonth()->toDateString())->first();
+    $laporan = RekapitulasiIndikatorRI::whereBetween(
+      'created_at',
+      [
+        $request->query('tanggal') ? Carbon::parse($request->query('tanggal'))->startOfMonth()  : Carbon::now()->subMonth()->startOfMonth(),
+        $request->query('tanggal') ? Carbon::parse($request->query('tanggal'))->endOfMonth()  : Carbon::now()->subMonth()->endOfMonth(),
+      ]
+    )->first();
     $data_ruangan = DataRuangan::all();
 
 
     return view('laporan.indikator-ri', compact('laporan', 'data_ruangan'));
   }
 
-  public function rekapitulasiLaporanPenyakit()
+  public function rekapitulasiLaporanPenyakit(Request $request)
   {
     $laporan = LaporanPenyakitPasien::whereBetween(
       'created_at',
       [
-        Carbon::now()->startOfMonth(),
-        Carbon::now()->endOfMonth()
+        $request->query('tanggal') ? Carbon::parse($request->query('tanggal'))->startOfMonth()  : Carbon::now()->startOfMonth(),
+        $request->query('tanggal') ? Carbon::parse($request->query('tanggal'))->endOfMonth()  : Carbon::now()->endOfMonth(),
       ]
     )->orderBy('jumlah_pasien', 'desc')->paginate(10);
     $data_ruangan = DataRuangan::all();

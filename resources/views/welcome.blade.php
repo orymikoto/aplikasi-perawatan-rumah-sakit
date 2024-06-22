@@ -3,6 +3,8 @@
 @section('content')
 
     <div class="flex flex-col gap-8 text-center font-jakarta-sans font-semibold text-xl text-gray-800">
+        <h1 class="text-4xl font-josefin-sans text-neutral-900 my-4">Dashboard Bulan
+            {{ \Carbon\Carbon::now()->translatedFormat('F, Y') }}</h1>
         <div class="flex justify-between w-full gap-4">
             <div class="flex-1 bg-teal-500 rounded-md flex flex-col overflow-hidden">
                 <div class=" flex flex-col text-left gap-2 px-2 py-6">
@@ -89,6 +91,7 @@
             </div>
 
             <div class="flex flex-col gap-4 max-w-[40%]">
+
                 <table class="rounded-t-2xl w-full max-h-40 flex-1 shadow-md overflow-hidden table">
                     <thead>
                         <tr class="text-white font-josefin-sans font-medium h-16 text-lg bg-emerald-600">
@@ -122,7 +125,9 @@
                         @endif
                     </tbody>
                 </table>
-                <table class="rounded-t-2xl w-full max-h-40 flex-1 shadow-md overflow-hidden table">
+                <h3 class="text-center font-josefin-sans text-neutral-600 text-xl">Tabel Rekapitulasi Rawat Inap Bulan
+                    Sebelumnya</h3>
+                <table class="rounded-t-2xl mt-8 w-full max-h-40 flex-1 shadow-md overflow-hidden table">
                     <thead>
                         <tr class="text-white font-josefin-sans font-medium h-16 text-lg bg-emerald-600">
                             <th class="px-4 text-center ">No</th>
@@ -134,8 +139,10 @@
                         @forelse ($laporan_penyakit as $key => $penyakit)
                             <tr class="h-12">
                                 <td class="px-4 text-center border border-neutral-200">{{ $key + 1 }}</td>
-                                <td class="px-4 text-center border border-neutral-200">{{ $penyakit->kode_penyakit }}</td>
-                                <td class="px-4 text-start border border-neutral-200">{{ $penyakit->jenis_penyakit }}</td>
+                                <td class="px-4 text-center border border-neutral-200">{{ $penyakit->kode_penyakit }}
+                                </td>
+                                <td class="px-4 text-start border border-neutral-200">{{ $penyakit->jenis_penyakit }}
+                                </td>
                             </tr>
                         @empty
                             <tr>
@@ -145,6 +152,10 @@
 
                     </tbody>
                 </table>
+
+                <h3 class="text-center font-josefin-sans text-neutral-600 text-xl">Tabel 10 Penyakit Tertinggi Bulan
+                    Ini
+                </h3>
             </div>
         </div>
     </div>

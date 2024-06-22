@@ -71,8 +71,13 @@ class DataRuanganController extends Controller
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(DataRuangan $dataRuangan)
+  public function destroy($id)
   {
+    // dd($id);
+    DataRuangan::whereId($id)->delete();
+
+    flash()->success('Data ruangan berhasil dihapus');
+    return redirect('/ruangan');
     //
   }
 }

@@ -27,6 +27,8 @@ return new class extends Migration
       $table->integer('jumlah_pasien_keluar');
       $table->integer('pasien_sisa');
       $table->timestamps();
+
+      $table->softDeletes();
     });
   }
 

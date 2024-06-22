@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PasienDirawat extends Model
 {
   use HasFactory;
+  use SoftDeletes;
 
   protected $fillable = [
     'pasien_id',
@@ -30,17 +32,17 @@ class PasienDirawat extends Model
 
   public function pasien(): BelongsTo
   {
-    return $this->belongsTo(Pasien::class);
+    return $this->belongsTo(Pasien::class)->withTrashed();
   }
 
   public function dataRuangan(): BelongsTo
   {
-    return $this->belongsTo(DataRuangan::class);
+    return $this->belongsTo(DataRuangan::class)->withTrashed();
   }
 
   public function jenisPembayaran(): BelongsTo
   {
-    return $this->belongsTo(JenisPembayaran::class);
+    return $this->belongsTo(JenisPembayaran::class)->withTrashed();
   }
 
   public function penyakit(): BelongsTo

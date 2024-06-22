@@ -20,6 +20,8 @@ return new class extends Migration
       $table->string("alamat");
       $table->integer("umur");
       $table->timestamps();
+
+      $table->softDeletes();
     });
   }
 

@@ -37,8 +37,8 @@
                             </td>
                             <td class="px-4 text-center">
                                 {{ $pasien->tanggal_keluar ? $pasien->tanggal_keluar->toDateString() : '-' }}</td>
-                            <td class="px-4">{{ $pasien->keadaan_keluar ?? 'Dirawat' }}</td>
-                            <td class="px-4">{{ $pasien->rumah_sakit_baru ?? '-' }}</td>
+                            <td class="px-4">{{ $pasien->keadaan_keluar ?? 'Sedang Dirawat' }}</td>
+                            <td class="px-4 text-center">{{ $pasien->rumah_sakit_baru ?? '-' }}</td>
                             {{-- <td class="px-4">
               <div class="flex gap-2 mx-auto justify-center">
                 <button class="bg-red-600 text-white hover:bg-red-500 p-1 px-2 rounded-md">

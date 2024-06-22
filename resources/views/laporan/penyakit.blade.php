@@ -13,6 +13,20 @@
                 class="rounded-md bg-emerald-600 w-60 text-center py-2 text-white text-lg font-josefin-sans hover:bg-white hover:text-emerald-600 hover:shadow-md hover:shadow-teal-400/75 duration-200">
                 10 Besar Penyakit</a>
         </div>
+
+        <h2 class="my-2 text-2xl text-center mx-auto text-neutral-900 font-josefin-sans">Laporan Penyakit Bulan
+            {{ request()->has('tanggal') ? \Carbon\Carbon::parse(request()->query('tanggal'))->translatedFormat('F, Y') : \Carbon\Carbon::now()->translatedFormat('F, Y') }}
+            {{-- {{ request()->query('tanggal') }} --}}
+        </h2>
+        <div class="flex items-center gap-4">
+            <p>Pilih Bulan : </p>
+            <form action="">
+                <input id="filter_bulan" class="rounded-md px-2 py-1 border-2 border-neutral-600" type="month"
+                    value="{{ request()->has('tanggal') ? \Carbon\Carbon::parse(request()->query('tanggal'))->format('Y-m') : \Carbon\Carbon::now()->format('Y-m') }}">
+                {{-- <x-button.color-button type="submit" color="emerald-600" text="Simpan" /> --}}
+                {{-- <button class="text-white bg-emerald-600 px-4 py-2 font-jakarta-sans hover:text-emerald-600 hover:bg-emerald-600">Simpan</button> --}}
+            </form>
+        </div>
         <div class=" overflow-x-scroll relative max-w-full">
             <table class="rounded-t-2xl w-full min-h-full flex-1 border-collapse shadow-md overflow-hidden table ">
                 <thead>
@@ -95,4 +109,23 @@
         </div>
 
     </div>
+
+    <script>
+        let filter_bulan = document.getElementById('filter_bulan');
+
+        filter_bulan.onchange = function(e) {
+            console.log(e.target.value);
+            location.replace(`http://127.0.0.1:8000/laporan/penyakit?tanggal=${e.target.value}`)
+            // const xhr = new XMLHttpRequest();
+            // xhr.open("GET", `http://127.0.0.1:8000/laporan/penyakit?tanggal=${e.target.value}`);
+            // xhr.send();
+        }
+
+        // document.getElementById('filter_bulan').addEventListener(
+        //     'change',
+        //     () => {
+        //         console.log("tes");
+        //     }
+        // );
+    </script>
 @stop

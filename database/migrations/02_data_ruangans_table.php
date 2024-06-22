@@ -17,6 +17,8 @@ return new class extends Migration
       $table->integer("jumlah_tempat_tidur");
       $table->enum("kelas", ['Kelas 1', 'Kelas 2', 'Kelas 3']);
       $table->timestamps();
+
+      $table->softDeletes();
     });
   }
 

@@ -16,8 +16,8 @@ return new class extends Migration
   {
     Schema::create('pasien_dirawats', function (Blueprint $table) {
       $table->id();
-      $table->foreignIdFor(Pasien::class)->constrained()->onDelete('cascade');
-      $table->foreignIdFor(DataRuangan::class)->constrained()->onDelete('cascade');
+      $table->foreignIdFor(Pasien::class)->constrained();
+      $table->foreignIdFor(DataRuangan::class)->constrained();
       $table->foreignIdFor(JenisPembayaran::class)->nullable()->nullOnDelete();
       $table->string('kode_penyakit');
       $table->string('jenis_penyakit');
@@ -29,6 +29,7 @@ return new class extends Migration
       $table->string('rumah_sakit_baru')->nullable();
 
       $table->timestamps();
+      $table->softDeletes();
     });
   }
 

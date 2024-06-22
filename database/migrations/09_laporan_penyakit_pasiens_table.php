@@ -26,6 +26,8 @@ return new class extends Migration
       $table->integer('pasien_umum');
       $table->integer('jumlah_pasien');
       $table->timestamps();
+
+      $table->softDeletes();
     });
   }
 

@@ -31,7 +31,7 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 // Route::get('login', [PenggunaController::class, 'login'])->name('login');
 Route::resource('pengguna', PenggunaController::class)->middleware(['role:ADMIN,KEPALA']);
-Route::resource('ruangan', DataRuanganController::class)->middleware(['role:ADMIN,KEPALA']);
+Route::resource('ruangan', DataRuanganController::class)->middleware(['role:ADMIN,KEPALA,PETUGAS']);
 
 // Pasien 
 Route::resource('pasiens', PasienController::class)->middleware('role:ADMIN,KEPALA,PERAWAT');
