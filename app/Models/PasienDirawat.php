@@ -17,7 +17,6 @@ class PasienDirawat extends Model
     'data_ruangan_id',
     'jenis_pembayaran_id',
     'kode_penyakit',
-    'jenis_penyakit',
     'tanggal_masuk',
     'tanggal_keluar',
     'pasien_pindahan',

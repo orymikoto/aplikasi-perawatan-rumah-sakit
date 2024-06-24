@@ -18,6 +18,7 @@ class Pengguna extends User
     'nama',
     'email',
     'role',
+    'data_ruangan_id',
     'password',
     'foto_profil',
   ];

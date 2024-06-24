@@ -36,7 +36,6 @@ class PasienDirawatSeeder extends Seeder
         'data_ruangan_id' => $faker->numberBetween(1, 10),
         'jenis_pembayaran_id' => $jenis_pembayaran[$id_jenis_pembayaran]->id,
         'kode_penyakit' => $penyakit[$id_penyakit]->kode_penyakit,
-        'jenis_penyakit' => $penyakit[$id_penyakit]->nama_penyakit,
         'tanggal_masuk' => $faker->dateTimeBetween("-4 weeks", "-3 days"),
         'tanggal_keluar' => $faker->boolean() ? now() : null,
         'pasien_pindahan' => false,
@@ -52,7 +51,7 @@ class PasienDirawatSeeder extends Seeder
           $jenis_pembayaran[$id_jenis_pembayaran]->kategori_pasien,
           1
         );
-        LaporanPenyakitPasien::whereKodePenyakit(strtoupper($penyakit[$id_penyakit]->kode_penyakit))->increment('jumlah_pasien', 1);
+        LaporanPenyakitPasien::whereKodePenyakit($penyakit[$id_penyakit]->kode_penyakit)->increment('jumlah_pasien', 1);
 
         // $check_laporan_penyakit->update([
         //   $jenis_pembayaran[$id_jenis_pembayaran]->kode_penyakit => DB::raw($jenis_pembayaran[$id_jenis_pembayaran]->kode_penyakit . ' + 1'),
@@ -60,7 +59,7 @@ class PasienDirawatSeeder extends Seeder
         // ]);
       } else {
         LaporanPenyakitPasien::create([
-          'kode_penyakit' => strtoupper($penyakit[$id_penyakit]->kode_penyakit),
+          'kode_penyakit' => $penyakit[$id_penyakit]->kode_penyakit,
           'jenis_penyakit' =>  $penyakit[$id_penyakit]->nama_penyakit,
           'tni_ad_mil' => 0,
           'tni_ad_kel' => 0,

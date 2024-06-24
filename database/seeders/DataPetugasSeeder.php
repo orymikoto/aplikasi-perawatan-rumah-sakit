@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\DataRuangan;
 use App\Models\Pengguna;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,11 +18,13 @@ class DataPetugasSeeder extends Seeder
   {
     $faker = FakerFactory::create();
     $role = ["ADMIN", "KEPALA", "PERAWAT", "PETUGAS"];
+    $data_ruangan = DataRuangan::all()->count();
     $data = [
       [
         'nama' => "Bagas Febriansyah",
         'email' => "adminbagas@dkt.com",
         'role' => "ADMIN",
+        'data_ruangan_id' => null,
         'password' => Hash::make('12345678'),
         'foto_profil' => $faker->imageUrl()
       ],
@@ -29,6 +32,7 @@ class DataPetugasSeeder extends Seeder
         'nama' => "Bagas Febriansyah",
         'email' => "petugasbagas@dkt.com",
         'role' => "PETUGAS",
+        'data_ruangan_id' => null,
         'password' => Hash::make('12345678'),
         'foto_profil' => $faker->imageUrl()
       ],
@@ -36,6 +40,7 @@ class DataPetugasSeeder extends Seeder
         'nama' => "Bagas Febriansyah",
         'email' => "kepalabagas@dkt.com",
         'role' => "KEPALA",
+        'data_ruangan_id' => null,
         'password' => Hash::make('12345678'),
         'foto_profil' => $faker->imageUrl()
       ],
@@ -44,14 +49,17 @@ class DataPetugasSeeder extends Seeder
         'email' => "perawatbagas@dkt.com",
         'role' => "PERAWAT",
         'password' => Hash::make('12345678'),
+        'data_ruangan_id' => null,
         'foto_profil' => $faker->imageUrl()
       ],
     ];
     for ($i = 0; $i < 8; $i++) {
+      $role_index = $faker->numberBetween(0, 3);
       array_push($data, [
         'nama' => $faker->name(),
         'email' => $faker->email(),
-        'role' => $role[$faker->numberBetween(0, 2)],
+        'role' => $role[$role_index],
+        'data_ruangan_id' => $role_index == 2 ? $faker->numberBetween(1, $data_ruangan) : null,
         'password' => Hash::make('12345678'),
         'foto_profil' => $faker->imageUrl()
       ]);

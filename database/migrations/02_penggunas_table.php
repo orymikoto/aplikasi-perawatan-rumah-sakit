@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\DataRuangan;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,6 +15,7 @@ return new class extends Migration
     Schema::create('penggunas', function (Blueprint $table) {
       $table->id();
       $table->string("nama");
+      $table->foreignIdFor(DataRuangan::class)->nullable()->constrained();
       $table->string("email")->unique();
       $table->enum("role", ["ADMIN", "KEPALA", "PERAWAT", "PETUGAS"]);
       $table->string("password");

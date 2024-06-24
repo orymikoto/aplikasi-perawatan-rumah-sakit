@@ -20,13 +20,14 @@ return new class extends Migration
       $table->foreignIdFor(DataRuangan::class)->constrained();
       $table->foreignIdFor(JenisPembayaran::class)->nullable()->nullOnDelete();
       $table->string('kode_penyakit');
-      $table->string('jenis_penyakit');
       $table->dateTime('tanggal_masuk');
       $table->dateTime('tanggal_keluar')->nullable();
       $table->boolean('pasien_pindahan')->nullable();
       $table->boolean('pasien_mati')->nullable();
       $table->enum('keadaan_keluar', ['Keluar - Dirujuk', 'Keluar - Sembuh', 'Keluar - Belum Sembuh',  'Mati < 48 Jam', 'Mati > 48 Jam'])->nullable();
       $table->string('rumah_sakit_baru')->nullable();
+
+      $table->foreign('kode_penyakit')->references('kode_penyakit')->on('penyakits')->onDelete('cascade');
 
       $table->timestamps();
       $table->softDeletes();

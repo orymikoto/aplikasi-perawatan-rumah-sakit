@@ -97,6 +97,15 @@ class PasienController extends Controller
   /**
    * Store a newly created resource in storage.
    */
+  // public function cek_rm($no_rm)
+  // {
+  //   $check_pasien = Pasien::whereNoRM($no_rm);
+
+  //   if ($check_pasien) {
+  //     return
+  //   }
+  // }
+
   public function store(Request $request)
   {
     $new_pasien = Pasien::create([

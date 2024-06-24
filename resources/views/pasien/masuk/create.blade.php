@@ -12,7 +12,11 @@
         <form action="{{ route('pasiens.store') }}" class="flex flex-col gap-2 p-4 rounded-2xl shadow-md xl:w-[480px] "
             method="POST">
             @csrf
-            <x-input.text title="No. RM" name="no_rm" placeholder="Nomor RM..." value="" />
+            <div class="flex gap-x-2 items-end">
+                <x-input.text title="No. RM" class="flex-1" name="no_rm" placeholder="Nomor RM..." value="" />
+                <button id="cek_rm"
+                    class="bg-teal-600 hover:bg-teal-500 duration-200 rounded-md px-4 py-2 text-white">Cek</button>
+            </div>
             <x-input.text title="Nama Pasien" name="nama_pasien" placeholder="Nama Pasien .." value="" />
             <x-input.number title="Usia" name="umur" placeholder="Usia Pasien..." value="" />
             <x-input.select title="Jenis Kelamin" name="jenis_kelamin" placeholder="Pilih jenis kelamin pasien"
