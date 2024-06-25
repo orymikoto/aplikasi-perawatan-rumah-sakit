@@ -20,22 +20,36 @@ class PasienController extends Controller
    */
   public function index()
   {
-    $pasien_dirawats = PasienDirawat::whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
     $daftar_ruangan = DataRuangan::pluck('nama_ruangan');
+    if (auth()->user()->role == "PERAWAT" && auth()->user()->data_ruangan_id) {
+      $pasien_dirawats = PasienDirawat::whereDataRuanganId(auth()->user()->data_ruangan_id)->whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
 
-    return view('pasien.masuk.index', compact('pasien_dirawats', 'daftar_ruangan'));
+      return view('pasien.masuk.index', compact('pasien_dirawats', 'daftar_ruangan'));
+    } else {
+      $pasien_dirawats = PasienDirawat::whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
+
+      return view('pasien.masuk.index', compact('pasien_dirawats', 'daftar_ruangan'));
+    }
   }
 
   public function daftar_pindah()
   {
-    $pasien_pindah = PasienPindah::whereDisetujui(true)->with(['pasienDirawat', 'ruanganLama', 'ruanganBaru'])->orderBy('tanggal_pindah', 'desc')->paginate(10);
+    if (auth()->user()->role == "PERAWAT" && auth()->user()->data_ruangan_id) {
+      $pasien_pindah = PasienPindah::whereDisetujui(true)->where(function ($q) {
+        $q->where('ruangan_lama_id', auth()->user()->data_ruangan_id)->orWhere('ruangan_baru_id', auth()->user()->data_ruangan_id);
+      })->with(['pasienDirawat', 'ruanganLama', 'ruanganBaru'])->orderBy('tanggal_pindah', 'desc')->paginate(10);
 
-    return view('pasien.pindah.index', compact('pasien_pindah'));
+      return view('pasien.pindah.index', compact('pasien_pindah'));
+    } else {
+      $pasien_pindah = PasienPindah::whereDisetujui(true)->with(['pasienDirawat', 'ruanganLama', 'ruanganBaru'])->orderBy('tanggal_pindah', 'desc')->paginate(10);
+
+      return view('pasien.pindah.index', compact('pasien_pindah'));
+    }
   }
 
   public function daftar_pasien_diminta_pindah()
   {
-    if (auth()->user()->data_ruangan_id) {
+    if (auth()->user()->role == "PERAWAT" && auth()->user()->data_ruangan_id) {
       $daftar_pasien_pindah = PasienPindah::whereDisetujui(false)->whereRuanganBaruId(auth()->user()->data_ruangan_id)->orderBy('tanggal_pindah', 'desc')->paginate(10);
 
       return view('pasien.pindah.diminta-pindah', compact('daftar_pasien_pindah'));
@@ -91,9 +105,16 @@ class PasienController extends Controller
 
   public function daftar_keluar()
   {
-    $pasien_keluar = PasienDirawat::orderBy('tanggal_masuk', 'desc')->paginate(10);
+    if (auth()->user()->role == "PERAWAT" && auth()->user()->data_ruangan_id) {
+      # code...
+      $pasien_keluar = PasienDirawat::whereDataRuanganId(auth()->user()->data_ruangan_id)->orderBy('tanggal_masuk', 'desc')->paginate(10);
 
-    return view('pasien.keluar.index', compact('pasien_keluar'));
+      return view('pasien.keluar.index', compact('pasien_keluar'));
+    } else {
+      $pasien_keluar = PasienDirawat::orderBy('tanggal_masuk', 'desc')->paginate(10);
+
+      return view('pasien.keluar.index', compact('pasien_keluar'));
+    }
   }
 
   public function pasien_keluar(Request $request, $id)
