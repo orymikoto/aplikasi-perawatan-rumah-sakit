@@ -18,6 +18,7 @@ return new class extends Migration
       $table->unsignedBigInteger('ruangan_lama_id');
       $table->unsignedBigInteger('ruangan_baru_id');
       $table->foreignIdFor(PasienDirawat::class)->constrained()->onDelete('cascade');
+      $table->boolean('disetujui')->default(false);
       $table->dateTime('tanggal_pindah');
 
       $table->foreign('ruangan_lama_id')->references('id')->on('data_ruangans')->onDelete('cascade');

@@ -2,7 +2,8 @@
 
 @section('content')
   <div class="flex flex-col justify-start items-start gap-6 overflow-x-clip h-full relative">
-    <h1 class="font-josefin-sans font-semibold text-2xl text-emerald-600">Daftar Pasien Pindahan</h1>
+    <h1 class="font-josefin-sans font-semibold text-2xl text-emerald-600">Daftar Permintaan Pindah Ruangan Pasien</h1>
+    <x-flash::message />
 
     <div class="flex gap-4">
       <a href="{{ route('daftar_pasien_pindah') }}"
@@ -22,14 +23,16 @@
             <th class="px-4 text-start min-w-52">Ruang Lama</th>
             <th class="px-4 text-start min-w-52">Ruang Baru</th>
             <th class="px-4 text-start min-w-20 ">Diagnosa</th>
-            <th class="px-4 text-center min-w-48">Tgl Pindah</th>
+            <th class="px-4 text-center min-w-48">Tgl Diminta</th>
+            <th class="px-4 text-center min-w-40">Aksi</th>
           </tr>
         </thead>
         <tbody>
-          @forelse ($pasien_pindah as $pasien)
+          @forelse ($daftar_pasien_pindah as $pasien)
             <tr data-entry-id="{{ $pasien->id }}"
               class="h-12 text-lg font-josefin-sans font-medium text-neutral-800 border-b border-b-neutral-200/50">
-              <td class="text-center">{{ ($pasien_pindah->currentPage() - 1) * $pasien_pindah->links()->paginator->perPage() + $loop->iteration }}
+              <td class="text-center">
+                {{ ($daftar_pasien_pindah->currentPage() - 1) * $daftar_pasien_pindah->links()->paginator->perPage() + $loop->iteration }}
               </td>
               <td class="px-4">{{ $pasien->pasienDirawat->pasien->no_RM }}</td>
               <td class="px-4">{{ $pasien->pasienDirawat->pasien->nama }}</td>
@@ -37,6 +40,15 @@
               <td class="px-4">{{ $pasien->ruanganBaru->nama_ruangan }}</td>
               <td class="px-4">{{ $pasien->pasienDirawat->kode_penyakit }}</td>
               <td class="px-4 text-center">{{ $pasien->tanggal_pindah->toDateString() }}</td>
+              <td class="px-4 text-center">
+                <div class="flex gap-2">
+                  <a href="{{ route('setujui_pindah', $pasien->id) }}"
+                    class="px-2 py-1 rounded-md text-white hover:shadow-md text-center font-josefin-sans font-medium hover:bg-white bg-emerald-600 hover:text-emerald-600 hover:shadow-emerald-400/50 duration-200 ">Setujui</a>
+                  <a href="{{ route('tolak_pindah', $pasien->id) }}"
+                    class="px-2 py-1 rounded-md text-white hover:shadow-md text-center font-josefin-sans font-medium hover:bg-white bg-red-600 hover:text-red-600 hover:shadow-red-400/50 duration-200 ">Tolak</a>
+
+                </div>
+              </td>
               {{-- <td class="px-4">
                   <div class="flex gap-2 mx-auto justify-center">
                     <button class="bg-red-600 text-white hover:bg-red-500 p-1 px-2 rounded-md">
@@ -60,7 +72,7 @@
         </tbody>
       </table>
     </div>
-    {{ $pasien_pindah->onEachSide(1)->links('pagination::simple-tailwind') }}
+    {{ $daftar_pasien_pindah->onEachSide(1)->links('pagination::simple-tailwind') }}
 
   </div>
 @stop

@@ -8,6 +8,7 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PenggunaController;
 use App\Models\DataRuangan;
+use App\Models\Pasien;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,11 +36,15 @@ Route::resource('ruangan', DataRuanganController::class)->middleware(['role:ADMI
 
 // Pasien 
 Route::resource('pasiens', PasienController::class)->middleware('role:ADMIN,KEPALA,PERAWAT');
+Route::get('pasiens/check-rm/{no_rm}', [PasienController::class, 'cek_rm'])->name('check_rm')->middleware(['role:ADMIN,KEPALA,PERAWAT']);
+Route::get('pasiens/check-kode-penyakit/{kode_penyakit}', [PasienController::class, 'cek_kode_penyakit'])->name('check_kode_penyakit')->middleware(['role:ADMIN,KEPALA,PERAWAT']);
 Route::get('pasien-pindah', [PasienController::class, 'daftar_pindah'])->name('daftar_pasien_pindah')->middleware(['role:ADMIN,KEPALA,PERAWAT']);
+Route::get('pasien-pindah/diminta', [PasienController::class, 'daftar_pasien_diminta_pindah'])->name('daftar_pasien_diminta_pindah')->middleware(['role:ADMIN,KEPALA,PERAWAT']);
+Route::get('pasien-pindah/setujui-pindah/{pasien_pindah_id}', [PasienController::class, 'setujui_pindah'])->name('setujui_pindah')->middleware(['role:ADMIN,KEPALA,PERAWAT']);
+Route::get('pasien-pindah/tolak-pindah/{pasien_pindah_id}', [PasienController::class, 'tolak_pindah'])->name('tolak_pindah')->middleware(['role:ADMIN,KEPALA,PERAWAT']);
 Route::get('pasien-keluar', [PasienController::class, 'daftar_keluar'])->name('daftar_pasien_keluar')->middleware(['role:ADMIN,KEPALA,PERAWAT']);
 Route::post('pasien-pindah/{id}', [PasienController::class, 'pasien_pindah'])->name('pasien_pindah')->middleware(['role:ADMIN,KEPALA,PERAWAT']);
 Route::post('pasien-keluar/{id}', [PasienController::class, 'pasien_keluar'])->name('pasien_keluar')->middleware(['role:ADMIN,KEPALA,PERAWAT']);
-
 
 // Laporan
 Route::get('laporan/shri/{id}', [LaporanController::class, 'rekapitulasiSHRI'])->name('laporan_shri')->middleware(['role:ADMIN,KEPALA,PETUGAS']);

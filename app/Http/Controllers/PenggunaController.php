@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataRuangan;
 use App\Models\Pengguna;
 use Hash;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class PenggunaController extends Controller
    */
   public function index()
   {
-    $penggunas = Pengguna::all();
+    $penggunas = Pengguna::with('dataRuangan')->get();
     return view('petugas.index', compact('penggunas'));
   }
 
@@ -27,7 +28,8 @@ class PenggunaController extends Controller
    */
   public function create()
   {
-    return view('petugas.create');
+    $data_ruangan = DataRuangan::all();
+    return view('petugas.create', compact('data_ruangan'));
   }
 
   /**

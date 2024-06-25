@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 // use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Notifications\Notifiable;
@@ -26,4 +27,9 @@ class Pengguna extends User
   protected $hidden = [
     'password'
   ];
+
+  public function dataRuangan(): BelongsTo
+  {
+    return $this->belongsTo(DataRuangan::class);
+  }
 }

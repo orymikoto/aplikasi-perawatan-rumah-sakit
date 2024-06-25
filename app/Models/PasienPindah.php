@@ -16,6 +16,7 @@ class PasienPindah extends Model
     'pasien_dirawat_id',
     'ruangan_lama_id',
     'ruangan_baru_id',
+    'disetujui',
     'tanggal_pindah',
   ];
 

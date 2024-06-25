@@ -28,9 +28,48 @@ class PasienController extends Controller
 
   public function daftar_pindah()
   {
-    $pasien_pindah = PasienPindah::with(['pasienDirawat', 'ruanganLama', 'ruanganBaru'])->orderBy('tanggal_pindah', 'desc')->paginate(10);
+    $pasien_pindah = PasienPindah::whereDisetujui(true)->with(['pasienDirawat', 'ruanganLama', 'ruanganBaru'])->orderBy('tanggal_pindah', 'desc')->paginate(10);
 
     return view('pasien.pindah.index', compact('pasien_pindah'));
+  }
+
+  public function daftar_pasien_diminta_pindah()
+  {
+    if (auth()->user()->data_ruangan_id) {
+      $daftar_pasien_pindah = PasienPindah::whereDisetujui(false)->whereRuanganBaruId(auth()->user()->data_ruangan_id)->orderBy('tanggal_pindah', 'desc')->paginate(10);
+
+      return view('pasien.pindah.diminta-pindah', compact('daftar_pasien_pindah'));
+    } else {
+      $daftar_pasien_pindah = PasienPindah::whereDisetujui(false)->orderBy('tanggal_pindah', 'desc')->paginate(10);
+
+      return view('pasien.pindah.diminta-pindah', compact('daftar_pasien_pindah'));
+    }
+  }
+
+  public function setujui_pindah($pasien_pindah_id)
+  {
+    $old_pasien_pindah = PasienPindah::whereId($pasien_pindah_id)->first();
+
+    PasienPindah::whereId($pasien_pindah_id)->update(['disetujui' => true]);
+    PasienDirawat::whereId($old_pasien_pindah->pasien_dirawat_id)->update(['data_ruangan_id' => $old_pasien_pindah->ruangan_baru_id, 'pasien_pindahan' => true]);
+
+    // rekapitulasi shri ruangan lama
+    RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($old_pasien_pindah->ruangan_lama_id)->incrementEach(['pasien_dipindahkan' => 1, 'jumlah_pasien_keluar' => 1])->decrement('pasien_sisa', 1);
+
+    // rekapitulasi shri ruangan baru
+    RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($old_pasien_pindah->ruangan_baru_id)->incrementEach(['pindahan' => 1, 'jumlah_pasien_masuk' => 1, 'pasien_sisa' => 1]);
+
+    flash()->success('Permintaan pasien pindah ruangan telah disetujui');
+    return redirect('/pasien-pindah');
+  }
+
+  public function tolak_pindah($pasien_pindah_id)
+  {
+    PasienPindah::whereId($pasien_pindah_id)->delete();
+
+
+    flash()->success('Permintaan pasien pindah ruangan telah ditolak');
+    return redirect('/pasien-pindah');
   }
 
   public function pasien_pindah(Request $request, $id)
@@ -38,10 +77,6 @@ class PasienController extends Controller
     $pasien_dirawat = PasienDirawat::whereId($id)->first();
 
     $ruangan_baru = DataRuangan::whereNamaRuangan($request->ruangan)->first();
-    $pasien_pindah = PasienDirawat::whereId($id)->update([
-      'pasien_pindahan' => true,
-      'data_ruangan_id' => $ruangan_baru->id
-    ]);
 
     $add_pasien_pindah = PasienPindah::create([
       'pasien_dirawat_id' => $id,
@@ -50,8 +85,7 @@ class PasienController extends Controller
       'tanggal_pindah' => Carbon::now()
     ]);
 
-    RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($pasien_dirawat->data_ruangan_id)->first()->incrementEach(['pasien_dipindahkan' => 1, 'jumlah_pasien_keluar' => 1, 'pasien_sisa' => 1]);
-
+    flash()->success('Permintaan pasien pindah ruangan telah ditambahkan, silahkan hubungi petugas untuk menyetujui!');
     return redirect('/pasien-pindah');
   }
 
@@ -79,6 +113,7 @@ class PasienController extends Controller
       RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($pasien_dirawat->data_ruangan_id)->incrementEach(['jumlah_pasien_keluar' => 1, 'jumlah_pasien_keluar' => 1])->decrement('pasien_sisa', 1);
     }
 
+    flash()->success('Data pasien keluar telah berhasil ditambahkan');
 
     return redirect('/pasiens');
   }
@@ -90,44 +125,83 @@ class PasienController extends Controller
   {
     $daftar_penyakit = Penyakit::pluck('nama_penyakit');
     $daftar_ruangan = DataRuangan::pluck('nama_ruangan');
+    $daftar_penyakit = Penyakit::all();
     // dd($daftar_penyakit);
-    return view('pasien.masuk.create', compact('daftar_penyakit', 'daftar_ruangan'));
+    return view('pasien.masuk.create', compact('daftar_penyakit', 'daftar_ruangan', 'daftar_penyakit'));
   }
 
   /**
    * Store a newly created resource in storage.
    */
-  // public function cek_rm($no_rm)
-  // {
-  //   $check_pasien = Pasien::whereNoRM($no_rm);
+  public function cek_rm($no_rm)
+  {
+    $check_pasien = Pasien::where('no_rm', $no_rm)->first();
 
-  //   if ($check_pasien) {
-  //     return
-  //   }
-  // }
+    if ($check_pasien) {
+      return response()->json([
+        'id' => $check_pasien->id,
+        'nama' => $check_pasien->nama,
+        'jenis_kelamin' => $check_pasien->jenis_kelamin,
+        'tanggal_daftar' => $check_pasien->tanggal_daftar,
+        'alamat' => $check_pasien->alamat,
+        'umur' => $check_pasien->umur,
+      ]);
+    } else {
+      return response()->json([
+        'error' => 'data pasien tidak ditemukan'
+      ]);
+    }
+  }
+
+  public function cek_kode_penyakit($kode_penyakit)
+  {
+    $check_penyakit = Penyakit::where('kode_penyakit', 'LIKE', '%' . $kode_penyakit . '%')->get();
+
+    return response()->json([
+      'data' => $check_penyakit
+    ]);
+  }
 
   public function store(Request $request)
   {
-    $new_pasien = Pasien::create([
-      'no_RM' => $request->no_rm,
-      'nama' => $request->nama_pasien,
-      'jenis_kelamin' => $request->jenis_kelamin,
-      'tanggal_daftar' => $request->tanggal_daftar,
-      'alamat' => $request->alamat,
-      'umur' => $request->umur
-    ]);
+    $check_pasien = Pasien::where('no_rm', $request->no_rm)->first();
 
     $check_data_ruangan = DataRuangan::whereNamaRuangan($request->ruangan)->first();
-    $check_data_penyakit = Penyakit::whereNamaPenyakit($request->kode_penyakit)->first();
+    $check_data_penyakit = Penyakit::whereKodePenyakit($request->kode_penyakit)->first();
     $check_jenis_pembayaran = JenisPembayaran::whereNamaJenisPembayaran($request->jenis_pembayaran)->first();
-    $pasien_dirawat = PasienDirawat::create([
-      'pasien_id' => $new_pasien->id,
-      'data_ruangan_id' => $check_data_ruangan->id,
-      'jenis_pembayaran_id' => $check_jenis_pembayaran->id,
-      'kode_penyakit' => strtoupper($request->kode_penyakit),
-      'jenis_penyakit' => $request->jenis_penyakit,
-      'tanggal_masuk' => $request->tanggal_masuk,
-    ]);
+
+    if (!$check_pasien) {
+      $new_pasien = Pasien::create([
+        'no_RM' => $request->no_rm,
+        'nama' => $request->nama_pasien,
+        'jenis_kelamin' => $request->jenis_kelamin,
+        'tanggal_daftar' => $request->tanggal_daftar,
+        'alamat' => $request->alamat,
+        'umur' => $request->umur
+      ]);
+
+      $pasien_dirawat = PasienDirawat::create([
+        'pasien_id' => $new_pasien->id,
+        'data_ruangan_id' => $check_data_ruangan->id,
+        'jenis_pembayaran_id' => $check_jenis_pembayaran->id,
+        'kode_penyakit' => $check_data_penyakit->kode_penyakit,
+        'jenis_penyakit' => $request->jenis_penyakit,
+        'tanggal_masuk' => $request->tanggal_masuk,
+      ]);
+    } else {
+      $pasien_dirawat = PasienDirawat::create([
+        'pasien_id' => $check_pasien->id,
+        'data_ruangan_id' => $check_data_ruangan->id,
+        'jenis_pembayaran_id' => $check_jenis_pembayaran->id,
+        'kode_penyakit' => $check_data_penyakit->kode_penyakit,
+        'jenis_penyakit' => $request->jenis_penyakit,
+        'tanggal_masuk' => $request->tanggal_masuk,
+      ]);
+    }
+
+
+
+
 
     // $check_column_pembayaran
 
@@ -145,11 +219,11 @@ class PasienController extends Controller
       LaporanPenyakitPasien::whereBetween('created_at', [
         Carbon::now()->startOfMonth(),
         Carbon::now()->endOfMonth()
-      ])->whereKodePenyakit(strtoupper($request->kode_penyakit))->increment('jumlah_pasien', 1);
+      ])->whereKodePenyakit($check_data_penyakit->kode_penyakit)->increment('jumlah_pasien', 1);
     } else {
       LaporanPenyakitPasien::create([
-        'kode_penyakit' => strtoupper($request->kode_penyakit),
-        'jenis_penyakit' =>  $request->jenis_penyakit,
+        'kode_penyakit' => $check_data_penyakit->kode_penyakit,
+        'jenis_penyakit' =>  $check_data_penyakit->nama_penyakit,
         'tni_ad_mil' => 0,
         'tni_ad_kel' => 0,
         'tni_ad_pns' => 0,

@@ -7,6 +7,11 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   @vite('resources/css/app.css')
   <title>Dashboard Aplikasi</title>
+
+  <link href = "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel = "stylesheet" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 
 <body class="min-h-screen bg-neutral-50 p-4 overflow-x-auto relative max-w-[1920px] mx-auto ">
@@ -17,8 +22,9 @@
         <p class="font-bold text-xl">SISTEM INFORMASI SENSUS HARIAN RAWAT INAP</p>
         <p class="font-semibold text-lg">RUMKIT TK. III BALADIKA HUSADA JEMBER</p>
       </div>
+
     </div>
-    <x-flash::message />
+    @include('flash::message')
   </header>
 
   <main class="flex gap-4 overflow-x-clip relative">
