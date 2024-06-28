@@ -50,3 +50,4 @@ Route::post('pasien-keluar/{id}', [PasienController::class, 'pasien_keluar'])->n
 Route::get('laporan/shri/{id}', [LaporanController::class, 'rekapitulasiSHRI'])->name('laporan_shri')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
 Route::get('laporan/ris', [LaporanController::class, 'rekapitulasiIndikatorRI'])->name('laporan_ris')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
 Route::get('laporan/penyakit', [LaporanController::class, 'rekapitulasiLaporanPenyakit'])->name('laporan_penyakit')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
+Route::get('laporan/export-penyakit/{tanggal}', [LaporanController::class, 'exportLaporanPenyakit'])->name('export-penyakit')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
