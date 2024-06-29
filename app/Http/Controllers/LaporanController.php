@@ -23,7 +23,7 @@ class LaporanController extends Controller
         $request->query('tanggal') ? Carbon::parse($request->query('tanggal'))->startOfMonth()  : Carbon::now()->startOfMonth(),
         $request->query('tanggal') ? Carbon::parse($request->query('tanggal'))->endOfMonth()  : Carbon::now()->endOfMonth(),
       ]
-    )->orderBy('tanggal', 'desc')->get();
+    )->orderBy('tanggal', 'asc')->get();
 
     $data_ruangan = DataRuangan::all();
     $ruangan_saat_ini = DataRuangan::whereId($id_ruangan)->first();
