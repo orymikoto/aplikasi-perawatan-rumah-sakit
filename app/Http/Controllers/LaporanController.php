@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LaporanIndikatorRIExport;
 use App\Exports\LaporanPenyakitExport;
 use App\Models\DataRuangan;
 use App\Models\LaporanPenyakitPasien;
@@ -62,22 +63,24 @@ class LaporanController extends Controller
     return view('laporan.penyakit', compact('laporan', 'data_ruangan'));
   }
 
-  public function exportLaporanShri()
+  public function exportLaporanIndikatorRI($tanggal)
   {
-    return view('export.laporan-shri', compact('laporan'));
+    $filename = "laporan-indikator-ri-" . $tanggal . '.xlsx';
+    return Excel::download(new LaporanIndikatorRIExport($tanggal), $filename);
   }
 
   public function exportLaporanPenyakit($tanggal)
   {
-    $laporan = LaporanPenyakitPasien::whereBetween(
-      'created_at',
-      [
-        Carbon::now()->startOfMonth(),
-        Carbon::now()->endOfMonth()
-      ]
-    )->orderBy('jumlah_pasien', 'desc')->paginate(10);
+    // $laporan = LaporanPenyakitPasien::whereBetween(
+    //   'created_at',
+    //   [
+    //     Carbon::now()->startOfMonth(),
+    //     Carbon::now()->endOfMonth()
+    //   ]
+    // )->orderBy('jumlah_pasien', 'desc')->paginate(10);
 
     // return view('export.laporan-penyakit', compact('laporan'));
-    return Excel::download(new LaporanPenyakitExport($tanggal), 'laporan-penyakit.xlsx');
+    $filename = "laporan-penyakit-" . $tanggal . '.xlsx';
+    return Excel::download(new LaporanPenyakitExport($tanggal), $filename);
   }
 }

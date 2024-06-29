@@ -17,14 +17,22 @@
       {{ request()->has('tanggal') ? \Carbon\Carbon::parse(request()->query('tanggal'))->translatedFormat('F, Y') : \Carbon\Carbon::now()->subMonth()->translatedFormat('F, Y') }}
       {{-- {{ request()->query('tanggal') }} --}}
     </h2>
-    <div class="flex items-center gap-4">
-      <p>Pilih Bulan : </p>
-      <form action="">
-        <input id="filter_bulan" class="rounded-md px-2 py-1 border-2 border-neutral-600" type="month"
-          value="{{ request()->has('tanggal') ? \Carbon\Carbon::parse(request()->query('tanggal'))->format('Y-m') : \Carbon\Carbon::now()->subMonth()->format('Y-m') }}">
-        {{-- <x-button.color-button type="submit" color="emerald-600" text="Simpan" /> --}}
-        {{-- <button class="text-white bg-emerald-600 px-4 py-2 font-jakarta-sans hover:text-emerald-600 hover:bg-emerald-600">Simpan</button> --}}
-      </form>
+    <div class="flex w-full justify-between">
+
+      <div class="flex items-center gap-4">
+        <p>Pilih Bulan : </p>
+        <form action="">
+          <input id="filter_bulan" class="rounded-md px-2 py-1 border-2 border-neutral-600" type="month"
+            value="{{ request()->has('tanggal') ? \Carbon\Carbon::parse(request()->query('tanggal'))->format('Y-m') : \Carbon\Carbon::now()->subMonth()->format('Y-m') }}">
+          {{-- <x-button.color-button type="submit" color="emerald-600" text="Simpan" /> --}}
+          {{-- <button class="text-white bg-emerald-600 px-4 py-2 font-jakarta-sans hover:text-emerald-600 hover:bg-emerald-600">Simpan</button> --}}
+        </form>
+      </div>
+      <a href="{{ route('export-indikator-ri', request()->has('tanggal') ? request()->query('tanggal') : \Carbon\Carbon::now()) }}"
+        class="self-end rounded-md flex gap-x-2 items-center bg-emerald-600 text-center px-8 py-2 text-white text-lg font-josefin-sans hover:bg-white hover:text-emerald-600 hover:shadow-md hover:shadow-teal-400/75 duration-200">
+        <p>Cetak</p>
+        <i class="fa-solid fa-file-arrow-down fa-lg"></i>
+      </a>
     </div>
     <div class=" overflow-x-scroll relative max-w-full">
       <table class="rounded-t-2xl w-full min-h-full flex-1 border-collapse shadow-md overflow-hidden table ">
