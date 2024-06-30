@@ -22,6 +22,7 @@ return new class extends Migration
       $table->string('kode_penyakit');
       $table->dateTime('tanggal_masuk');
       $table->dateTime('tanggal_keluar')->nullable();
+      $table->string('nama_dokter');
       $table->boolean('pasien_pindahan')->nullable();
       $table->boolean('pasien_mati')->nullable();
       $table->enum('keadaan_keluar', ['Keluar - Dirujuk', 'Keluar - Sembuh', 'Keluar - Belum Sembuh',  'Mati < 48 Jam', 'Mati > 48 Jam'])->nullable();
