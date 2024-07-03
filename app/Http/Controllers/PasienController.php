@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ImportPasienDirawat;
 use App\Models\DataRuangan;
 use App\Models\JenisPembayaran;
 use App\Models\LaporanPenyakitPasien;
@@ -11,7 +12,11 @@ use App\Models\PasienPindah;
 use App\Models\Penyakit;
 use App\Models\RekapitulasiSHRI;
 use Carbon\Carbon;
+use Error;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Faker\Factory as FakerFactory;
+
 
 class PasienController extends Controller
 {
@@ -149,6 +154,103 @@ class PasienController extends Controller
     $daftar_penyakit = Penyakit::all();
     // dd($daftar_penyakit);
     return view('pasien.masuk.create', compact('daftar_penyakit', 'daftar_ruangan', 'daftar_penyakit'));
+  }
+
+  public function import_pasien_masuk(Request $request)
+  {
+    // dd($request);
+    $request->validate([
+      'file' => 'required|mimes:xlsx,xls',
+    ]);
+
+    // Get the uploaded file
+    $file = $request->file('file');
+
+    // dd($file);
+    try {
+      // code...
+      $import = new ImportPasienDirawat;
+      $excel = Excel::import($import, $file);
+      $array = $import->getArray();
+
+
+      // dd($array);
+
+      $faker = FakerFactory::create();
+      // dd($rows);
+      foreach ($array as $row) {
+        $kode_penyakit = "";
+        if (substr($row['kode_penyakit'], 0, 1) == "Z") {
+          $array_of_kode_penyakit = explode(";", $row['kode_penyakit']);
+          $kode_penyakit = $array_of_kode_penyakit[1];
+        } else {
+          $array_of_kode_penyakit = explode(";", $row['kode_penyakit']);
+          $kode_penyakit = $array_of_kode_penyakit[0];
+        }
+        // dd($kode_penyakit);
+        $check_pembayaran = JenisPembayaran::whereNamaJenisPembayaran($row['jenis_pembayaran'])->first();
+        $check_penyakit = Penyakit::whereKodePenyakit($kode_penyakit)->first();
+        $jumlah_ruangan = DataRuangan::all()->count();
+        $check_pasien = Pasien::whereNo_rm($row["no_rm"])->first();
+        $id_pasien = 0;
+        if (!$check_pasien) {
+          # code...
+          $new_pasien = Pasien::create([
+            'no_RM' => $row["no_rm"],
+            'nama' => $row["nama"],
+            'jenis_kelamin' => $row["jenis_kelamin"] == "L" ? "LAKI - LAKI" : "PEREMPUAN",
+            'umur' => intval($row["umur"]),
+            'alamat' => $row["alamat"],
+          ]);
+
+          $id_pasien = $new_pasien->id;
+        } else {
+          $id_pasien = $check_pasien->id;
+        }
+
+        $pasien_mati = $row["kondisi_keluar"] == "meninggal" ? true : false;
+        $kondisi_pasien = "";
+        $dirujuk_ke = "";
+
+        if ($row["kondisi_keluar"] == "Sembuh" || $row["kondisi_keluar"] == "Membaik" || $row["kondisi_keluar"] == "Lain-lain") {
+          $kondisi_pasien = "Keluar - Sembuh";
+        } else if ($row["kondisi_keluar"] == "Pulang" || $row == "Pulang Paksa") {
+          $kondisi_pasien = "Keluar - Belum Sembuh";
+        } else if ($row["kondisi_keluar"] == "Dirujuk" || $row["kondisi_keluar"] == "Dirujuk RS Lain" || $row["kondisi_keluar"] == "Dirujuk RS Lain Lebih Tinggi") {
+          $kondisi_pasien = "Keluar - Dirujuk";
+        } else if ($row["kondisi_keluar"] == "Meninggal" && ($row["kondisi_mati"] == "Meninggal 0 - 24 Jam" || $row["kondisi_mati"] == "Meninggal 24 - 48 Jam")) {
+          $kondisi_pasien = "Mati < 48 Jam";
+        } else if ($row["kondisi_keluar"] == "Meninggal" && $row["kondisi_mati"] == "Meninggal lebih dari 48 Jam") {
+          $kondisi_pasien = "Mati > 48 Jam";
+        }
+
+        if ($row["dirujuk_ke"] != "") {
+          $dirujuk_ke = $row["dirujuk_ke"];
+        }
+
+        PasienDirawat::create([
+          'pasien_id' => $id_pasien,
+          'jenis_pembayaran_id' => $check_pembayaran->id,
+          'kode_penyakit' => $kode_penyakit,
+          'data_ruangan_id' =>  $faker->numberBetween(1, $jumlah_ruangan - 1),
+          'nama_dokter' => $row["nama_dokter"],
+          'tanggal_masuk' => $row["tanggal_masuk"],
+          'tanggal_keluar' => $row["tanggal_keluar"],
+          'pasien_pindahan' => false,
+          'pasien_mati' => $pasien_mati,
+          'keadaan_keluar' => $kondisi_pasien != "" ? $kondisi_pasien : null,
+          'rumah_sakit_baru' => $dirujuk_ke != "" ? $dirujuk_ke : null
+
+        ]);
+      }
+      flash()->success('Data import pasien berhasil ditambahkan.');
+      return redirect('/pasiens');
+    } catch (Error $err) {
+      dd($err);
+      flash()->error('Terjadi error data import pasien gagal ditambahkan.');
+      return redirect('/pasiens');
+      //   //throw $th;
+    }
   }
 
   /**

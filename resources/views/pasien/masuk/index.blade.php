@@ -3,8 +3,12 @@
 @section('content')
   <div class="flex flex-col justify-start items-start gap-6 h-full overflow-x-clip relative">
     <h1 class="font-josefin-sans font-semibold text-2xl text-emerald-600">Daftar Pasien</h1>
-    <a class="rounded-md px-4 py-2 w-auto font-josefin-sans font-semibold text-lg bg-emerald-600 text-white hover:bg-white hover:text-emerald-600 hover:shadow-md hover:shadow-emerald-600/50 duration-200 {{ auth()->user()->role == 'KEPALA' ? 'hidden' : '' }}"
-      href='{{ route('pasiens.create') }}'>Tambah Pasien</a>
+
+    <div class="flex justify-between w-full font-josefin-sans font-semibold text-lg ">
+      <a class="rounded-md px-4 py-2 w-auto bg-emerald-600 text-white hover:bg-white hover:text-emerald-600 hover:shadow-md hover:shadow-emerald-600/50 duration-200 {{ auth()->user()->role == 'KEPALA' ? 'hidden' : '' }}"
+        href='{{ route('pasiens.create') }}'>Tambah Pasien</a>
+      <x-popup.import-pasien-button text="Import Data Pasien" />
+    </div>
     <div class=" overflow-x-scroll relative max-w-full">
       <table class="rounded-t-2xl w-full min-h-full flex-1 shadow-md overflow-hidden table">
         <thead>

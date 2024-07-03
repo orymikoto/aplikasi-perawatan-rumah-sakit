@@ -22,7 +22,6 @@ class PasienSeeder extends Seeder
         "no_RM" => str($faker->numberBetween(100000, 999999)),
         "nama" => $faker->name(),
         "jenis_kelamin" => ["PEREMPUAN", "LAKI - LAKI"][$faker->numberBetween(0, 1)],
-        "tanggal_daftar" => $faker->dateTimeBetween('-1 years', 'now'),
         "alamat" => $faker->address(),
         "umur" => $faker->numberBetween(10, 60),
       ]);

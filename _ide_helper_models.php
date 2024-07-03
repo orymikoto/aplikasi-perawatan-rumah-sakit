@@ -21,17 +21,23 @@ namespace App\Models{
  * @property string $kelas
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PasienDirawat> $pasienDirawat
  * @property-read int|null $pasien_dirawat_count
+ * @property-read \App\Models\Pengguna|null $perawat
  * @method static \Illuminate\Database\Eloquent\Builder|DataRuangan newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DataRuangan newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DataRuangan onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|DataRuangan query()
  * @method static \Illuminate\Database\Eloquent\Builder|DataRuangan whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DataRuangan whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DataRuangan whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DataRuangan whereJumlahTempatTidur($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DataRuangan whereKelas($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DataRuangan whereNamaRuangan($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DataRuangan whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DataRuangan withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|DataRuangan withoutTrashed()
  */
 	class DataRuangan extends \Eloquent {}
 }
@@ -45,16 +51,21 @@ namespace App\Models{
  * @property string $kategori_pasien
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PasienDirawat> $pasienDirawat
  * @property-read int|null $pasien_dirawat_count
  * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran query()
  * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran whereKategoriPasien($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran whereNamaJenisPembayaran($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|JenisPembayaran withoutTrashed()
  */
 	class JenisPembayaran extends \Eloquent {}
 }
@@ -94,12 +105,15 @@ namespace App\Models{
  * @property int $jumlah_pasien
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\Penyakit|null $penyakit
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien query()
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereBpjs($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereJenisPenyakit($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereJumlahPasien($value)
@@ -112,6 +126,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereTniAlMil($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereTniAlPns($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|LaporanPenyakitPasien withoutTrashed()
  */
 	class LaporanPenyakitPasien extends \Eloquent {}
 }
@@ -129,13 +145,16 @@ namespace App\Models{
  * @property int $umur
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PasienDirawat> $pasienDirawat
  * @property-read int|null $pasien_dirawat_count
  * @method static \Illuminate\Database\Eloquent\Builder|Pasien newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Pasien newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Pasien onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Pasien query()
  * @method static \Illuminate\Database\Eloquent\Builder|Pasien whereAlamat($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pasien whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pasien whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pasien whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pasien whereJenisKelamin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pasien whereNama($value)
@@ -143,6 +162,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Pasien whereTanggalDaftar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pasien whereUmur($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pasien whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pasien withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Pasien withoutTrashed()
  */
 	class Pasien extends \Eloquent {}
 }
@@ -156,29 +177,32 @@ namespace App\Models{
  * @property int $data_ruangan_id
  * @property int|null $jenis_pembayaran_id
  * @property string $kode_penyakit
- * @property string $jenis_penyakit
  * @property \Illuminate\Support\Carbon $tanggal_masuk
  * @property \Illuminate\Support\Carbon|null $tanggal_keluar
+ * @property string $nama_dokter
  * @property int|null $pasien_pindahan
  * @property int|null $pasien_mati
  * @property string|null $keadaan_keluar
  * @property string|null $rumah_sakit_baru
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\DataRuangan $dataRuangan
  * @property-read \App\Models\JenisPembayaran|null $jenisPembayaran
  * @property-read \App\Models\Pasien $pasien
- * @property-read \App\Models\Penyakit|null $penyakit
+ * @property-read \App\Models\Penyakit $penyakit
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat query()
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereDataRuanganId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereJenisPembayaranId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereJenisPenyakit($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereKeadaanKeluar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereKodePenyakit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereNamaDokter($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat wherePasienId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat wherePasienMati($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat wherePasienPindahan($value)
@@ -186,6 +210,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereTanggalKeluar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereTanggalMasuk($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|PasienDirawat withoutTrashed()
  */
 	class PasienDirawat extends \Eloquent {}
 }
@@ -198,22 +224,29 @@ namespace App\Models{
  * @property int $ruangan_lama_id
  * @property int $ruangan_baru_id
  * @property int $pasien_dirawat_id
+ * @property int $disetujui
  * @property \Illuminate\Support\Carbon $tanggal_pindah
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\PasienDirawat $pasienDirawat
  * @property-read \App\Models\DataRuangan $ruanganBaru
  * @property-read \App\Models\DataRuangan $ruanganLama
  * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah query()
  * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah whereDisetujui($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah wherePasienDirawatId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah whereRuanganBaruId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah whereRuanganLamaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah whereTanggalPindah($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|PasienPindah withoutTrashed()
  */
 	class PasienPindah extends \Eloquent {}
 }
@@ -224,12 +257,14 @@ namespace App\Models{
  *
  * @property int $id
  * @property string $nama
+ * @property int|null $data_ruangan_id
  * @property string $email
  * @property string $role
  * @property string $password
  * @property string $foto_profil
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\DataRuangan|null $dataRuangan
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
@@ -238,6 +273,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Pengguna newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Pengguna query()
  * @method static \Illuminate\Database\Eloquent\Builder|Pengguna whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pengguna whereDataRuanganId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pengguna whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pengguna whereFotoProfil($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pengguna whereId($value)
@@ -290,10 +326,13 @@ namespace App\Models{
  * @property float $nilai_ndr
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiIndikatorRI newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiIndikatorRI newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiIndikatorRI onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiIndikatorRI query()
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiIndikatorRI whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiIndikatorRI whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiIndikatorRI whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiIndikatorRI whereJumlahTempatTidur($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiIndikatorRI whereNamaFktl($value)
@@ -305,6 +344,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiIndikatorRI whereNilaiToi($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiIndikatorRI whereTanggal($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiIndikatorRI whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiIndikatorRI withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiIndikatorRI withoutTrashed()
  */
 	class RekapitulasiIndikatorRI extends \Eloquent {}
 }
@@ -315,7 +356,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $data_ruangan_id
- * @property string $tanggal
+ * @property \Illuminate\Support\Carbon $tanggal
  * @property int $pasien_awal
  * @property int $pasien_baru
  * @property int $pindahan
@@ -328,12 +369,15 @@ namespace App\Models{
  * @property int $pasien_sisa
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\DataRuangan $dataRuangan
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI query()
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI whereDataRuanganId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI whereJumlahPasienKeluar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI whereJumlahPasienMasuk($value)
@@ -347,6 +391,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI wherePindahan($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI whereTanggal($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|RekapitulasiSHRI withoutTrashed()
  */
 	class RekapitulasiSHRI extends \Eloquent {}
 }

@@ -17,7 +17,6 @@ class Pasien extends Model
     'no_RM',
     'nama',
     'jenis_kelamin',
-    'tanggal_daftar',
     'alamat',
     'umur'
   ];

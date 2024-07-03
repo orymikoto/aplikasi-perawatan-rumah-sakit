@@ -38,6 +38,7 @@ class PasienDirawatSeeder extends Seeder
         'kode_penyakit' => $penyakit[$id_penyakit]->kode_penyakit,
         'tanggal_masuk' => $faker->dateTimeBetween("-4 weeks", "-3 days"),
         'tanggal_keluar' => $faker->boolean() ? now() : null,
+        'nama_dokter' => $faker->name(),
         'pasien_pindahan' => false,
         'pasien_mati' => false,
         'keadaan_keluar' => ['Keluar - Sembuh', 'Keluar - Belum Sembuh'][$faker->numberBetween(0, 1)]

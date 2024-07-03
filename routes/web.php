@@ -45,6 +45,7 @@ Route::get('pasien-pindah/tolak-pindah/{pasien_pindah_id}', [PasienController::c
 Route::get('pasien-keluar', [PasienController::class, 'daftar_keluar'])->name('daftar_pasien_keluar')->middleware(['role:ADMIN,KEPALA,PERAWAT']);
 Route::post('pasien-pindah/{id}', [PasienController::class, 'pasien_pindah'])->name('pasien_pindah')->middleware(['role:ADMIN,KEPALA,PERAWAT']);
 Route::post('pasien-keluar/{id}', [PasienController::class, 'pasien_keluar'])->name('pasien_keluar')->middleware(['role:ADMIN,KEPALA,PERAWAT']);
+Route::post('pasien/import', [PasienController::class, 'import_pasien_masuk'])->name('import_pasien')->middleware(['role:ADMIN,KEPALA,PERAWAT']);
 
 // Laporan
 Route::get('laporan/shri/{id}', [LaporanController::class, 'rekapitulasiIndikatorRI'])->name('laporan_shri')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
