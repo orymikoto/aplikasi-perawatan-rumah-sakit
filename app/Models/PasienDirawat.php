@@ -19,6 +19,7 @@ class PasienDirawat extends Model
     'kode_penyakit',
     'tanggal_masuk',
     'tanggal_keluar',
+    'keadaan_keluar',
     'nama_dokter',
     'pasien_pindahan',
     'pasien_mati',

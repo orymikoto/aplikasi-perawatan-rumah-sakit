@@ -224,6 +224,7 @@ class PasienController extends Controller
           $kondisi_pasien = "Mati > 48 Jam";
         }
 
+        // dd($kondisi_pasien);
         if ($row["dirujuk_ke"] != "") {
           $dirujuk_ke = $row["dirujuk_ke"];
         }
@@ -308,6 +309,7 @@ class PasienController extends Controller
         'data_ruangan_id' => $check_data_ruangan->id,
         'jenis_pembayaran_id' => $check_jenis_pembayaran->id,
         'kode_penyakit' => $check_data_penyakit->kode_penyakit,
+        'nama_dokter' => $request->nama_dokter,
         'jenis_penyakit' => $request->jenis_penyakit,
         'tanggal_masuk' => $request->tanggal_masuk,
       ]);
@@ -317,17 +319,14 @@ class PasienController extends Controller
         'data_ruangan_id' => $check_data_ruangan->id,
         'jenis_pembayaran_id' => $check_jenis_pembayaran->id,
         'kode_penyakit' => $check_data_penyakit->kode_penyakit,
+        'nama_dokter' => $request->nama_dokter,
         'jenis_penyakit' => $request->jenis_penyakit,
         'tanggal_masuk' => $request->tanggal_masuk,
       ]);
     }
-
-
-
-
-
     // $check_column_pembayaran
 
+    // Ini memperbarui data total penyakit 10 besar Bulan ini
     $check_laporan_penyakit = LaporanPenyakitPasien::whereBetween('created_at', [
       Carbon::now()->startOfMonth(),
       Carbon::now()->endOfMonth()
@@ -364,6 +363,7 @@ class PasienController extends Controller
       );
     }
 
+    // Memperbarui nilai SHRI hari ini
     RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($check_data_ruangan->id)->incrementEach(['pasien_baru' => 1, 'jumlah_pasien_masuk' => 1, 'pasien_sisa' => 1]);
 
     return redirect('/pasiens');

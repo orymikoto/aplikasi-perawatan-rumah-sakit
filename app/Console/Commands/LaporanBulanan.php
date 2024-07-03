@@ -33,40 +33,51 @@ class LaporanBulanan extends Command
 
     protected function indikatorRI(): void
     {
-
+        //Mengambil dari database pasien yang telah dirawat bulan ini
         $pasien_bulan_ini = PasienDirawat::where(
             'tanggal_keluar',
             '>=',
             Carbon::now()->startOfMonth()->toDateString()
         )->get();
 
+        //Mengambil dari database pasien yang telah keluar bulan ini
         $pasien_keluar_bulan_ini = PasienDirawat::where(
             'tanggal_keluar',
             '>=',
             Carbon::now()->startOfMonth()->toDateString()
         )->whereNotNull('tanggal_keluar')->get();
 
+
+        //Mengambil dari database pasien yang Meninggal lebih dari 48 jam bulan ini
         $pasien_meninggal_48jam_bulan_ini = PasienDirawat::where(
             'tanggal_keluar',
             '>=',
             Carbon::now()->startOfMonth()->toDateString()
         )->whereKeadaanKeluar('Mati > 48 Jam')->get();
 
+        //Mengambil dari database pasien seluruh yang meninggal bulan ini
         $pasien_meninggal_bulan_ini = PasienDirawat::where('tanggal_masuk', '>=', Carbon::now()->startOfMonth()->toDateString())
             ->where(function ($query) {
                 $query->where('keadaan_keluar', 'Mati > 48 Jam')
                     ->orWhere('keadaan_keluar', 'Mati < 48 Jam');
             })->get();
 
+        // Jumlah Tempat Tidur
         $jumlah_tt = DataRuangan::all()->sum('jumlah_tempat_tidur');
+
+        // Menampung total jumlah hari perawatan
         $jumlah_hari_perawatan = 0;
+
+        // Menampung total jumlah lama dirawat
         $jumlah_lama_dirawat = 0;
 
+        // Menghitung total hari perawatan dan lama dirawat
         foreach ($pasien_bulan_ini as $key => $value) {
             $jumlah_hari_perawatan += $value->tanggal_keluar->diffInDays($value->tanggal_masuk) + 1;
             $jumlah_lama_dirawat += $value->tanggal_keluar->diffInDays($value->tanggal_masuk);
         }
 
+        // Kalkulasi nilai berdasarkan rumus
         $BOR = ($jumlah_hari_perawatan  / ($jumlah_tt * Carbon::now()->daysInMonth)) * 100;
         $BTO = ($pasien_keluar_bulan_ini->count() / $jumlah_tt) / 100 * 100;
         $ALOS = ($jumlah_lama_dirawat / $pasien_keluar_bulan_ini->count()) / 100 * 100;
