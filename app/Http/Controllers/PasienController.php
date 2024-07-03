@@ -412,6 +412,7 @@ class PasienController extends Controller
       'data_ruangan_id' => $check_data_ruangan->id,
       'jenis_pembayaran_id' => $check_jenis_pembayaran->id,
       'kode_penyakit' => strtoupper($request->kode_penyakit),
+      'nama_dokter' => $request->nama_dokter,
       'jenis_penyakit' => $request->jenis_penyakit,
       'tanggal_masuk' => $request->tanggal_masuk,
     ]);
