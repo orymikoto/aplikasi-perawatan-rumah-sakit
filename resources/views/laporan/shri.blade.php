@@ -94,7 +94,8 @@
 
         filter_bulan.onchange = function(e) {
             console.log(e.target.value);
-            location.replace(`http://127.0.0.1:8000/laporan/shri?tanggal=${e.target.value}`)
+            location.replace(
+                `http://127.0.0.1:8000/laporan/shri/{{ request()->route('id') }}?tanggal=${e.target.value}`)
             // const xhr = new XMLHttpRequest();
             // xhr.open("GET", `http://127.0.0.1:8000/laporan/penyakit?tanggal=${e.target.value}`);
             // xhr.send();
