@@ -9,7 +9,7 @@
   <form action="{{ route('import_pasien') }}" class="p-4 relative rounded-2xl gap-y-4 bg-white shadow-md flex flex-col " enctype="multipart/form-data"
     method="POST">
     @csrf
-    <p class=" font-semibold text-lg text-emerald-700">Upload File</p>
+    <p class=" font-semibold text-lg text-emerald-700">Upload File Pasien</p>
     <input type="file" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       class=" w-full border border-neutral-600 focus:border-emerald-600 font-medium rounded-lg py-2 px-4 outline-none" name="file"
       placeholder="Silahkan pilih file..." required>

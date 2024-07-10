@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ImportPasien;
 use App\Imports\ImportPasienDirawat;
 use App\Models\DataRuangan;
 use App\Models\JenisPembayaran;
@@ -16,7 +17,7 @@ use Error;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Faker\Factory as FakerFactory;
-
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
 class PasienController extends Controller
 {
@@ -35,6 +36,23 @@ class PasienController extends Controller
 
       return view('pasien.masuk.index', compact('pasien_dirawats', 'daftar_ruangan'));
     }
+  }
+
+  public function daftar_pasien()
+  {
+    $daftar_pasien = Pasien::paginate(20);
+
+    return view('pasien.daftar-pasien', compact('daftar_pasien'));
+  }
+
+  public function tambah_pasien()
+  {
+    return view('pasien.create');
+  }
+
+  public function edit_pasien()
+  {
+    return view('pasien.edit');
   }
 
   public function daftar_pindah()
@@ -156,9 +174,52 @@ class PasienController extends Controller
     return view('pasien.masuk.create', compact('daftar_penyakit', 'daftar_ruangan', 'daftar_penyakit'));
   }
 
+  public function import_pasien(Request $request)
+  {
+    // dd($request);
+    $request->validate([
+      'file' => 'required|mimes:xlsx,xls',
+    ]);
+
+    // Get the uploaded file
+    $file = $request->file('file');
+
+    try {
+      //code...
+      $import = new ImportPasien;
+      $excel = Excel::import($import, $file);
+      $array = $import->getArray();
+
+      foreach ($array as $row) {
+        $check_pasien = Pasien::whereNo_rm($row["no_rm"])->first();
+
+        if (!$check_pasien) {
+          # code...
+          Pasien::create([
+            'no_RM' => $row["no_rm"],
+            'nama' => $row["nama"],
+            'jenis_kelamin' => $row["jenis_kelamin"] == "L" ? "LAKI - LAKI" : "PEREMPUAN",
+            'umur' => intval($row["umur"]),
+            'alamat' => $row["alamat"],
+          ]);
+        }
+      }
+
+      flash()->success('Data import pasien berhasil ditambahkan.');
+      return redirect('/daftar-pasien');
+    } catch (Error $err) {
+      dd($err);
+      flash()->error('Terjadi error data import pasien gagal ditambahkan.');
+      return redirect('/daftar-pasien');
+      //   //throw $th;
+    }
+  }
+
   public function import_pasien_masuk(Request $request)
   {
     // dd($request);
+
+
     $request->validate([
       'file' => 'required|mimes:xlsx,xls',
     ]);
@@ -256,6 +317,23 @@ class PasienController extends Controller
   /**
    * Store a newly created resource in storage.
    */
+  public function tambah_pasien_post(Request $request)
+  {
+    $this->validate($request, [
+      'no_rm' => 'required|max:32|unique:pasiens,no_RM'
+    ]);
+
+    Pasien::create([
+      'no_RM' => $request->no_rm,
+      'nama' => $request->nama_pasien,
+      'alamat' => $request->alamat,
+      'umur' => $request->umur,
+    ]);
+
+    flash()->success('Pasien berhasil ditambahkan');
+    return redirect('/daftar-pasien');
+  }
+
   public function cek_rm($no_rm)
   {
     $check_pasien = Pasien::where('no_rm', $no_rm)->first();
