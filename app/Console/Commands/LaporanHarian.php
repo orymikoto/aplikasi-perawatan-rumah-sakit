@@ -30,8 +30,10 @@ class LaporanHarian extends Command
         $data_ruangan = DataRuangan::all();
 
         foreach ($data_ruangan as $key => $value) {
+            // Cek apakah SHRI Hari sebelumnya ada
             $day_before = RekapitulasiSHRI::whereDataRuanganId($value->id)->whereDate('created_at', Carbon::yesterday())->first();
 
+            // Kalau ada
             if ($day_before) {
                 # code...
                 $new_row = RekapitulasiSHRI::create([
@@ -48,6 +50,7 @@ class LaporanHarian extends Command
                     'jumlah_pasien_keluar' => 0,
                     'pasien_sisa' => $day_before->pasien_sisa,
                 ]);
+                // Kalau tidak ada
             } else {
                 $new_row = RekapitulasiSHRI::create([
                     'tanggal' => Carbon::today(),

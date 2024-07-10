@@ -53,7 +53,7 @@ Route::post('tambah-pasien/post', [PasienController::class, 'tambah_pasien_post'
 Route::delete('hapus-pasien/{id}', [PasienController::class, 'hapus_pasien'])->name('hapus_pasien')->middleware(['role:ADMIN,KEPALA,PERAWAT']);
 
 // Laporan
-Route::get('laporan/shri/{id}', [LaporanController::class, 'rekapitulasiIndikatorRI'])->name('laporan_shri')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
+Route::get('laporan/shri/{id}', [LaporanController::class, 'rekapitulasiSHRI'])->name('laporan_shri')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
 Route::get('laporan/ris', [LaporanController::class, 'rekapitulasiIndikatorRI'])->name('laporan_ris')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
 Route::get('laporan/penyakit', [LaporanController::class, 'rekapitulasiLaporanPenyakit'])->name('laporan_penyakit')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
 Route::get('laporan/export-penyakit/{tanggal}', [LaporanController::class, 'exportLaporanPenyakit'])->name('export-penyakit')->middleware(['role:ADMIN,KEPALA,PETUGAS']);

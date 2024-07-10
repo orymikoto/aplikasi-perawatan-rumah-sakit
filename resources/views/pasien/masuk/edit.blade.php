@@ -25,6 +25,7 @@
                 value="{{ $pasien_dirawat->pasien->tanggal_daftar }}" />
             <x-input.text title="Alamat" name="alamat" placeholder="Alamat Pasien..."
                 value="{{ $pasien_dirawat->pasien->alamat }}" />
+            <x-input.text title="Nama Dokter" name="nama_dokter" placeholder="Nama Dokter..." value="" />
             <x-input.select title="Ruangan" name="ruangan" placeholder="Ruangan..."
                 value="{{ $pasien_dirawat->dataRuangan->nama_ruangan }}" :options="$daftar_ruangan" />
             <x-input.text placeholder="Kode Penyakit..." name="kode_penyakit" title="Kode Penyakit"
