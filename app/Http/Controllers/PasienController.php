@@ -525,8 +525,8 @@ class PasienController extends Controller
 
     // Ini memperbarui data total penyakit 10 besar Bulan ini
     $check_laporan_penyakit = LaporanPenyakitPasien::whereBetween('created_at', [
-      Carbon::now()->startOfMonth(),
-      Carbon::now()->endOfMonth()
+      Carbon::parse($request->tanggal_masuk)->startOfMonth(),
+      Carbon::parse($request->tanggal_masuk)->endOfMonth()
     ])->whereKodePenyakit($request->kode_penyakit)->first();
 
     if ($check_laporan_penyakit) {
@@ -536,8 +536,8 @@ class PasienController extends Controller
         1
       );
       LaporanPenyakitPasien::whereBetween('created_at', [
-        Carbon::now()->startOfMonth(),
-        Carbon::now()->endOfMonth()
+        Carbon::parse($request->tanggal_masuk)->startOfMonth(),
+        Carbon::parse($request->tanggal_masuk)->endOfMonth()
       ])->whereKodePenyakit($check_data_penyakit->kode_penyakit)->increment('jumlah_pasien', 1);
     } else {
       LaporanPenyakitPasien::create([
@@ -552,6 +552,7 @@ class PasienController extends Controller
         'bpjs' => 0,
         'pasien_umum' => 0,
         'jumlah_pasien' => 0,
+        'created_at' => Carbon::parse($request->tanggal_masuk)
       ]);
 
       LaporanPenyakitPasien::whereKodePenyakit(strtoupper($request->kode_penyakit))->increment(

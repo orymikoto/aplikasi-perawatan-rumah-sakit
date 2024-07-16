@@ -25,6 +25,7 @@ class LaporanPenyakitPasien extends Model
     'bpjs',
     'pasien_umum',
     'jumlah_pasien',
+    'created_at'
   ];
 
   public function penyakit(): BelongsTo
