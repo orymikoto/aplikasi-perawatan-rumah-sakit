@@ -600,16 +600,16 @@ class PasienController extends Controller
         $new_row = RekapitulasiSHRI::create([
           'tanggal' =>  Carbon::parse($request->tanggal_masuk),
           'data_ruangan_id' => $check_data_ruangan->id,
-          'pasien_awal' => 0,
-          'pasien_baru' => 0,
+          'pasien_awal' => 1,
+          'pasien_baru' => 1,
           'pindahan' => 0,
-          'jumlah_pasien_masuk' => 0,
+          'jumlah_pasien_masuk' => 1,
           'pasien_keluar_hidup' => 0,
           'pasien_dipindahkan' => 0,
           'pasien_mati_belum_48_jam' => 0,
           'pasien_mati_sudah_48_jam' => 0,
           'jumlah_pasien_keluar' => 0,
-          'pasien_sisa' => 0,
+          'pasien_sisa' => 1,
         ]);
       }
     }
@@ -632,7 +632,7 @@ class PasienController extends Controller
   {
     $pasien_dirawat = PasienDirawat::with('pasien')->whereId($id)->first();
     $daftar_ruangan = DataRuangan::pluck('nama_ruangan');
-    $daftar_penyakit = Penyakit::pluck('nama_penyakit');
+    $daftar_penyakit = Penyakit::all();
 
 
     // dd($pasien_dirawat->tanggal_masuk);
@@ -649,7 +649,6 @@ class PasienController extends Controller
       'no_RM' => $request->no_rm,
       'nama' => $request->nama_pasien,
       'jenis_kelamin' => $request->jenis_kelamin,
-      'tanggal_daftar' => $request->tanggal_daftar,
       'alamat' => $request->alamat,
       'umur' => $request->umur
     ]);
@@ -661,7 +660,6 @@ class PasienController extends Controller
       'jenis_pembayaran_id' => $check_jenis_pembayaran->id,
       'kode_penyakit' => strtoupper($request->kode_penyakit),
       'nama_dokter' => $request->nama_dokter,
-      'jenis_penyakit' => $request->jenis_penyakit,
       'tanggal_masuk' => $request->tanggal_masuk,
     ]);
 
@@ -694,7 +692,48 @@ class PasienController extends Controller
     }
 
     RekapitulasiSHRI::whereDate('tanggal', $old_pasien_dirawats->tanggal_masuk)->whereDataRuanganId($old_pasien_dirawats->data_ruangan_id)->decrementEach(['pasien_baru' => 1, 'jumlah_pasien_masuk' => 1, 'pasien_sisa' => 1]);
-    RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($check_data_ruangan->id)->incrementEach(['pasien_baru' => 1, 'jumlah_pasien_masuk' => 1, 'pasien_sisa' => 1]);
+    $check_laporan_shri = RekapitulasiSHRI::whereDate('tanggal', Carbon::parse($request->tanggal_masuk))->whereDataRuanganId($check_data_ruangan->id)->first();
+    if ($check_laporan_shri) {
+      # code...
+      RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($check_data_ruangan->id)->incrementEach(['pasien_baru' => 1, 'jumlah_pasien_masuk' => 1, 'pasien_sisa' => 1]);
+    } else {
+      $day_before = RekapitulasiSHRI::whereDataRuanganId($check_data_ruangan->id)->whereDate('created_at', Carbon::parse($request->tanggal_masuk)->subDay())->first();
+
+      // Kalau ada
+      if ($day_before) {
+        # code...
+        $new_row = RekapitulasiSHRI::create([
+          'tanggal' => Carbon::parse($request->tanggal_masuk),
+          'data_ruangan_id' => $day_before->data_ruangan_id,
+          'pasien_awal' => $day_before->pasien_sisa,
+          'pasien_baru' => 0,
+          'pindahan' => 0,
+          'jumlah_pasien_masuk' => 0,
+          'pasien_keluar_hidup' => 0,
+          'pasien_dipindahkan' => 0,
+          'pasien_mati_belum_48_jam' => 0,
+          'pasien_mati_sudah_48_jam' => 0,
+          'jumlah_pasien_keluar' => 0,
+          'pasien_sisa' => $day_before->pasien_sisa,
+        ]);
+        // Kalau tidak ada
+      } else {
+        $new_row = RekapitulasiSHRI::create([
+          'tanggal' =>  Carbon::parse($request->tanggal_masuk),
+          'data_ruangan_id' => $check_data_ruangan->id,
+          'pasien_awal' => 1,
+          'pasien_baru' => 1,
+          'pindahan' => 0,
+          'jumlah_pasien_masuk' => 1,
+          'pasien_keluar_hidup' => 0,
+          'pasien_dipindahkan' => 0,
+          'pasien_mati_belum_48_jam' => 0,
+          'pasien_mati_sudah_48_jam' => 0,
+          'jumlah_pasien_keluar' => 0,
+          'pasien_sisa' => 1,
+        ]);
+      }
+    }
 
     return redirect('/pasiens');
   }

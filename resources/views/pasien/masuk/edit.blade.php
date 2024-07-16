@@ -20,7 +20,21 @@
       <x-input.text title="Nama Dokter" name="nama_dokter" placeholder="Nama Dokter..." value="{{ $pasien_dirawat->nama_dokter }}" />
       <x-input.select title="Ruangan" name="ruangan" placeholder="Ruangan..." value="{{ $pasien_dirawat->dataRuangan->nama_ruangan }}"
         :options="$daftar_ruangan" />
-      <x-input.text placeholder="Kode Penyakit..." name="kode_penyakit" title="Kode Penyakit" value="{{ $pasien_dirawat->kode_penyakit }}" />
+      <div class="flex flex-col">
+        <div class="form-group flex flex-col font-jakarta-sans gap-2">
+          <label for="kode_penyakit" class="text-emerald-600 text-lg font-semibold">Kode Penyakit</label>
+          <input id="kode_penyakit" name="kode_penyakit" type="text" list="kode_penyakit_fieldlist"
+            class=" w-full border border-neutral-600 focus:border-emerald-600 font-medium rounded-lg py-2 px-4 outline-none"
+            placeholder="Kode Penyakit..." value="{{ $pasien_dirawat->kode_penyakit }}">
+          <datalist id="kode_penyakit_fieldlist">
+            @foreach ($daftar_penyakit as $key => $value)
+              <option value="{{ $value->kode_penyakit }}">
+                {{ $value->kode_penyakit . ' - ' . $value->nama_penyakit }}</option>
+            @endforeach
+          </datalist>
+          <span id="error" class="text-danger"></span>
+        </div>
+      </div>
       <x-input.select title="Jenis Pembayaran" name="jenis_pembayaran" placeholder="Pilih tipe jenis pembayaran"
         value="{{ $pasien_dirawat->jenisPembayaran->nama_jenis_pembayaran }}" :options="[
             'BPJS DINAS - ANGKATAN LAIN KELUARGA',
