@@ -531,14 +531,21 @@ class PasienController extends Controller
 
     if ($check_laporan_penyakit) {
       // dd($check_laporan_penyakit);
-      $check_laporan_penyakit->increment(
-        $check_jenis_pembayaran->kategori_pasien,
-        1
+      $check_laporan_penyakit->incrementEach(
+        [
+          $check_jenis_pembayaran->kategori_pasien => 1,
+          'jumlah_pasien' => 1
+        ]
       );
       LaporanPenyakitPasien::whereBetween('created_at', [
         Carbon::parse($request->tanggal_masuk)->startOfMonth(),
         Carbon::parse($request->tanggal_masuk)->endOfMonth()
-      ])->whereKodePenyakit($check_data_penyakit->kode_penyakit)->increment('jumlah_pasien', 1);
+      ])->whereKodePenyakit($check_data_penyakit->kode_penyakit)->incrementEach(
+        [
+          $check_jenis_pembayaran->kategori_pasien => 1,
+          'jumlah_pasien' => 1
+        ]
+      );
     } else {
       LaporanPenyakitPasien::create([
         'kode_penyakit' => $check_data_penyakit->kode_penyakit,
@@ -555,9 +562,11 @@ class PasienController extends Controller
         'created_at' => Carbon::parse($request->tanggal_masuk)
       ]);
 
-      LaporanPenyakitPasien::whereKodePenyakit(strtoupper($request->kode_penyakit))->increment(
-        $check_jenis_pembayaran->kategori_pasien,
-        1
+      LaporanPenyakitPasien::whereKodePenyakit($request->kode_penyakit)->incrementEach(
+        [
+          $check_jenis_pembayaran->kategori_pasien => 1,
+          'jumlah_pasien' => 1
+        ]
       );
     }
 
@@ -621,7 +630,7 @@ class PasienController extends Controller
    */
   public function edit($id)
   {
-    $pasien_dirawat = PasienDirawat::whereId($id)->first();
+    $pasien_dirawat = PasienDirawat::with('pasien')->whereId($id)->first();
     $daftar_ruangan = DataRuangan::pluck('nama_ruangan');
     $daftar_penyakit = Penyakit::pluck('nama_penyakit');
 
@@ -657,21 +666,31 @@ class PasienController extends Controller
     ]);
 
     $check_laporan_penyakit = LaporanPenyakitPasien::whereBetween('created_at', [
-      Carbon::now()->startOfMonth(),
-      Carbon::now()->endOfMonth()
-    ])->whereKodePenyakit(strtoupper($request->kode_penyakit))->first();
+      Carbon::parse($old_pasien_dirawats->tanggal_masuk)->startOfMonth(),
+      Carbon::parse($old_pasien_dirawats->tanggal_masuk)->endOfMonth()
+    ])->whereKodePenyakit($request->kode_penyakit)->first();
 
     if ($check_laporan_penyakit) {
       // dd($check_laporan_penyakit);
       $old_jenis_pembayaran = JenisPembayaran::whereId($old_pasien_dirawats->jenis_pembayaran_id)->first();
-      $check_laporan_penyakit->decrement(
-        $old_jenis_pembayaran->kategori_pasien,
-        1
+      LaporanPenyakitPasien::whereBetween('created_at', [
+        Carbon::parse($old_pasien_dirawats->tanggal_masuk)->startOfMonth(),
+        Carbon::parse($old_pasien_dirawats->tanggal_masuk)->endOfMonth()
+      ])->whereKodePenyakit($request->kode_penyakit)->decrementEach(
+        [
+          $old_jenis_pembayaran->kategori_pasien => 1,
+          'jumlah_pasien' => 1
+        ]
       );
       LaporanPenyakitPasien::whereBetween('created_at', [
         Carbon::now()->startOfMonth(),
         Carbon::now()->endOfMonth()
-      ])->whereKodePenyakit(strtoupper($request->kode_penyakit))->increment($check_jenis_pembayaran->kategori_pasien, 1);
+      ])->whereKodePenyakit(strtoupper($request->kode_penyakit))->incrementEach(
+        [
+          $check_jenis_pembayaran->kategori_pasien => 1,
+          'jumlah_pasien' => 1
+        ]
+      );
     }
 
     RekapitulasiSHRI::whereDate('tanggal', $old_pasien_dirawats->tanggal_masuk)->whereDataRuanganId($old_pasien_dirawats->data_ruangan_id)->decrementEach(['pasien_baru' => 1, 'jumlah_pasien_masuk' => 1, 'pasien_sisa' => 1]);
