@@ -90,6 +90,86 @@ class PasienController extends Controller
     PasienPindah::whereId($pasien_pindah_id)->update(['disetujui' => true]);
     PasienDirawat::whereId($old_pasien_pindah->pasien_dirawat_id)->update(['data_ruangan_id' => $old_pasien_pindah->ruangan_baru_id, 'pasien_pindahan' => true]);
 
+    $check_laporan_shri_ruangan_baru = RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($old_pasien_pindah->ruangan_baru_id);
+    if (!$check_laporan_shri_ruangan_baru) {
+      $day_before = RekapitulasiSHRI::whereDataRuanganId($old_pasien_pindah->ruangan_baru_id)->whereDate('created_at', Carbon::today())->first();
+
+      // Kalau ada
+      if ($day_before) {
+        # code...
+        $new_row = RekapitulasiSHRI::create([
+          'tanggal' => Carbon::today(),
+          'data_ruangan_id' => $day_before->data_ruangan_id,
+          'pasien_awal' => $day_before->pasien_sisa,
+          'pasien_baru' => 0,
+          'pindahan' => 0,
+          'jumlah_pasien_masuk' => 0,
+          'pasien_keluar_hidup' => 0,
+          'pasien_dipindahkan' => 0,
+          'pasien_mati_belum_48_jam' => 0,
+          'pasien_mati_sudah_48_jam' => 0,
+          'jumlah_pasien_keluar' => 0,
+          'pasien_sisa' => $day_before->pasien_sisa,
+        ]);
+        // Kalau tidak ada
+      } else {
+        $new_row = RekapitulasiSHRI::create([
+          'tanggal' =>  Carbon::today(),
+          'data_ruangan_id' => $old_pasien_pindah->ruangan_baru_id,
+          'pasien_awal' => 0,
+          'pasien_baru' => 0,
+          'pindahan' => 0,
+          'jumlah_pasien_masuk' => 0,
+          'pasien_keluar_hidup' => 0,
+          'pasien_dipindahkan' => 0,
+          'pasien_mati_belum_48_jam' => 0,
+          'pasien_mati_sudah_48_jam' => 0,
+          'jumlah_pasien_keluar' => 0,
+          'pasien_sisa' => 0,
+        ]);
+      }
+    }
+
+    $check_laporan_shri_ruangan_lama = RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($old_pasien_pindah->ruangan_lama_id);
+    if (!$check_laporan_shri_ruangan_lama) {
+      $day_before = RekapitulasiSHRI::whereDataRuanganId($old_pasien_pindah->ruangan_lama_id)->whereDate('created_at', Carbon::today())->first();
+
+      // Kalau ada
+      if ($day_before) {
+        # code...
+        $new_row = RekapitulasiSHRI::create([
+          'tanggal' => Carbon::today(),
+          'data_ruangan_id' => $day_before->data_ruangan_id,
+          'pasien_awal' => $day_before->pasien_sisa,
+          'pasien_baru' => 0,
+          'pindahan' => 0,
+          'jumlah_pasien_masuk' => 0,
+          'pasien_keluar_hidup' => 0,
+          'pasien_dipindahkan' => 0,
+          'pasien_mati_belum_48_jam' => 0,
+          'pasien_mati_sudah_48_jam' => 0,
+          'jumlah_pasien_keluar' => 0,
+          'pasien_sisa' => $day_before->pasien_sisa,
+        ]);
+        // Kalau tidak ada
+      } else {
+        $new_row = RekapitulasiSHRI::create([
+          'tanggal' =>  Carbon::today(),
+          'data_ruangan_id' => $old_pasien_pindah->ruangan_lama_id,
+          'pasien_awal' => 0,
+          'pasien_baru' => 0,
+          'pindahan' => 0,
+          'jumlah_pasien_masuk' => 0,
+          'pasien_keluar_hidup' => 0,
+          'pasien_dipindahkan' => 0,
+          'pasien_mati_belum_48_jam' => 0,
+          'pasien_mati_sudah_48_jam' => 0,
+          'jumlah_pasien_keluar' => 0,
+          'pasien_sisa' => 0,
+        ]);
+      }
+    }
+
     // rekapitulasi shri ruangan lama
     RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($old_pasien_pindah->ruangan_lama_id)->incrementEach(['pasien_dipindahkan' => 1, 'jumlah_pasien_keluar' => 1])->decrement('pasien_sisa', 1);
 
@@ -148,6 +228,46 @@ class PasienController extends Controller
       'keadaan_keluar' => $request->kondisi,
       'rumah_sakit_baru' => $request->rumah_sakit ?? null
     ]);
+
+    $check_laporan_shri = RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($pasien_dirawat->data_ruangan_id);
+    if (!$check_laporan_shri) {
+      $day_before = RekapitulasiSHRI::whereDataRuanganId($pasien_dirawat->data_ruangan_id)->whereDate('created_at', Carbon::today())->first();
+
+      // Kalau ada
+      if ($day_before) {
+        # code...
+        $new_row = RekapitulasiSHRI::create([
+          'tanggal' => Carbon::today(),
+          'data_ruangan_id' => $day_before->data_ruangan_id,
+          'pasien_awal' => $day_before->pasien_sisa,
+          'pasien_baru' => 0,
+          'pindahan' => 0,
+          'jumlah_pasien_masuk' => 0,
+          'pasien_keluar_hidup' => 0,
+          'pasien_dipindahkan' => 0,
+          'pasien_mati_belum_48_jam' => 0,
+          'pasien_mati_sudah_48_jam' => 0,
+          'jumlah_pasien_keluar' => 0,
+          'pasien_sisa' => $day_before->pasien_sisa,
+        ]);
+        // Kalau tidak ada
+      } else {
+        $new_row = RekapitulasiSHRI::create([
+          'tanggal' =>  Carbon::today(),
+          'data_ruangan_id' => $pasien_dirawat->data_ruangan_id,
+          'pasien_awal' => 0,
+          'pasien_baru' => 0,
+          'pindahan' => 0,
+          'jumlah_pasien_masuk' => 0,
+          'pasien_keluar_hidup' => 0,
+          'pasien_dipindahkan' => 0,
+          'pasien_mati_belum_48_jam' => 0,
+          'pasien_mati_sudah_48_jam' => 0,
+          'jumlah_pasien_keluar' => 0,
+          'pasien_sisa' => 0,
+        ]);
+      }
+    }
 
     if ($request->kondisi == "Mati < 48 Jam") {
       RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($pasien_dirawat->data_ruangan_id)->incrementEach(['pasien_mati_belum_48_jam' => 1, 'jumlah_pasien_keluar' => 1])->decrement('pasien_sisa', 1);
