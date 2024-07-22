@@ -3,18 +3,20 @@
 @section('content')
   <div class="flex flex-col justify-start items-start gap-6 h-full overflow-x-clip relative">
     <h1 class="font-josefin-sans font-semibold text-2xl text-emerald-600">Laporan</h1>
-    <div class="w-full flex gap-x-4 ">
+    <div class="w-full flex gap-x-4 overflow-x-scroll scrollbar-thin pb-2 " style="scrollbar-color: #059669 white ">
       <x-popup.link_shri id="modal_link_shri" :daftar_ruangan="$data_ruangan" />
-
       <a href="{{ route('laporan_ris') }}"
-        class="rounded-md bg-emerald-600 w-60 text-center py-2 text-white text-lg font-josefin-sans hover:bg-white hover:text-emerald-600 hover:shadow-md hover:shadow-teal-400/75 duration-200">
+        class="rounded-md bg-emerald-600 min-w-60 text-center py-2 text-white text-lg font-josefin-sans hover:bg-white hover:text-emerald-600 hover:shadow-md hover:shadow-teal-400/75 duration-200">
         Rekapatilasi Indikator RI</a>
       <a href="{{ route('laporan_penyakit') }}"
-        class="rounded-md bg-emerald-600 w-60 text-center py-2 text-white text-lg font-josefin-sans hover:bg-white hover:text-emerald-600 hover:shadow-md hover:shadow-teal-400/75 duration-200">
+        class="rounded-md bg-emerald-600 min-w-60 text-center py-2 text-white text-lg font-josefin-sans hover:bg-white hover:text-emerald-600 hover:shadow-md hover:shadow-teal-400/75 duration-200">
         10 Besar Penyakit</a>
+      <a href="{{ route('laporan_ruangan') }}"
+        class="rounded-md bg-emerald-600 min-w-60 text-center py-2 text-white text-lg font-josefin-sans hover:bg-white hover:text-emerald-600 hover:shadow-md hover:shadow-teal-400/75 duration-200">
+        Data Ruangan</a>
     </div>
 
-    <h2 class="my-2 text-2xl text-center mx-auto text-neutral-900 font-josefin-sans">Laporan Penyakit Bulan
+    <h2 class="text-2xl text-center mx-auto text-neutral-900 font-josefin-sans">Laporan Penyakit Bulan
       {{ request()->has('tanggal') ? \Carbon\Carbon::parse(request()->query('tanggal'))->translatedFormat('F, Y') : \Carbon\Carbon::now()->translatedFormat('F, Y') }}
       {{-- {{ request()->query('tanggal') }} --}}
     </h2>

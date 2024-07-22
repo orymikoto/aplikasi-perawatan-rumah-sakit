@@ -2,7 +2,7 @@
   {{-- Profil Pengguna --}}
   <div class="flex items-center gap-4 my-8 ">
     <div class="rounded-full w-16 h-16 shadow-md border border-neutral-400 hover:border-blue-800 duration-200 overflow-hidden">
-      <img src="{{ auth()->user()->foto_profil }}" class="w-full h-full object-cover" alt="Foto Profil">
+      <img src="/user.png" class="w-full h-full object-cover" alt="Foto Profil">
     </div>
     <div class="flex flex-col items-start text-emerald-800">
       <p class="font-jakarta-sans font-bold line-clamp-1">{{ auth()->user()->nama }}</p>
