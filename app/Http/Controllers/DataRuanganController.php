@@ -34,6 +34,8 @@ class DataRuanganController extends Controller
       'jumlah_tempat_tidur' => $request->jumlah_tempat_tidur,
       'kelas' => $request->kelas
     ]);
+
+    flash()->success('Data ruangan berhasil ditambahkan');
     return redirect('/ruangan');
   }
 
@@ -57,14 +59,15 @@ class DataRuanganController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, DataRuangan $dataRuangan)
+  public function update(Request $request, $id)
   {
-    DataRuangan::whereId($dataRuangan->id)->update([
+    DataRuangan::whereId($id)->update([
       'nama_ruangan' => $request->nama_ruangan,
       'jumlah_tempat_tidur' => $request->jumlah_tempat_tidur,
       'kelas' => $request->kelas
     ]);
 
+    flash()->success('Data ruangan berhasil diperbarui');
     return redirect('/ruangan');
   }
 

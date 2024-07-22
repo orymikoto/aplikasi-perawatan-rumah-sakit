@@ -45,6 +45,7 @@ class PenggunaController extends Controller
       'password' => Hash::make($request->password),
       'foto_profil' => ''
     ]);
+    flash()->success('Data petugas berhasil ditambahkan');
     return redirect('/pengguna');
   }
 
@@ -81,6 +82,7 @@ class PenggunaController extends Controller
       'foto_profil' => ''
     ]);
 
+    flash()->success('Data petugas berhasil diperbarui');
     return redirect("/pengguna");
   }
 
