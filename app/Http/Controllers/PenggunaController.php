@@ -85,7 +85,7 @@ class PenggunaController extends Controller
       'nama' => $request->nama,
       'email' => $request->email,
       'role' => $request->role,
-      'data_ruangan_id' => $request->ruangan,
+      'data_ruangan_id' => $request->data_ruangan,
       'password' => Hash::make($request->password),
       'foto_profil' => ''
     ]);

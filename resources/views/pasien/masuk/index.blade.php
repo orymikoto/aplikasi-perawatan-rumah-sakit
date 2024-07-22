@@ -2,13 +2,20 @@
 
 @section('content')
   <div class="flex flex-col justify-start items-start gap-6 h-full overflow-x-clip relative">
-    <h1 class="font-josefin-sans font-semibold text-2xl text-emerald-600">Daftar Pasien</h1>
+    <h1 class="font-josefin-sans font-semibold text-2xl text-emerald-600">Daftar Pasien Masuk</h1>
 
     <div class="flex justify-between w-full font-josefin-sans font-semibold text-lg ">
       <a class="rounded-md px-4 py-2 w-auto bg-emerald-600 text-white hover:bg-white hover:text-emerald-600 hover:shadow-md hover:shadow-emerald-600/50 duration-200 {{ auth()->user()->role == 'KEPALA' ? 'hidden' : '' }}"
         href='{{ route('pasiens.create') }}'>Tambah Pasien Masuk</a>
       <x-popup.import-pasien-button text="Import Data Pasien" />
     </div>
+    <form action="{{ route('pasiens.index') }}" method="GET">
+      <div class="flex items-center gap-x-2 px-2 py-1 border border-neutral-400 rounded-md">
+        <i class="fa-solid fa-magnifying-glass text-neutral-600"></i>
+        <input type="text" name="filter" class="outline-none text-neutral-600 font-jakarta-sans" placeholder="Cari berdasarkan no RM"
+          autofocus="true" value="{{ $filter ?? '' }}">
+      </div>
+    </form>
     <div class=" overflow-x-scroll relative max-w-full">
       <table class="rounded-t-2xl w-full min-h-full flex-1 shadow-md overflow-hidden table">
         <thead>
