@@ -62,7 +62,8 @@ class PenggunaController extends Controller
   public function edit($id)
   {
     $pengguna = Pengguna::whereId($id)->first();
-    return view('petugas.edit', compact('pengguna'));
+    $data_ruangan = DataRuangan::all();
+    return view('petugas.edit', compact('pengguna', 'data_ruangan'));
   }
 
   /**
@@ -86,8 +87,11 @@ class PenggunaController extends Controller
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(Pengguna $pengguna)
+  public function destroy($id)
   {
-    //
+    $pengguna = Pengguna::whereId($id)->delete();
+
+    flash()->success('Data petugas telah berhasil dihapus');
+    return redirect("/pengguna");
   }
 }
