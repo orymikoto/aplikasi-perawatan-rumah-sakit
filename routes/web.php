@@ -56,5 +56,6 @@ Route::delete('hapus-pasien/{id}', [PasienController::class, 'hapus_pasien'])->n
 Route::get('laporan/shri/{id}', [LaporanController::class, 'rekapitulasiSHRI'])->name('laporan_shri')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
 Route::get('laporan/ris', [LaporanController::class, 'rekapitulasiIndikatorRI'])->name('laporan_ris')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
 Route::get('laporan/penyakit', [LaporanController::class, 'rekapitulasiLaporanPenyakit'])->name('laporan_penyakit')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
+Route::get('laporan/ruangan', [LaporanController::class, 'laporanDataRuangan'])->name('laporan_ruangan')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
 Route::get('laporan/export-penyakit/{tanggal}', [LaporanController::class, 'exportLaporanPenyakit'])->name('export-penyakit')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
 Route::get('laporan/export-indikator-ri/{tanggal}', [LaporanController::class, 'exportLaporanIndikatorRI'])->name('export-indikator-ri')->middleware(['role:ADMIN,KEPALA,PETUGAS']);

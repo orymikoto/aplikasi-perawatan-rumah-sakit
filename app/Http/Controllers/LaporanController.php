@@ -63,6 +63,13 @@ class LaporanController extends Controller
     return view('laporan.penyakit', compact('laporan', 'data_ruangan'));
   }
 
+  public function laporanDataRuangan(Request $request)
+  {
+    $data_ruangan = DataRuangan::all();
+
+    return view('laporan.ruangan', compact('data_ruangan'));
+  }
+
   public function exportLaporanIndikatorRI($tanggal)
   {
     $filename = "laporan-indikator-ri-" . $tanggal . '.xlsx';
