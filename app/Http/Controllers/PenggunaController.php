@@ -37,6 +37,10 @@ class PenggunaController extends Controller
    */
   public function store(Request $request)
   {
+    $request->validate([
+      'email' => 'email|unique:penggunas,email'
+    ]);
+
     Pengguna::create([
       'nama' => $request->nama,
       'email' => $request->email,
@@ -73,6 +77,10 @@ class PenggunaController extends Controller
   public function update(Request $request, Pengguna $pengguna)
   {
     // $old_pengguna = Pengguna::whereId($pengguna->id)->first();
+    $request->validate([
+      'email' => 'email|unique:penggunas,email,' . $pengguna->id
+    ]);
+
     $pengguna = Pengguna::whereId($pengguna->id)->update([
       'nama' => $request->nama,
       'email' => $request->email,
