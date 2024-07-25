@@ -37,6 +37,10 @@ class PenggunaController extends Controller
    */
   public function store(Request $request)
   {
+    $request->validate([
+      'email' => 'email|unique:penggunas,email'
+    ]);
+
     Pengguna::create([
       'nama' => $request->nama,
       'email' => $request->email,
@@ -45,6 +49,7 @@ class PenggunaController extends Controller
       'password' => Hash::make($request->password),
       'foto_profil' => ''
     ]);
+    flash()->success('Data petugas berhasil ditambahkan');
     return redirect('/pengguna');
   }
 
@@ -62,7 +67,8 @@ class PenggunaController extends Controller
   public function edit($id)
   {
     $pengguna = Pengguna::whereId($id)->first();
-    return view('petugas.edit', compact('pengguna'));
+    $data_ruangan = DataRuangan::all();
+    return view('petugas.edit', compact('pengguna', 'data_ruangan'));
   }
 
   /**
@@ -71,23 +77,31 @@ class PenggunaController extends Controller
   public function update(Request $request, Pengguna $pengguna)
   {
     // $old_pengguna = Pengguna::whereId($pengguna->id)->first();
+    $request->validate([
+      'email' => 'email|unique:penggunas,email,' . $pengguna->id
+    ]);
+
     $pengguna = Pengguna::whereId($pengguna->id)->update([
       'nama' => $request->nama,
       'email' => $request->email,
       'role' => $request->role,
-      'data_ruangan_id' => $request->ruangan,
+      'data_ruangan_id' => $request->data_ruangan,
       'password' => Hash::make($request->password),
       'foto_profil' => ''
     ]);
 
+    flash()->success('Data petugas berhasil diperbarui');
     return redirect("/pengguna");
   }
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(Pengguna $pengguna)
+  public function destroy($id)
   {
-    //
+    $pengguna = Pengguna::whereId($id)->delete();
+
+    flash()->success('Data petugas telah berhasil dihapus');
+    return redirect("/pengguna");
   }
 }

@@ -9,6 +9,13 @@
         href='{{ route('tambah_pasien') }}'>Tambah Pasien</a>
       <x-popup.import-pasien-button text="Import Data Pasien" />
     </div>
+    <form action="{{ route('daftar_pasien') }}" method="GET">
+      <div class="flex items-center gap-x-2 px-2 py-1 border border-neutral-400 rounded-md">
+        <i class="fa-solid fa-magnifying-glass text-neutral-600"></i>
+        <input type="text" name="filter" class="outline-none text-neutral-600 font-jakarta-sans" placeholder="Cari berdasarkan no RM"
+          autofocus="true" value="{{ $filter ?? '' }}">
+      </div>
+    </form>
     <div class=" overflow-x-scroll relative max-w-full">
       <table class="rounded-t-2xl w-full min-h-full flex-1 shadow-md overflow-hidden table">
         <thead>

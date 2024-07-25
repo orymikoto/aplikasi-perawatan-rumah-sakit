@@ -19,30 +19,52 @@ use Maatwebsite\Excel\Facades\Excel;
 use Faker\Factory as FakerFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
+use function PHPUnit\Framework\isEmpty;
+
 class PasienController extends Controller
 {
   /**
    * Display a listing of the resource.
    */
-  public function index()
+  public function index(Request $request)
   {
+    $filter = $request->query('filter');
+    // dd($filter);
     $daftar_ruangan = DataRuangan::pluck('nama_ruangan');
+
+
+
     if (auth()->user()->role == "PERAWAT" && auth()->user()->data_ruangan_id) {
-      $pasien_dirawats = PasienDirawat::whereDataRuanganId(auth()->user()->data_ruangan_id)->whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
 
-      return view('pasien.masuk.index', compact('pasien_dirawats', 'daftar_ruangan'));
+      if ($filter) {
+        $pasien_dirawats = PasienDirawat::whereRelation('pasien', 'no_RM', 'like', '%' . $filter . '%')->whereDataRuanganId(auth()->user()->data_ruangan_id)->whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
+      } else {
+        $pasien_dirawats = PasienDirawat::whereDataRuanganId(auth()->user()->data_ruangan_id)->whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
+      }
+      return view('pasien.masuk.index')->with(['pasien_dirawats' => $pasien_dirawats, 'daftar_ruangan' => $daftar_ruangan, 'filter' => $filter]);
     } else {
-      $pasien_dirawats = PasienDirawat::whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
+      if ($filter) {
+        // dd($filter);
+        $pasien_dirawats = PasienDirawat::whereRelation('pasien', 'no_RM', 'like', '%' . $filter . '%')->whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
+      } else {
+        $pasien_dirawats = PasienDirawat::whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
+      }
 
-      return view('pasien.masuk.index', compact('pasien_dirawats', 'daftar_ruangan'));
+      return view('pasien.masuk.index')->with(['pasien_dirawats' => $pasien_dirawats, 'daftar_ruangan' => $daftar_ruangan, 'filter' => $filter]);
     }
   }
 
-  public function daftar_pasien()
+  public function daftar_pasien(Request $request)
   {
-    $daftar_pasien = Pasien::paginate(20);
+    $filter = $request->query('filter');
 
-    return view('pasien.daftar-pasien', compact('daftar_pasien'));
+    if ($filter) {
+
+      $daftar_pasien = Pasien::where('no_RM', 'like', '%' . $filter . '%')->paginate(20);
+    } else {
+      $daftar_pasien = Pasien::paginate(20);
+    }
+    return view('pasien.daftar-pasien', compact('daftar_pasien', 'filter'));
   }
 
   public function tambah_pasien()
