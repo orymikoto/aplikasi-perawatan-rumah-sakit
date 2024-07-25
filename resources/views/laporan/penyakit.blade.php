@@ -14,7 +14,7 @@
         10 Besar Penyakit</a>
     </div>
 
-    <h2 class="my-2 text-2xl text-center mx-auto text-neutral-900 font-josefin-sans">Laporan Penyakit Bulan
+    <h2 class="my-2 text-2xl text-center mx-auto text-neutral-900 font-josefin-sans">Laporan 10 Besar Penyakit Rawat Inap Bulan
       {{ request()->has('tanggal') ? \Carbon\Carbon::parse(request()->query('tanggal'))->translatedFormat('F, Y') : \Carbon\Carbon::now()->translatedFormat('F, Y') }}
       {{-- {{ request()->query('tanggal') }} --}}
     </h2>
