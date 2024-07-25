@@ -34,7 +34,7 @@
                     class="w-full border border-neutral-600 focus:border-emerald-600 font-medium rounded-lg py-2 px-3 outline-none"
                     name="kondisi" id="{{ 'kondisi_' . $id_pasien }}" required>
                     <option value="">Kondisi keluar pasien ...</option>
-                    @foreach (['Keluar - Dirujuk', 'Keluar - Sembuh', 'Keluar - Belum Sembuh', 'Mati < 48 Jam', 'Mati > 48 Jam'] as $e)
+                    @foreach (['Pulang Paksa','Keluar - Dirujuk', 'Keluar - Sembuh', 'Keluar - Belum Sembuh', 'Mati < 48 Jam', 'Mati > 48 Jam'] as $e)
                         <option value="{{ $e }}"> {{ $e }}
                         </option>
                     @endforeach

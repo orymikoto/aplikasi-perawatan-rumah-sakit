@@ -45,7 +45,7 @@ class LaporanSHRISeeder extends Seeder
                             'pasien_dipindahkan' => $pasien_dipindah,
                             'pasien_mati_belum_48_jam' => $pasien_meninggal,
                             'pasien_mati_sudah_48_jam' => $pasien_meninggal_48,
-                            'jumlah_pasien_keluar' => $pasien_keluar + $pasien_dipindah + $pasien_keluar + $pasien_meninggal + $pasien_meninggal_48,
+                            'jumlah_pasien_keluar' => $pasien_keluar + $pasien_dipindah + $pasien_meninggal + $pasien_meninggal_48,
                             'pasien_sisa' => $check_before_shri->pasien_sisa + $pasien_baru + $pasien_pindahan - $pasien_keluar - $pasien_dipindah - $pasien_meninggal - $pasien_meninggal_48
 
                         ]);
@@ -57,7 +57,7 @@ class LaporanSHRISeeder extends Seeder
                         'pasien_baru' => $pasien_baru,
                         'pindahan' => $pasien_pindahan,
                         'jumlah_pasien_masuk' => $pasien_baru + $pasien_pindahan,
-                        'pasien_keluar_hidup' => $pasien_keluar,
+                        'pasien_keluar_hidup' =>  0,
                         'pasien_dipindahkan' => 0,
                         'pasien_mati_belum_48_jam' => 0,
                         'pasien_mati_sudah_48_jam' => 0,
