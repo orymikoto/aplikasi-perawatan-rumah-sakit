@@ -15,7 +15,7 @@ return new class extends Migration
       $table->id();
       $table->string("nama_ruangan");
       $table->integer("jumlah_tempat_tidur");
-      $table->enum("kelas", ['Kelas 1', 'Kelas 2', 'Kelas 3']);
+      $table->enum("kelas", ['Umum', 'Kelas 1', 'Kelas 2', 'Kelas 3']);
       $table->timestamps();
 
       $table->softDeletes();

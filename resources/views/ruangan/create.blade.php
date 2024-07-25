@@ -12,7 +12,7 @@
       @csrf
       <x-input.text title="Nama ruangan" name="nama_ruangan" placeholder="Nama Ruangan..." value="" />
       <x-input.number title="Jumlah tempat tidur" name="jumlah_tempat_tidur" placeholder="Jumlah tempat tidur..." value="" />
-      <x-input.select title="Kelas" name="kelas" placeholder="Pilih jenis kelas" value="" :options="['Kelas 1', 'Kelas 2', 'Kelas 3']" />
+      <x-input.select title="Kelas" name="kelas" placeholder="Pilih jenis kelas" value="" :options="['Umum', 'Kelas 1', 'Kelas 2', 'Kelas 3']" />
       <div class="flex items-center self-end gap-4">
         <a href="{{ url()->previous() }}"
           class="py-2 px-4 font-jakarta-sans font-semibold rounded-lg bg-red-600 text-white hover:shadow-md hover:bg-white hover:shadow-red-600/50 hover:text-red-600 duration-200">Batal</a>

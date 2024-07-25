@@ -6,6 +6,7 @@ use App\Exports\LaporanIndikatorRIExport;
 use App\Exports\LaporanPenyakitExport;
 use App\Models\DataRuangan;
 use App\Models\LaporanPenyakitPasien;
+use App\Models\PasienDirawat;
 use App\Models\RekapitulasiIndikatorRI;
 use App\Models\RekapitulasiSHRI;
 use Carbon\Carbon;
@@ -67,7 +68,31 @@ class LaporanController extends Controller
   {
     $data_ruangan = DataRuangan::all();
 
-    return view('laporan.ruangan', compact('data_ruangan'));
+    $pasien_dirawat = PasienDirawat::whereBetween('tanggal_masuk', [
+      $request->query('tanggal') ? Carbon::parse($request->query('tanggal'))->startOfMonth()  : Carbon::now()->startOfMonth(),
+      $request->query('tanggal') ? Carbon::parse($request->query('tanggal'))->endOfMonth()  : Carbon::now()->endOfMonth(),
+    ])->with('dataRuangan')->get();
+
+    $laporan_ruangan = ["Umum" => 0, "Kelas 1" => 0, "Kelas 2" => 0, "Kelas 3" => 0, 'Jumlah' => 0];
+
+    foreach ($pasien_dirawat as $key => $value) {
+      // dd($value->dataRuangan->kelas);
+      if ($value->dataRuangan->kelas == "Umum") {
+        $laporan_ruangan["Umum"] += 1;
+        $laporan_ruangan["Jumlah"] += 1;
+      } else if ($value->dataRuangan->kelas == "Kelas 1") {
+        $laporan_ruangan["Kelas 1"] += 1;
+        $laporan_ruangan["Jumlah"] += 1;
+      } else if ($value->dataRuangan->kelas == "Kelas 2") {
+        $laporan_ruangan["Kelas 2"] += 1;
+        $laporan_ruangan["Jumlah"] += 1;
+      } else if ($value->dataRuangan->kelas == "Kelas 3") {
+        $laporan_ruangan["Kelas 3"] += 1;
+        $laporan_ruangan["Jumlah"] += 1;
+      }
+    }
+
+    return view('laporan.ruangan', compact('data_ruangan', 'laporan_ruangan'));
   }
 
   public function exportLaporanIndikatorRI($tanggal)
