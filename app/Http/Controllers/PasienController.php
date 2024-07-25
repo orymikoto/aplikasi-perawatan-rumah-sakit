@@ -245,15 +245,11 @@ class PasienController extends Controller
   public function pasien_keluar(Request $request, $id)
   {
     $pasien_dirawat = PasienDirawat::whereId($id)->first();
-    $pasien_pindah = PasienDirawat::whereId($id)->update([
-      'tanggal_keluar' => Carbon::now(),
-      'keadaan_keluar' => $request->kondisi,
-      'rumah_sakit_baru' => $request->rumah_sakit ?? null
-    ]);
 
-    $check_laporan_shri = RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($pasien_dirawat->data_ruangan_id);
+    $check_laporan_shri = RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($pasien_dirawat->data_ruangan_id)->first();
+    // dd($check_laporan_shri);
     if (!$check_laporan_shri) {
-      $day_before = RekapitulasiSHRI::whereDataRuanganId($pasien_dirawat->data_ruangan_id)->whereDate('created_at', Carbon::today())->first();
+      $day_before = RekapitulasiSHRI::whereDataRuanganId($pasien_dirawat->data_ruangan_id)->whereDate('created_at', Carbon::today()->subDay())->first();
 
       // Kalau ada
       if ($day_before) {
@@ -296,7 +292,7 @@ class PasienController extends Controller
     } else if ($request->kondisi == "Mati > 48 Jam") {
       RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($pasien_dirawat->data_ruangan_id)->incrementEach(['pasien_mati_sudah_48_jam' => 1, 'jumlah_pasien_keluar' => 1])->decrement('pasien_sisa', 1);
     } else {
-      RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($pasien_dirawat->data_ruangan_id)->incrementEach(['jumlah_pasien_keluar' => 1, 'jumlah_pasien_keluar' => 1])->decrement('pasien_sisa', 1);
+      RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($pasien_dirawat->data_ruangan_id)->incrementEach(['pasien_keluar_hidup' => 1, 'jumlah_pasien_keluar' => 1])->decrement('pasien_sisa', 1);
     }
 
     flash()->success('Data pasien keluar telah berhasil ditambahkan');
