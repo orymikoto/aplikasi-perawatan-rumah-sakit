@@ -245,6 +245,10 @@ class PasienController extends Controller
   public function pasien_keluar(Request $request, $id)
   {
     $pasien_dirawat = PasienDirawat::whereId($id)->first();
+    PasienDirawat::whereId($id)->update([
+      'tanggal_keluar' => Carbon::today(),
+      'keadaan_keluar' => $request->kondisi
+    ]);
 
     $check_laporan_shri = RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($pasien_dirawat->data_ruangan_id)->first();
     // dd($check_laporan_shri);
