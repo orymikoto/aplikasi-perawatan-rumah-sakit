@@ -23,6 +23,7 @@ class PasienDirawat extends Model
     'nama_dokter',
     'pasien_pindahan',
     'pasien_mati',
+    'jam_dirujuk',
     'rumah_sakit_baru',
   ];
 

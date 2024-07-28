@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DataRuangan;
 use App\Models\Pengguna;
+use App\Models\RuanganPerawat;
 use Hash;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class PenggunaController extends Controller
    */
   public function index()
   {
-    $penggunas = Pengguna::with('dataRuangan')->get();
+    $penggunas = Pengguna::with('ruanganPerawat.dataRuangan')->get();
+    // dd($penggunas[2]->ruanganPerawat);
     return view('petugas.index', compact('penggunas'));
   }
 
@@ -41,14 +43,25 @@ class PenggunaController extends Controller
       'email' => 'email|unique:penggunas,email'
     ]);
 
-    Pengguna::create([
+    // dd($request->data_ruangan);
+
+    $new_user = Pengguna::create([
       'nama' => $request->nama,
       'email' => $request->email,
       'role' => $request->role,
-      'data_ruangan_id' => $request->data_ruangan,
       'password' => Hash::make($request->password),
       'foto_profil' => ''
     ]);
+
+    if ($request->data_ruangan) {
+      foreach ($request->data_ruangan as $key => $value) {
+        RuanganPerawat::create([
+          'pengguna_id' => $new_user->id,
+          'data_ruangan_id' => (int)$value
+        ]);
+      }
+    }
+
     flash()->success('Data petugas berhasil ditambahkan');
     return redirect('/pengguna');
   }
@@ -68,7 +81,14 @@ class PenggunaController extends Controller
   {
     $pengguna = Pengguna::whereId($id)->first();
     $data_ruangan = DataRuangan::all();
-    return view('petugas.edit', compact('pengguna', 'data_ruangan'));
+    $daftar_ruangan_perawat = RuanganPerawat::wherePenggunaId($id)->get();
+    $ruangan_perawat = [];
+    foreach ($daftar_ruangan_perawat as $key => $value) {
+      array_push($ruangan_perawat, $value->data_ruangan_id);
+    }
+
+    // dd($ruangan_perawat);
+    return view('petugas.edit', compact('pengguna', 'data_ruangan', 'ruangan_perawat'));
   }
 
   /**
@@ -81,14 +101,24 @@ class PenggunaController extends Controller
       'email' => 'email|unique:penggunas,email,' . $pengguna->id
     ]);
 
-    $pengguna = Pengguna::whereId($pengguna->id)->update([
+    Pengguna::whereId($pengguna->id)->update([
       'nama' => $request->nama,
       'email' => $request->email,
       'role' => $request->role,
-      'data_ruangan_id' => $request->data_ruangan,
       'password' => Hash::make($request->password),
       'foto_profil' => ''
     ]);
+
+    if ($request->data_ruangan) {
+      RuanganPerawat::wherePenggunaId($pengguna->id)->delete();
+      foreach ($request->data_ruangan as $key => $value) {
+        RuanganPerawat::create([
+          'pengguna_id' => $pengguna->id,
+          'data_ruangan_id' => (int)$value
+        ]);
+      }
+    }
+
 
     flash()->success('Data petugas berhasil diperbarui');
     return redirect("/pengguna");

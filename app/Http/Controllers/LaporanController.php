@@ -73,12 +73,12 @@ class LaporanController extends Controller
       $request->query('tanggal') ? Carbon::parse($request->query('tanggal'))->endOfMonth()  : Carbon::now()->endOfMonth(),
     ])->with('dataRuangan')->get();
 
-    $laporan_ruangan = ["Umum" => 0, "Kelas 1" => 0, "Kelas 2" => 0, "Kelas 3" => 0, 'Jumlah' => 0];
+    $laporan_ruangan = ["Paviliun" => 0, "Kelas 1" => 0, "Kelas 2" => 0, "Kelas 3" => 0, 'Non Kelas' => 0, 'Isolasi' => 0, 'Jumlah' => 0];
 
     foreach ($pasien_dirawat as $key => $value) {
       // dd($value->dataRuangan->kelas);
-      if ($value->dataRuangan->kelas == "Umum") {
-        $laporan_ruangan["Umum"] += 1;
+      if ($value->dataRuangan->kelas == "Paviliun") {
+        $laporan_ruangan["Paviliun"] += 1;
         $laporan_ruangan["Jumlah"] += 1;
       } else if ($value->dataRuangan->kelas == "Kelas 1") {
         $laporan_ruangan["Kelas 1"] += 1;
@@ -88,6 +88,12 @@ class LaporanController extends Controller
         $laporan_ruangan["Jumlah"] += 1;
       } else if ($value->dataRuangan->kelas == "Kelas 3") {
         $laporan_ruangan["Kelas 3"] += 1;
+        $laporan_ruangan["Jumlah"] += 1;
+      } else if ($value->dataRuangan->kelas == "Non Kelas") {
+        $laporan_ruangan["Non Kelas"] += 1;
+        $laporan_ruangan["Jumlah"] += 1;
+      } else if ($value->dataRuangan->kelas == "Isolasi") {
+        $laporan_ruangan["Isolasi"] += 1;
         $laporan_ruangan["Jumlah"] += 1;
       }
     }

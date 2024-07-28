@@ -8,15 +8,16 @@
         <p>Kembali ke halaman daftar petugas</p>
       </div>
     </a>
-    <form class="flex flex-col gap-4 p-4 rounded-2xl shadow-md xl:w-[480px] " action="{{ route('pengguna.store') }}" method="POST">
+    <form class="flex flex-col gap-4 p-4 rounded-2xl shadow-md xl:w-[480px] " action="{{ route('pengguna.store') }}" method="POST"
+      enctype="multipart/form-data">
       @csrf
       <x-input.text title="Nama" name="nama" placeholder="Nama..." value="" />
       <x-input.text title="Email" name="email" type="email" placeholder="Email..." value="" />
-      <x-input.select title="Tipe" name="role" placeholder="Pilih tipe pengguna" value="" :options="['ADMIN', 'KEPALA', 'PERAWAT', 'PETUGAS']" />
+      <x-input.select title="Tipe" name="role" placeholder="Pilih tipe pengguna" value="" :options="['ADMIN', 'PERAWAT', 'PETUGAS']" />
       <div id="ruangan" class=' hidden flex-col gap-2 font-jakarta-sans '>
         <p class="text-emerald-600 text-lg font-semibold">Ruangan</p>
-        <select class="w-full border border-neutral-600 focus:border-emerald-600 font-medium rounded-lg py-2 px-3 outline-none" name="data_ruangan">
-          <option value="">Pilih Ruangan...</option>
+        <select id="ruangan_select" name="data_ruangan[]" multiple="multiple"
+          class="form-select w-full border border-neutral-600 focus:border-emerald-600 font-medium rounded-lg py-2 px-3 outline-none">
           @foreach ($data_ruangan as $e)
             <option value="{{ $e->id }}"> {{ $e->nama_ruangan }}
             </option>
@@ -33,17 +34,25 @@
     </form>
   </div>
 
-  <script>
+  <script type="module">
     const role_select = document.getElementsByName("role")[0]
     role_select.onchange = function(e) {
       if (e.target.value == "PERAWAT") {
         document.getElementById("ruangan").classList.remove("hidden");
         document.getElementById("ruangan").classList.add("flex");
-        document.getElementsByName("data_ruangan")[0].required = true;
+        document.getElementsByName("data_ruangan[]")[0].required = true;
       } else {
         document.getElementById("ruangan").classList.remove("flex"); +
         document.getElementById("ruangan").classList.add("hidden");
+        document.getElementsByName("data_ruangan[]")[0].required = false;
+        document.getElementsByName("data_ruangan[]")[0].value = null;
       }
     }
+
+    $('#ruangan_select').select2({
+      tokenSeparators: [',', ' '],
+      placeholder: "Silahkan tambahkan ruangan perawat...",
+      selectionCssClass: "w-full border border-neutral-600 focus:border-emerald-600 font-medium rounded-lg py-2 px-3 outline-none"
+    });
   </script>
 @stop

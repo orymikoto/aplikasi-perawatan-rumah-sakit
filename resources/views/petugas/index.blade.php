@@ -22,14 +22,22 @@
             <td class="px-4">{{ $pengguna->nama }}</td>
             <td class="px-4">{{ $pengguna->email }}</td>
             <td class="px-4">{{ $pengguna->role }}</td>
-            <td class="px-4 text-center">{{ $pengguna->data_ruangan_id ? $pengguna->dataRuangan->nama_ruangan : '-' }}</td>
+            <td class="px-4 text-start">
+              @if ($pengguna->ruanganPerawat)
+                @foreach ($pengguna->ruanganPerawat as $ruangan_perawat)
+                  {{ $ruangan_perawat->dataRuangan->nama_ruangan . ', ' }}
+                @endforeach
+              @else
+                -
+              @endif
+            </td>
             <td class="px-4">
               <div class="flex gap-2 mx-auto justify-center">
                 <form action="{{ route('pengguna.destroy', $pengguna->id) }}" method="POST">
                   @csrf
                   @method('DELETE')
-                  <button type="submit" class="bg-red-600 text-white hover:bg-red-500 p-1 px-2 rounded-md">
-                    <i class="fa-solid fa-trash w-6 h-6 m-auto flex items-center justify-center"></i>
+                  <button type="submit" class="bg-red-600 text-white flex items-center justify-center hover:bg-red-500 p-1 px-2 rounded-md">
+                    <i class="fa-solid fa-trash "></i>
                   </button>
                 </form>
                 <a href="{{ route('pengguna.edit', $pengguna->id) }}"

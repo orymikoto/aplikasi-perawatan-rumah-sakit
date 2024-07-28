@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\DataRuangan;
+use App\Models\Pengguna;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,14 +13,12 @@ return new class extends Migration
    */
   public function up(): void
   {
-    Schema::create('penggunas', function (Blueprint $table) {
+    Schema::create('ruangan_perawats', function (Blueprint $table) {
       $table->id();
-      $table->string("nama");
-      // $table->foreignIdFor(DataRuangan::class)->nullable()->constrained();
-      $table->string("email")->unique();
-      $table->enum("role", ["ADMIN", "KEPALA", "PERAWAT", "PETUGAS"]);
-      $table->string("password");
-      $table->string("foto_profil");
+
+      $table->foreignIdFor(Pengguna::class)->nullable()->constrained()->cascadeOnDelete();
+      $table->foreignIdFor(DataRuangan::class)->nullable()->constrained()->cascadeOnDelete();
+
       $table->timestamps();
     });
   }
@@ -29,6 +28,6 @@ return new class extends Migration
    */
   public function down(): void
   {
-    Schema::dropIfExists('penggunas');
+    Schema::dropIfExists('ruangan_perawat');
   }
 };

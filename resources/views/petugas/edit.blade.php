@@ -13,13 +13,13 @@
       @csrf
       <x-input.text title="Nama" name="nama" placeholder="Nama..." value="{{ $pengguna->nama }}" />
       <x-input.text title="Email" name="email" type="email" placeholder="Email..." value="{{ $pengguna->email }}" />
-      <x-input.select title="Tipe" name="role" placeholder="Pilih tipe pengguna" value="{{ $pengguna->role }}" :options="['ADMIN', 'KEPALA', 'PERAWAT', 'PETUGAS']" />
-      <div id="ruangan" class='{{ $pengguna->role != 'PERAWAT' ? 'hidden' : '' }}  flex-col gap-2 font-jakarta-sans '>
+      <x-input.select title="Tipe" name="role" placeholder="Pilih tipe pengguna" value="{{ $pengguna->role }}" :options="['ADMIN', 'PERAWAT', 'PETUGAS']" />
+      <div id="ruangan" class=" flex-col gap-2 font-jakarta-sans {{ $pengguna->role != 'PERAWAT' ? 'hidden' : '' }}">
         <p class="text-emerald-600 text-lg font-semibold">Ruangan</p>
-        <select class="w-full border border-neutral-600 focus:border-emerald-600 font-medium rounded-lg py-2 px-3 outline-none" name="data_ruangan">
-          <option value="">Pilih Ruangan...</option>
+        <select id="ruangan_select" name="data_ruangan[]" multiple="multiple"
+          class="form-select w-full border border-neutral-600 focus:border-emerald-600 font-medium rounded-lg py-2 px-3 outline-none">
           @foreach ($data_ruangan as $e)
-            <option value="{{ $e->id }}" {{ $e->id == $pengguna->data_ruangan_id ? 'selected' : '' }}> {{ $e->nama_ruangan }}
+            <option value="{{ $e->id }}" {{ in_array($e->id, $ruangan_perawat) ? 'selected' : '' }}> {{ $e->nama_ruangan }}
             </option>
           @endforeach
         </select>
@@ -34,17 +34,25 @@
     </form>
   </div>
 
-  <script>
+  <script type="module">
     const role_select = document.getElementsByName("role")[0]
     role_select.onchange = function(e) {
       if (e.target.value == "PERAWAT") {
         document.getElementById("ruangan").classList.remove("hidden");
         document.getElementById("ruangan").classList.add("flex");
-        document.getElementsByName("data_ruangan")[0].required = true;
+        document.getElementsByName("data_ruangan[]")[0].required = true;
       } else {
         document.getElementById("ruangan").classList.remove("flex"); +
         document.getElementById("ruangan").classList.add("hidden");
+        document.getElementsByName("data_ruangan[]")[0].required = false;
+        document.getElementsByName("data_ruangan[]")[0].value = null;
       }
     }
+
+    $('#ruangan_select').select2({
+      tokenSeparators: [',', ' '],
+      placeholder: "Silahkan tambahkan ruangan perawat...",
+      selectionCssClass: "w-full border border-neutral-600 focus:border-emerald-600 font-medium rounded-lg py-2 px-3 outline-none"
+    });
   </script>
 @stop

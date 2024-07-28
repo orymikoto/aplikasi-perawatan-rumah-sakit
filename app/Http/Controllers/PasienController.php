@@ -247,7 +247,9 @@ class PasienController extends Controller
     $pasien_dirawat = PasienDirawat::whereId($id)->first();
     PasienDirawat::whereId($id)->update([
       'tanggal_keluar' => Carbon::today(),
-      'keadaan_keluar' => $request->kondisi
+      'keadaan_keluar' => $request->kondisi,
+      'rumah_sakit_baru' => $request->rumah_sakit ?? null,
+      'jam_dirujuk' => $request->jam_rujuk ?? null
     ]);
 
     $check_laporan_shri = RekapitulasiSHRI::whereDate('tanggal', Carbon::today())->whereDataRuanganId($pasien_dirawat->data_ruangan_id)->first();
@@ -757,14 +759,19 @@ class PasienController extends Controller
       }
     }
 
+
+    flash()->success('Data pasien masuk berhasil diperbarui');
     return redirect('/pasiens');
   }
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(Pasien $pasien)
+  public function destroy($id)
   {
-    //
+    $pasien_delete = PasienDirawat::whereId($id)->delete();
+
+    flash()->success('Data pasien masuk berhasil dihapus');
+    return redirect('/pasiens');
   }
 }

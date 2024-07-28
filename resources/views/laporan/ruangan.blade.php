@@ -33,10 +33,12 @@
           <tr class="text-white font-josefin-sans font-medium h-16 text-lg bg-emerald-600">
             {{-- <th rowspan="2" class="px-4 text-start w-12">No.</th> --}}
             <th class="px-4 text-center w-12 ">No</th>
-            <th class="px-4 text-center w-24">Umum</th>
+            <th class="px-4 text-center w-24">Paviliun</th>
             <th class="px-4 text-center w-24">Kelas 1</th>
             <th class="px-4 text-center w-24">Kelas 2</th>
             <th class="px-4 text-center w-24">Kelas 3</th>
+            <th class="px-4 text-center w-24">Non Kelas</th>
+            <th class="px-4 text-center w-24">Isolasi</th>
             <th class="px-4 text-center w-24">Jumlah</th>
             {{-- <th class="px-4 text-center w-16">Aksi</th> --}}
           </tr>
@@ -45,10 +47,12 @@
 
           <tr data-entry-id="{{ 1 }}" class="h-12 text-lg font-josefin-sans font-medium text-neutral-800 border-b border-b-neutral-200/50">
             <td class="px-4 text-center">1 </td>
-            <td class="px-4 text-center">{{ $laporan_ruangan['Umum'] }}</td>
+            <td class="px-4 text-center">{{ $laporan_ruangan['Paviliun'] }}</td>
             <td class="px-4 text-center">{{ $laporan_ruangan['Kelas 1'] }}</td>
             <td class="px-4 text-center">{{ $laporan_ruangan['Kelas 2'] }}</td>
             <td class="px-4 text-center">{{ $laporan_ruangan['Kelas 3'] }}</td>
+            <td class="px-4 text-center">{{ $laporan_ruangan['Non Kelas'] }}</td>
+            <td class="px-4 text-center">{{ $laporan_ruangan['Isolasi'] }}</td>
             <td class="px-4 text-center">{{ $laporan_ruangan['Jumlah'] }}</td>
           </tr>
 

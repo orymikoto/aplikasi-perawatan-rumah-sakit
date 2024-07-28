@@ -17,12 +17,12 @@ class DataRuanganSeeder extends Seeder
   {
     $faker = FakerFactory::create();
     $data = [];
-    $kelas = ["Umum", "Kelas 1", "Kelas 2", "Kelas 3"];
-    for ($i = 0; $i < 10; $i++) {
+    $kelas =  ['Paviliun', 'Kelas 1', 'Kelas 2', 'Kelas 3', 'Non Kelas', 'Isolasi'];
+    for ($i = 0; $i < 12; $i++) {
       array_push($data, [
         "nama_ruangan" => $faker->name(),
         "jumlah_tempat_tidur" => $faker->numberBetween(4, 10),
-        "kelas" => $kelas[$faker->numberBetween(0, 3)]
+        "kelas" => $kelas[$faker->numberBetween(0, 5)]
       ]);
     }
     DataRuangan::insert($data);

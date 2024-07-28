@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 // use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Notifications\Notifiable;
@@ -19,7 +20,6 @@ class Pengguna extends User
     'nama',
     'email',
     'role',
-    'data_ruangan_id',
     'password',
     'foto_profil',
   ];
@@ -28,8 +28,8 @@ class Pengguna extends User
     'password'
   ];
 
-  public function dataRuangan(): BelongsTo
+  public function ruanganPerawat(): HasMany
   {
-    return $this->belongsTo(DataRuangan::class);
+    return $this->hasMany(RuanganPerawat::class);
   }
 }

@@ -18,4 +18,5 @@ module.exports = {
         // ...
         require("tailwind-scrollbar"),
     ],
+    important: true,
 };
