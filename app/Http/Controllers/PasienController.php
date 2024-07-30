@@ -12,6 +12,7 @@ use App\Models\PasienDirawat;
 use App\Models\PasienPindah;
 use App\Models\Penyakit;
 use App\Models\RekapitulasiSHRI;
+use App\Models\RuanganPerawat;
 use Carbon\Carbon;
 use Error;
 use Illuminate\Http\Request;
@@ -34,12 +35,13 @@ class PasienController extends Controller
 
 
 
-    if (auth()->user()->role == "PERAWAT" && auth()->user()->data_ruangan_id) {
-
+    if (auth()->user()->role == "PERAWAT") {
+      $ruangan_perawat = RuanganPerawat::wherePenggunaId(auth()->user()->id)->pluck('data_ruangan_id')->toArray();
+      // dd($ruangan_perawat);
       if ($filter) {
         $pasien_dirawats = PasienDirawat::whereRelation('pasien', 'no_RM', 'like', '%' . $filter . '%')->whereDataRuanganId(auth()->user()->data_ruangan_id)->whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
       } else {
-        $pasien_dirawats = PasienDirawat::whereDataRuanganId(auth()->user()->data_ruangan_id)->whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
+        $pasien_dirawats = PasienDirawat::whereIn('data_ruangan_id', $ruangan_perawat)->whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
       }
       return view('pasien.masuk.index')->with(['pasien_dirawats' => $pasien_dirawats, 'daftar_ruangan' => $daftar_ruangan, 'filter' => $filter]);
     } else {
@@ -79,9 +81,10 @@ class PasienController extends Controller
 
   public function daftar_pindah()
   {
-    if (auth()->user()->role == "PERAWAT" && auth()->user()->data_ruangan_id) {
-      $pasien_pindah = PasienPindah::whereDisetujui(true)->where(function ($q) {
-        $q->where('ruangan_lama_id', auth()->user()->data_ruangan_id)->orWhere('ruangan_baru_id', auth()->user()->data_ruangan_id);
+    if (auth()->user()->role == "PERAWAT") {
+      $ruangan_perawat = RuanganPerawat::wherePenggunaId(auth()->user()->id)->pluck('data_ruangan_id')->toArray();
+      $pasien_pindah = PasienPindah::whereDisetujui(true)->where(function ($q) use ($ruangan_perawat) {
+        $q->whereIn('ruangan_lama_id', $ruangan_perawat)->orWhereIn('ruangan_baru_id', $ruangan_perawat);
       })->with(['pasienDirawat', 'ruanganLama', 'ruanganBaru'])->orderBy('tanggal_pindah', 'desc')->paginate(10);
 
       return view('pasien.pindah.index', compact('pasien_pindah'));
@@ -94,8 +97,9 @@ class PasienController extends Controller
 
   public function daftar_pasien_diminta_pindah()
   {
-    if (auth()->user()->role == "PERAWAT" && auth()->user()->data_ruangan_id) {
-      $daftar_pasien_pindah = PasienPindah::whereDisetujui(false)->whereRuanganBaruId(auth()->user()->data_ruangan_id)->orderBy('tanggal_pindah', 'desc')->paginate(10);
+    if (auth()->user()->role == "PERAWAT") {
+      $ruangan_perawat = RuanganPerawat::wherePenggunaId(auth()->user()->id)->pluck('data_ruangan_id')->toArray();
+      $daftar_pasien_pindah = PasienPindah::whereDisetujui(false)->whereIn('ruangan_baru_id', $ruangan_perawat)->orderBy('tanggal_pindah', 'desc')->paginate(10);
 
       return view('pasien.pindah.diminta-pindah', compact('daftar_pasien_pindah'));
     } else {
@@ -230,9 +234,9 @@ class PasienController extends Controller
 
   public function daftar_keluar()
   {
-    if (auth()->user()->role == "PERAWAT" && auth()->user()->data_ruangan_id) {
-      # code...
-      $pasien_keluar = PasienDirawat::whereDataRuanganId(auth()->user()->data_ruangan_id)->orderBy('tanggal_masuk', 'desc')->paginate(10);
+    if (auth()->user()->role == "PERAWAT") {
+      $ruangan_perawat = RuanganPerawat::wherePenggunaId(auth()->user()->id)->pluck('data_ruangan_id')->toArray();
+      $pasien_keluar = PasienDirawat::whereIn('data_ruangan_id', $ruangan_perawat)->orderBy('tanggal_masuk', 'desc')->paginate(10);
 
       return view('pasien.keluar.index', compact('pasien_keluar'));
     } else {
