@@ -13,6 +13,8 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as FakerFactory;
 use Illuminate\Support\Facades\DB as FacadesDB;
+use Carbon\Carbon;
+
 
 class PasienDirawatSeeder extends Seeder
 {
@@ -36,15 +38,18 @@ class PasienDirawatSeeder extends Seeder
         'data_ruangan_id' => $faker->numberBetween(1, 10),
         'jenis_pembayaran_id' => $jenis_pembayaran[$id_jenis_pembayaran]->id,
         'kode_penyakit' => $penyakit[$id_penyakit]->kode_penyakit,
-        'tanggal_masuk' => $faker->dateTimeBetween("-4 weeks", "-3 days"),
-        'tanggal_keluar' => $faker->boolean() ? now() : null,
+        'tanggal_masuk' => $tanggal_masuk,
+        'tanggal_keluar' => $faker->boolean() ? Carbon::parse($tanggal_masuk)->addDays($faker->numberBetween(0, 7)) : null,
         'nama_dokter' => $faker->name(),
         'pasien_pindahan' => false,
         'pasien_mati' => false,
         'keadaan_keluar' => ['Keluar - Sembuh', 'Keluar - Belum Sembuh'][$faker->numberBetween(0, 1)]
       ]);
 
-      $check_laporan_penyakit = LaporanPenyakitPasien::whereKodePenyakit(strtoupper($penyakit[$id_penyakit]->kode_penyakit))->first();
+      $check_laporan_penyakit = LaporanPenyakitPasien::whereKodePenyakit(strtoupper($penyakit[$id_penyakit]->kode_penyakit))->whereBetween('created_at', [
+        Carbon::parse($tanggal_masuk)->startOfMonth(),
+        Carbon::parse($tanggal_masuk)->endOfMonth()
+      ])->first();
 
       if ($check_laporan_penyakit) {
         // dd($check_laporan_penyakit);
@@ -71,6 +76,7 @@ class PasienDirawatSeeder extends Seeder
           'bpjs' => 0,
           'pasien_umum' => 0,
           'jumlah_pasien' => 1,
+          'created_at' => $tanggal_masuk
         ]);
 
         LaporanPenyakitPasien::whereKodePenyakit(strtoupper($penyakit[$id_penyakit]->kode_penyakit))->increment(

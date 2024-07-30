@@ -236,11 +236,11 @@ class PasienController extends Controller
   {
     if (auth()->user()->role == "PERAWAT") {
       $ruangan_perawat = RuanganPerawat::wherePenggunaId(auth()->user()->id)->pluck('data_ruangan_id')->toArray();
-      $pasien_keluar = PasienDirawat::whereIn('data_ruangan_id', $ruangan_perawat)->orderBy('tanggal_masuk', 'desc')->paginate(10);
+      $pasien_keluar = PasienDirawat::whereIn('data_ruangan_id', $ruangan_perawat)->whereNotNull("tanggal_keluar")->orderBy('tanggal_keluar', 'desc')->paginate(10);
 
       return view('pasien.keluar.index', compact('pasien_keluar'));
     } else {
-      $pasien_keluar = PasienDirawat::orderBy('tanggal_masuk', 'desc')->paginate(10);
+      $pasien_keluar = PasienDirawat::whereNotNull("tanggal_keluar")->orderBy('tanggal_keluar', 'desc')->paginate(10);
 
       return view('pasien.keluar.index', compact('pasien_keluar'));
     }

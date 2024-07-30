@@ -16,7 +16,23 @@ class DataRuanganSeeder extends Seeder
   public function run(): void
   {
     $faker = FakerFactory::create();
-    $data = [];
+    $data = [
+      [
+        "nama_ruangan" => 'Anggrek I',
+        "jumlah_tempat_tidur" => 0,
+        "kelas" => "Isolasi"
+      ],
+      [
+        "nama_ruangan" => 'Anggrek 1',
+        "jumlah_tempat_tidur" => 9,
+        "kelas" => "Isolasi"
+      ],
+      [
+        "nama_ruangan" => 'Anggrek 2',
+        "jumlah_tempat_tidur" => 3,
+        "kelas" => "Isolasi"
+      ],
+    ];
     $kelas =  ['Paviliun', 'Kelas 1', 'Kelas 2', 'Kelas 3', 'Non Kelas', 'Isolasi'];
     for ($i = 0; $i < 12; $i++) {
       array_push($data, [
