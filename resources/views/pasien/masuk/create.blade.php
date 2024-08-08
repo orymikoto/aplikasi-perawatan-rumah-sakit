@@ -23,16 +23,20 @@
       <x-input.number title="Usia" name="umur" placeholder="Usia Pasien..." value="" />
       <x-input.select title="Jenis Kelamin" name="jenis_kelamin" placeholder="Pilih jenis kelamin pasien" :options="['LAKI - LAKI', 'PEREMPUAN']" />
       <x-input.text title="Alamat" name="alamat" placeholder="Alamat Pasien..." value="" />
-      <div class="flex flex-col gap-2 font-jakarta-sans">
-        <label class="text-emerald-600 text-lg font-semibold">Nama Dokter</label>
-        <select class="w-full border border-neutral-600 focus:border-emerald-600 font-medium rounded-lg py-2 px-3 outline-none" name="nama_dokter"
-          required>
-          <option value="">Nama Dokter</option>
-          @foreach ($daftar_dokter as $value)
-            <option value="{{ $value->id }}"> {{ $value->nama_dokter }}
-            </option>
-          @endforeach
-        </select>
+      <div class="flex flex-col">
+        <div class="form-group flex flex-col font-jakarta-sans gap-2">
+          <label for="nama_dokter" class="text-emerald-600 text-lg font-semibold">ID Dokter</label>
+          <input id="nama_dokter" name="nama_dokter" type="text" list="daftar_dokter_fieldlist"
+            class=" w-full border border-neutral-600 focus:border-emerald-600 font-medium rounded-lg py-2 px-4 outline-none"
+            placeholder="Nama Dokter...">
+          <datalist id="daftar_dokter_fieldlist">
+            @foreach ($daftar_dokter as $key => $value)
+              <option value="{{ $value->id }}">
+                {{ $value->nama_dokter }}</option>
+            @endforeach
+          </datalist>
+          <span id="error" class="text-danger"></span>
+        </div>
       </div>
       <div class="flex flex-col">
         <div class="form-group flex flex-col font-jakarta-sans gap-2">
