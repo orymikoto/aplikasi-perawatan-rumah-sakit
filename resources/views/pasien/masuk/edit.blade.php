@@ -17,9 +17,23 @@
       <x-input.select title="Jenis Kelamin" name="jenis_kelamin" placeholder="Pilih jenis kelamin pasien" :options="['LAKI - LAKI', 'PEREMPUAN']"
         value="{{ $pasien_dirawat->pasien->jenis_kelamin }}" />
       <x-input.text title="Alamat" name="alamat" placeholder="Alamat Pasien..." value="{{ $pasien_dirawat->pasien->alamat }}" />
-      <x-input.text title="Nama Dokter" name="nama_dokter" placeholder="Nama Dokter..." value="{{ $pasien_dirawat->nama_dokter }}" />
       <x-input.select title="Ruangan" name="ruangan" placeholder="Ruangan..." value="{{ $pasien_dirawat->dataRuangan->nama_ruangan }}"
         :options="$daftar_ruangan" />
+      <div class="flex flex-col">
+        <div class="form-group flex flex-col font-jakarta-sans gap-2">
+          <label for="nama_dokter" class="text-emerald-600 text-lg font-semibold">ID Dokter</label>
+          <input id="nama_dokter" name="nama_dokter" type="text" list="daftar_dokter_fieldlist"
+            class=" w-full border border-neutral-600 focus:border-emerald-600 font-medium rounded-lg py-2 px-4 outline-none"
+            placeholder="Nama Dokter...">
+          <datalist id="daftar_dokter_fieldlist">
+            @foreach ($daftar_dokter as $key => $value)
+              <option value="{{ $value->id }}">
+                {{ $value->nama_dokter }}</option>
+            @endforeach
+          </datalist>
+          <span id="error" class="text-danger"></span>
+        </div>
+      </div>
       <div class="flex flex-col">
         <div class="form-group flex flex-col font-jakarta-sans gap-2">
           <label for="kode_penyakit" class="text-emerald-600 text-lg font-semibold">Kode Penyakit</label>

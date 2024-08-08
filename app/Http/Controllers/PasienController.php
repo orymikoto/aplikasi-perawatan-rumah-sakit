@@ -662,10 +662,11 @@ class PasienController extends Controller
     $pasien_dirawat = PasienDirawat::with('pasien')->whereId($id)->first();
     $daftar_ruangan = DataRuangan::pluck('nama_ruangan');
     $daftar_penyakit = Penyakit::all();
+    $daftar_dokter = Dokter::all();
 
 
     // dd($pasien_dirawat->tanggal_masuk);
-    return view('pasien.masuk.edit', compact('daftar_penyakit', 'daftar_ruangan', 'pasien_dirawat'));
+    return view('pasien.masuk.edit', compact('daftar_penyakit', 'daftar_ruangan', 'pasien_dirawat', 'daftar_dokter'));
   }
 
   /**
