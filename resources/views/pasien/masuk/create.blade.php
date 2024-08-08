@@ -23,7 +23,17 @@
       <x-input.number title="Usia" name="umur" placeholder="Usia Pasien..." value="" />
       <x-input.select title="Jenis Kelamin" name="jenis_kelamin" placeholder="Pilih jenis kelamin pasien" :options="['LAKI - LAKI', 'PEREMPUAN']" />
       <x-input.text title="Alamat" name="alamat" placeholder="Alamat Pasien..." value="" />
-      <x-input.text title="Nama Dokter" name="nama_dokter" placeholder="Nama Dokter..." value="" />
+      <div class="flex flex-col gap-2 font-jakarta-sans">
+        <label class="text-emerald-600 text-lg font-semibold">Nama Dokter</label>
+        <select class="w-full border border-neutral-600 focus:border-emerald-600 font-medium rounded-lg py-2 px-3 outline-none" name="nama_dokter"
+          required>
+          <option value="">Nama Dokter</option>
+          @foreach ($daftar_dokter as $value)
+            <option value="{{ $value->id }}"> {{ $value->nama_dokter }}
+            </option>
+          @endforeach
+        </select>
+      </div>
       <div class="flex flex-col">
         <div class="form-group flex flex-col font-jakarta-sans gap-2">
           <label for="kode_penyakit" class="text-emerald-600 text-lg font-semibold">Kode Penyakit</label>
@@ -93,6 +103,7 @@
     const input_usia = document.getElementsByName("umur")[0].readOnly = true;
     const input_jenis_kelamin = document.getElementsByName("jenis_kelamin")[0].classList.add("pointer-events-none");
     const input_alamat = document.getElementsByName("alamat")[0].readOnly = true;
+    const input_nama_dokter = document.getElementsByName("nama_dokter")[0].disabled = true;
     const input_kode_penyakit = document.getElementsByName("kode_penyakit")[0].disabled = true;
     const input_ruangan = document.getElementsByName("ruangan")[0].disabled = true;
     const input_jenis_pembayaran = document.getElementsByName("jenis_pembayaran")[0].disabled = true;
@@ -126,6 +137,7 @@
             .jenis_kelamin;
 
           let alamat = document.getElementsByName('alamat')[0].value = res.alamat;
+          document.getElementsByName("nama_dokter")[0].disabled = false;
           document.getElementsByName("kode_penyakit")[0].disabled = false;
           document.getElementsByName("ruangan")[0].disabled = false;
           document.getElementsByName("jenis_pembayaran")[0].disabled = false;
@@ -149,6 +161,7 @@
       document.getElementsByName("umur")[0].readOnly = false;
       document.getElementsByName("jenis_kelamin")[0].classList.remove("pointer-events-none");
       document.getElementsByName("alamat")[0].readOnly = false;
+      document.getElementsByName("nama_dokter")[0].disabled = false;
       document.getElementsByName("kode_penyakit")[0].disabled = false;
       document.getElementsByName("ruangan")[0].disabled = false;
       document.getElementsByName("jenis_pembayaran")[0].disabled = false;

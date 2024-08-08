@@ -44,7 +44,7 @@
               <td class="px-4 ">{{ $pasien->dataRuangan->nama_ruangan }}</td>
               <td class="px-4 ">{{ $pasien->kode_penyakit }}</td>
               <td class="px-4 ">{{ $pasien->penyakit->nama_penyakit }}</td>
-              <td class="px-4 ">{{ $pasien->nama_dokter }}</td>
+              <td class="px-4 ">{{ $pasien->dokter->nama_dokter }}</td>
               <td class="px-4">{{ $pasien->jenisPembayaran->nama_jenis_pembayaran }}</td>
               <td class="px-4">{{ $pasien->tanggal_masuk->toDateString() }}</td>
               <td class="px-4">

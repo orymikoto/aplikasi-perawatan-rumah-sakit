@@ -13,6 +13,7 @@
       @csrf
       <x-input.text title="Nama" name="nama" placeholder="Nama..." value="{{ $pengguna->nama }}" />
       <x-input.text title="Email" name="email" type="email" placeholder="Email..." value="{{ $pengguna->email }}" />
+      <x-input.text title="Nomor Telepon" name="no_hp" type="tel" placeholder="Nomor Telepon..." value="{{ $pengguna->no_hp }}" />
       <x-input.select title="Tipe" name="role" placeholder="Pilih tipe pengguna" value="{{ $pengguna->role }}" :options="['ADMIN', 'PERAWAT', 'PETUGAS']" />
       <div id="ruangan" class=" flex-col gap-2 font-jakarta-sans {{ $pengguna->role != 'PERAWAT' ? 'hidden' : '' }}">
         <p class="text-emerald-600 text-lg font-semibold">Ruangan</p>
@@ -24,7 +25,8 @@
           @endforeach
         </select>
       </div>
-      <x-input.password placeholder="Pasword..." title="Password" name="password" />
+      <x-input.password placeholder="New Pasword..." title="Password" name="password" />
+      <x-input.password placeholder="Confirm Pasword..." title="Password Verivication" name="password_confirmation" />
       <div class="flex items-center self-end gap-4">
         <a href="{{ url()->previous() }}"
           class="py-2 px-4 font-jakarta-sans font-semibold rounded-lg bg-red-600 text-white hover:shadow-md hover:bg-white hover:shadow-red-600/50 hover:text-red-600 duration-200">Batal</a>

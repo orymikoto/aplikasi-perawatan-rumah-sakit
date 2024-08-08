@@ -40,7 +40,9 @@ class PenggunaController extends Controller
   public function store(Request $request)
   {
     $request->validate([
-      'email' => 'email|unique:penggunas,email'
+      'email' => 'email|unique:penggunas,email',
+      'password' => 'min:6|same:password_confirmation',
+      'password_confirmation' => 'min:6'
     ]);
 
     // dd($request->data_ruangan);
@@ -48,6 +50,7 @@ class PenggunaController extends Controller
     $new_user = Pengguna::create([
       'nama' => $request->nama,
       'email' => $request->email,
+      'no_hp' => $request->no_hp,
       'role' => $request->role,
       'password' => Hash::make($request->password),
       'foto_profil' => ''
@@ -98,12 +101,15 @@ class PenggunaController extends Controller
   {
     // $old_pengguna = Pengguna::whereId($pengguna->id)->first();
     $request->validate([
-      'email' => 'email|unique:penggunas,email,' . $pengguna->id
+      'email' => 'email|unique:penggunas,email,' . $pengguna->id,
+      'password' => 'nullable|min:6|same:password_confirmation',
+      'password_confirmation' => 'nullable|min:6'
     ]);
 
     Pengguna::whereId($pengguna->id)->update([
       'nama' => $request->nama,
       'email' => $request->email,
+      'no_hp' => $request->no_hp,
       'role' => $request->role,
       'password' => Hash::make($request->password),
       'foto_profil' => ''

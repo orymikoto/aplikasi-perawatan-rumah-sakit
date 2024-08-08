@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\DataRuangan;
+use App\Models\Dokter;
 use App\Models\JenisPembayaran;
 use App\Models\Pasien;
 use Illuminate\Database\Migrations\Migration;
@@ -23,7 +24,7 @@ return new class extends Migration
       $table->dateTime('tanggal_masuk');
       $table->dateTime('tanggal_keluar')->nullable();
       $table->string('jam_dirujuk')->nullable();
-      $table->string('nama_dokter');
+      $table->foreignIdFor(Dokter::class)->nullable()->nullOnDelete();
       $table->boolean('pasien_pindahan')->nullable();
       $table->boolean('pasien_mati')->nullable();
       $table->enum('keadaan_keluar', ['Pulang Paksa', 'Keluar - Dirujuk', 'Keluar - Sembuh', 'Keluar - Belum Sembuh',  'Mati < 48 Jam', 'Mati > 48 Jam'])->nullable();

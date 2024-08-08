@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Imports\ImportPasien;
 use App\Imports\ImportPasienDirawat;
 use App\Models\DataRuangan;
+use App\Models\Dokter;
 use App\Models\JenisPembayaran;
 use App\Models\LaporanPenyakitPasien;
 use App\Models\Pasien;
@@ -39,17 +40,17 @@ class PasienController extends Controller
       $ruangan_perawat = RuanganPerawat::wherePenggunaId(auth()->user()->id)->pluck('data_ruangan_id')->toArray();
       // dd($ruangan_perawat);
       if ($filter) {
-        $pasien_dirawats = PasienDirawat::whereRelation('pasien', 'no_RM', 'like', '%' . $filter . '%')->whereDataRuanganId(auth()->user()->data_ruangan_id)->whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
+        $pasien_dirawats = PasienDirawat::whereRelation('pasien', 'no_RM', 'like', '%' . $filter . '%')->whereDataRuanganId(auth()->user()->data_ruangan_id)->whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran', 'dokter')->orderBy('tanggal_masuk', 'desc')->paginate(10);
       } else {
-        $pasien_dirawats = PasienDirawat::whereIn('data_ruangan_id', $ruangan_perawat)->whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
+        $pasien_dirawats = PasienDirawat::whereIn('data_ruangan_id', $ruangan_perawat)->whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran', 'dokter')->orderBy('tanggal_masuk', 'desc')->paginate(10);
       }
       return view('pasien.masuk.index')->with(['pasien_dirawats' => $pasien_dirawats, 'daftar_ruangan' => $daftar_ruangan, 'filter' => $filter]);
     } else {
       if ($filter) {
         // dd($filter);
-        $pasien_dirawats = PasienDirawat::whereRelation('pasien', 'no_RM', 'like', '%' . $filter . '%')->whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
+        $pasien_dirawats = PasienDirawat::whereRelation('pasien', 'no_RM', 'like', '%' . $filter . '%')->whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran', 'dokter')->orderBy('tanggal_masuk', 'desc')->paginate(10);
       } else {
-        $pasien_dirawats = PasienDirawat::whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran')->orderBy('tanggal_masuk', 'desc')->paginate(10);
+        $pasien_dirawats = PasienDirawat::whereTanggalKeluar(null)->with('pasien', 'penyakit', 'jenisPembayaran', 'dokter')->orderBy('tanggal_masuk', 'desc')->paginate(10);
       }
 
       return view('pasien.masuk.index')->with(['pasien_dirawats' => $pasien_dirawats, 'daftar_ruangan' => $daftar_ruangan, 'filter' => $filter]);
@@ -315,11 +316,11 @@ class PasienController extends Controller
    */
   public function create()
   {
-    $daftar_penyakit = Penyakit::pluck('nama_penyakit');
     $daftar_ruangan = DataRuangan::pluck('nama_ruangan');
     $daftar_penyakit = Penyakit::all();
+    $daftar_dokter = Dokter::all();
     // dd($daftar_penyakit);
-    return view('pasien.masuk.create', compact('daftar_penyakit', 'daftar_ruangan', 'daftar_penyakit'));
+    return view('pasien.masuk.create', compact('daftar_ruangan', 'daftar_penyakit', 'daftar_dokter'));
   }
 
   public function import_pasien(Request $request)
@@ -443,7 +444,7 @@ class PasienController extends Controller
           'jenis_pembayaran_id' => $check_pembayaran->id,
           'kode_penyakit' => $kode_penyakit,
           'data_ruangan_id' =>  $faker->numberBetween(1, $jumlah_ruangan - 1),
-          'nama_dokter' => $row["nama_dokter"],
+          'dokter_id' => $row["nama_dokter"],
           'tanggal_masuk' => $row["tanggal_masuk"],
           'tanggal_keluar' => $row["tanggal_keluar"],
           'pasien_pindahan' => false,
@@ -534,7 +535,7 @@ class PasienController extends Controller
         'data_ruangan_id' => $check_data_ruangan->id,
         'jenis_pembayaran_id' => $check_jenis_pembayaran->id,
         'kode_penyakit' => $check_data_penyakit->kode_penyakit,
-        'nama_dokter' => $request->nama_dokter,
+        'dokter_id' => $request->nama_dokter,
         'jenis_penyakit' => $request->jenis_penyakit,
         'tanggal_masuk' => $request->tanggal_masuk,
       ]);
@@ -544,7 +545,7 @@ class PasienController extends Controller
         'data_ruangan_id' => $check_data_ruangan->id,
         'jenis_pembayaran_id' => $check_jenis_pembayaran->id,
         'kode_penyakit' => $check_data_penyakit->kode_penyakit,
-        'nama_dokter' => $request->nama_dokter,
+        'dokter_id' => $request->nama_dokter,
         'jenis_penyakit' => $request->jenis_penyakit,
         'tanggal_masuk' => $request->tanggal_masuk,
       ]);
@@ -687,7 +688,7 @@ class PasienController extends Controller
       'data_ruangan_id' => $check_data_ruangan->id,
       'jenis_pembayaran_id' => $check_jenis_pembayaran->id,
       'kode_penyakit' => strtoupper($request->kode_penyakit),
-      'nama_dokter' => $request->nama_dokter,
+      'dokter_id' => $request->nama_dokter,
       'tanggal_masuk' => $request->tanggal_masuk,
     ]);
 

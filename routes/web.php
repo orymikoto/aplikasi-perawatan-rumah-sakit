@@ -3,11 +3,13 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataRuanganController;
+use App\Http\Controllers\DokterController;
 use App\Http\Controllers\Laporan;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PenggunaController;
 use App\Models\DataRuangan;
+use App\Models\Dokter;
 use App\Models\Pasien;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [DashboardController::class, 'dashboard'])->middleware('auth');
+Route::get('/', [DashboardController::class, 'dashboard'])->middleware(['auth', 'nochace']);
 
 // Route::group(['middleware' => ['login', 'admin', 'kepala', ]])
 
@@ -36,6 +38,7 @@ Route::resource('ruangan', DataRuanganController::class)->middleware(['role:ADMI
 
 // Pasien 
 Route::resource('pasiens', PasienController::class)->middleware('role:ADMIN,KEPALA,PERAWAT');
+Route::resource('daftar-dokter', DokterController::class)->middleware('role:ADMIN,KEPALA,PERAWAT');
 Route::get('pasiens/check-rm/{no_rm}', [PasienController::class, 'cek_rm'])->name('check_rm')->middleware(['role:ADMIN,KEPALA,PERAWAT']);
 Route::get('pasiens/check-kode-penyakit/{kode_penyakit}', [PasienController::class, 'cek_kode_penyakit'])->name('check_kode_penyakit')->middleware(['role:ADMIN,KEPALA,PERAWAT']);
 Route::get('daftar-pasien', [PasienController::class, 'daftar_pasien'])->name('daftar_pasien')->middleware(['role:ADMIN,KEPALA,PERAWAT']);
@@ -59,3 +62,6 @@ Route::get('laporan/penyakit', [LaporanController::class, 'rekapitulasiLaporanPe
 Route::get('laporan/ruangan', [LaporanController::class, 'laporanDataRuangan'])->name('laporan_ruangan')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
 Route::get('laporan/export-penyakit/{tanggal}', [LaporanController::class, 'exportLaporanPenyakit'])->name('export-penyakit')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
 Route::get('laporan/export-indikator-ri/{tanggal}', [LaporanController::class, 'exportLaporanIndikatorRI'])->name('export-indikator-ri')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
+
+Route::get('ganti-password', [AuthController::class, 'ganti_password'])->name('ganti_password_view')->middleware('auth');
+Route::post('ganti-password', [AuthController::class, 'ganti_password_store'])->name('ganti_password_store')->middleware('auth');

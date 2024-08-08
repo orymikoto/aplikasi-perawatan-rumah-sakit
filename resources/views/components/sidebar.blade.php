@@ -7,6 +7,7 @@
     <div class="flex flex-col items-start text-emerald-800">
       <p class="font-jakarta-sans font-bold line-clamp-1">{{ auth()->user()->nama }}</p>
       <p class="font-josefin-sans font-normal text-neutral-600">{{ auth()->user()->role }}</p>
+      <a href="{{ route('ganti_password_view') }}" class="text-neutral-600 text-sm hover:text-emerald-600 duration-200">Ganti Password</a>
     </div>
   </div>
 
@@ -34,6 +35,15 @@
           ">
       <i class="fa-regular fa-hospital fa-lg w-8"></i>
       <p class="font-jakarta-sans font-semibold">Data Ruangan</p>
+    </a>
+    <a href="{{ route('daftar-dokter.index') }}"
+      class="flex items-center gap-4 rounded-lg px-2 py-2 {{ explode('/', request()->path())[0] == 'daftar-dokter'
+          ? 'text-emerald-600 bg-emerald-300/50'
+          : 'text-neutral-400 hover:text-emerald-600 hover:bg-neutral-200 duration-200' }}
+          {{ auth()->user()->role != 'ADMIN' && auth()->user()->role != 'KEPALA' && auth()->user()->role != 'PERAWAT' ? 'hidden' : '' }}
+          ">
+      <i class="fa-solid fa-hospital-user fa-lg w-8"></i>
+      <p class="font-jakarta-sans font-semibold">Daftar Dokter</p>
     </a>
     <a href="{{ route('daftar_pasien') }}"
       class="flex items-center gap-4 rounded-lg px-2 py-2 {{ explode('/', request()->path())[0] == 'daftar-pasien'

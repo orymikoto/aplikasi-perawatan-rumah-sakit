@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\Admin;
+use App\Http\Middleware\NoCacheMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -64,6 +65,7 @@ class Kernel extends HttpKernel
     'signed' => \App\Http\Middleware\ValidateSignature::class,
     'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
     'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+    'nochace' => \App\Http\Middleware\NoCacheMiddleware::class,
     'login' => \App\Http\Middleware\Login::class,
     'admin' => \App\Http\Middleware\Admin::class,
     'kepala' => \App\Http\Middleware\Kepala::class,

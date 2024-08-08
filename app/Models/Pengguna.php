@@ -19,6 +19,7 @@ class Pengguna extends User
   protected $fillable = [
     'nama',
     'email',
+    'no_hp',
     'role',
     'password',
     'foto_profil',

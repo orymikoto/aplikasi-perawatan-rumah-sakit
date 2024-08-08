@@ -43,6 +43,31 @@ class AuthController extends Controller
     auth()->logout();
 
     flash()->success('Anda telah keluar dari sesi anda.');
+    // return redirect('login');
     return redirect('login');
+  }
+
+  public function ganti_password()
+  {
+    return view('profile.ganti-password');
+  }
+
+  public function ganti_password_store(Request $request)
+  {
+    $request->validate([
+      'password' => 'nullable|min:6|same:password_confirmation',
+      'password_confirmation' => 'nullable|min:6'
+    ]);
+
+    $user_id = auth()->user()->id;
+
+    $user = Pengguna::whereId($user_id)->update([
+      "password" => Hash::make($request->password)
+    ]);
+
+    auth()->logout();
+
+    flash()->success('password berhasil diganti silahkan login kembali');
+    return redirect('/login');
   }
 }

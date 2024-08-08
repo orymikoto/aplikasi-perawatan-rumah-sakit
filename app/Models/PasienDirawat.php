@@ -20,7 +20,7 @@ class PasienDirawat extends Model
     'tanggal_masuk',
     'tanggal_keluar',
     'keadaan_keluar',
-    'nama_dokter',
+    'dokter_id',
     'pasien_pindahan',
     'pasien_mati',
     'jam_dirujuk',
@@ -50,5 +50,10 @@ class PasienDirawat extends Model
   public function penyakit(): BelongsTo
   {
     return $this->belongsTo(Penyakit::class, 'kode_penyakit', 'kode_penyakit');
+  }
+
+  public function dokter(): BelongsTo
+  {
+    return $this->belongsTo(Dokter::class)->withTrashed();
   }
 }

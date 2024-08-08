@@ -25,6 +25,7 @@ class DataPetugasSeeder extends Seeder
         'nama' => "Bagas Febriansyah",
         'email' => "adminbagas@dkt.com",
         'role' => "ADMIN",
+        'no_hp' => "08123456789",
         // 'data_ruangan_id' => null,
         'password' => Hash::make('12345678'),
         'foto_profil' => $faker->imageUrl()
@@ -33,6 +34,7 @@ class DataPetugasSeeder extends Seeder
         'nama' => "Bagas Febriansyah",
         'email' => "petugasbagas@dkt.com",
         'role' => "PETUGAS",
+        'no_hp' => "08987654321",
         // 'data_ruangan_id' => null,
         'password' => Hash::make('12345678'),
         'foto_profil' => $faker->imageUrl()
@@ -40,6 +42,7 @@ class DataPetugasSeeder extends Seeder
       [
         'nama' => "Bagas Febriansyah",
         'email' => "perawatbagas@dkt.com",
+        'no_hp' => "08987654123",
         'role' => "PERAWAT",
         'password' => Hash::make('12345678'),
         'foto_profil' => $faker->imageUrl()
@@ -50,6 +53,7 @@ class DataPetugasSeeder extends Seeder
       array_push($data, [
         'nama' => $faker->name(),
         'email' => $faker->email(),
+        'no_hp' => null,
         'role' => $role[$role_index],
         // 'data_ruangan_id' => $role_index == 2 ? $faker->numberBetween(1, $data_ruangan) : null,
         'password' => Hash::make('12345678'),

@@ -17,6 +17,7 @@ return new class extends Migration
       $table->string("nama");
       // $table->foreignIdFor(DataRuangan::class)->nullable()->constrained();
       $table->string("email")->unique();
+      $table->string("no_hp")->nullable();
       $table->enum("role", ["ADMIN", "KEPALA", "PERAWAT", "PETUGAS"]);
       $table->string("password");
       $table->string("foto_profil");

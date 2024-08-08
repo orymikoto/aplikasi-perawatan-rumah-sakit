@@ -40,7 +40,7 @@ class PasienDirawatSeeder extends Seeder
         'kode_penyakit' => $penyakit[$id_penyakit]->kode_penyakit,
         'tanggal_masuk' => $tanggal_masuk,
         'tanggal_keluar' => $faker->boolean() ? Carbon::parse($tanggal_masuk)->addDays($faker->numberBetween(0, 7)) : null,
-        'nama_dokter' => $faker->name(),
+        'dokter_id' => $faker->numberBetween(1, 3),
         'pasien_pindahan' => false,
         'pasien_mati' => false,
         'keadaan_keluar' => ['Keluar - Sembuh', 'Keluar - Belum Sembuh'][$faker->numberBetween(0, 1)]
