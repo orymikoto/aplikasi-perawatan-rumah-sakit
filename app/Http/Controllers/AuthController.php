@@ -54,12 +54,19 @@ class AuthController extends Controller
 
   public function ganti_password_store(Request $request)
   {
+    $user_id = auth()->user()->id;
+    $user_old = Pengguna::whereId($user_id)->first();
+
+    if (!Hash::check($request->password_lama, $user_old->password)) {
+      flash()->error('Old password is not correct');
+      return redirect('/ganti-password');
+    }
+
     $request->validate([
       'password' => 'nullable|min:6|same:password_confirmation',
       'password_confirmation' => 'nullable|min:6'
     ]);
 
-    $user_id = auth()->user()->id;
 
     $user = Pengguna::whereId($user_id)->update([
       "password" => Hash::make($request->password)

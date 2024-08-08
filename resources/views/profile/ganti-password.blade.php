@@ -10,6 +10,7 @@
     </a>
     <form class="flex flex-col gap-4 p-4 rounded-2xl shadow-md xl:w-[480px]" action="{{ route('ganti_password_store') }}" method="POST">
       @csrf
+      <x-input.password placeholder="Password Lama..." title="Password Lama" name="password_lama" />
       <x-input.password placeholder="New Pasword..." title="Password" name="password" />
       <x-input.password placeholder="Confirm New Pasword..." title="Password Verivication" name="password_confirmation" />
       <div class="flex items-center self-end gap-4">
