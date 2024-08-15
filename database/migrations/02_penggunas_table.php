@@ -21,6 +21,7 @@ return new class extends Migration
       $table->enum("role", ["ADMIN", "KEPALA", "PERAWAT", "PETUGAS"]);
       $table->string("password");
       $table->string("foto_profil");
+      $table->boolean("minta_reset_password")->default(false);
       $table->timestamps();
     });
   }

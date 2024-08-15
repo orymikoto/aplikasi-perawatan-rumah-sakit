@@ -30,11 +30,18 @@
           {{-- <button class="text-white bg-emerald-600 px-4 py-2 font-jakarta-sans hover:text-emerald-600 hover:bg-emerald-600">Simpan</button> --}}
         </form>
       </div>
-      <a href="{{ route('export-penyakit', request()->has('tanggal') ? request()->query('tanggal') : \Carbon\Carbon::now()) }}"
-        class="self-end rounded-md flex gap-x-2 items-center bg-emerald-600 text-center px-8 py-2 text-white text-lg font-josefin-sans hover:bg-white hover:text-emerald-600 hover:shadow-md hover:shadow-teal-400/75 duration-200">
-        <p>Cetak</p>
-        <i class="fa-solid fa-file-arrow-down fa-lg"></i>
-      </a>
+      <div class="flex gap-x-2">
+        <a href="{{ route('export-penyakit', request()->has('tanggal') ? request()->query('tanggal') : \Carbon\Carbon::now()) }}?jenis_file=pdf"
+          class="self-end rounded-md flex gap-x-2 items-center bg-emerald-600 text-center px-8 py-2 text-white text-lg font-josefin-sans hover:bg-white hover:text-emerald-600 hover:shadow-md hover:shadow-teal-400/75 duration-200">
+          <p>Cetak PDF</p>
+          <i class="fa-solid fa-file-arrow-down fa-lg"></i>
+        </a>
+        <a href="{{ route('export-penyakit', request()->has('tanggal') ? request()->query('tanggal') : \Carbon\Carbon::now()) }}?jenis_file=xlsx"
+          class="self-end rounded-md flex gap-x-2 items-center bg-emerald-600 text-center px-8 py-2 text-white text-lg font-josefin-sans hover:bg-white hover:text-emerald-600 hover:shadow-md hover:shadow-teal-400/75 duration-200">
+          <p>Cetak Excel</p>
+          <i class="fa-solid fa-file-arrow-down fa-lg"></i>
+        </a>
+      </div>
     </div>
     <div class=" overflow-x-scroll relative max-w-full">
       <table class="rounded-t-2xl w-full min-h-full flex-1 border-collapse shadow-md overflow-hidden table ">

@@ -38,6 +38,28 @@ class AuthController extends Controller
     return redirect('/');
   }
 
+  public function lupa_password_view()
+  {
+    return view('auth.lupa-password');
+  }
+
+  public function lupa_password_post(Request $request)
+  {
+    $validate = $request->validate(['email' => 'exists:penggunas,email']);
+
+    // if ($validate->fails()) {
+    //   flash()->error('Pengguna dengan email tersebut tidak ada.');
+    //   redirect('/lupa-password');
+    // }
+
+    $user = Pengguna::whereEmail($request->email)->update([
+      'minta_reset_password' => true,
+    ]);
+
+    flash()->success('Permintaan reset password diajukan. Admin akan menghubungi anda segera setelah proses selesai.');
+    return redirect('/login');
+  }
+
   public function logout()
   {
     auth()->logout();

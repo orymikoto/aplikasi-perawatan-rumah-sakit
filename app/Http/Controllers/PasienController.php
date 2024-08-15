@@ -515,11 +515,17 @@ class PasienController extends Controller
 
   public function store(Request $request)
   {
+
     $check_pasien = Pasien::where('no_rm', $request->no_rm)->first();
 
     $check_data_ruangan = DataRuangan::whereNamaRuangan($request->ruangan)->first();
     $check_data_penyakit = Penyakit::whereKodePenyakit($request->kode_penyakit)->first();
     $check_jenis_pembayaran = JenisPembayaran::whereNamaJenisPembayaran($request->jenis_pembayaran)->first();
+    $check_dokter = Dokter::whereNamaDokter($request->nama_dokter)->first();
+
+    if (!$check_dokter) {
+      flash()->error('Nama dokter tidak ditemukan');
+    }
 
     if (!$check_pasien) {
       $new_pasien = Pasien::create([
@@ -535,7 +541,7 @@ class PasienController extends Controller
         'data_ruangan_id' => $check_data_ruangan->id,
         'jenis_pembayaran_id' => $check_jenis_pembayaran->id,
         'kode_penyakit' => $check_data_penyakit->kode_penyakit,
-        'dokter_id' => $request->nama_dokter,
+        'dokter_id' => $check_dokter->id,
         'jenis_penyakit' => $request->jenis_penyakit,
         'tanggal_masuk' => $request->tanggal_masuk,
       ]);
@@ -545,7 +551,7 @@ class PasienController extends Controller
         'data_ruangan_id' => $check_data_ruangan->id,
         'jenis_pembayaran_id' => $check_jenis_pembayaran->id,
         'kode_penyakit' => $check_data_penyakit->kode_penyakit,
-        'dokter_id' => $request->nama_dokter,
+        'dokter_id' => $check_dokter->id,
         'jenis_penyakit' => $request->jenis_penyakit,
         'tanggal_masuk' => $request->tanggal_masuk,
       ]);
@@ -674,6 +680,13 @@ class PasienController extends Controller
    */
   public function update(Request $request, $id)
   {
+
+    $check_dokter = Dokter::whereNamaDokter($request->nama_dokter)->first();
+
+    if (!$check_dokter) {
+      flash()->error('Nama dokter tidak ditemukan');
+    }
+
     $old_pasien_dirawats = PasienDirawat::whereId($id)->first();
     $new_pasien = Pasien::whereId($old_pasien_dirawats->pasien_id)->update([
       'no_RM' => $request->no_rm,
@@ -689,7 +702,7 @@ class PasienController extends Controller
       'data_ruangan_id' => $check_data_ruangan->id,
       'jenis_pembayaran_id' => $check_jenis_pembayaran->id,
       'kode_penyakit' => strtoupper($request->kode_penyakit),
-      'dokter_id' => $request->nama_dokter,
+      'dokter_id' => $check_dokter->id,
       'tanggal_masuk' => $request->tanggal_masuk,
     ]);
 

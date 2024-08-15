@@ -29,7 +29,9 @@ Route::get('/', [DashboardController::class, 'dashboard'])->middleware(['auth', 
 // Route::group(['middleware' => ['login', 'admin', 'kepala', ]])
 
 Route::get('login', [AuthController::class, 'login_view'])->name('login_view');
+Route::get('lupa-password', [AuthController::class, 'lupa_password_view'])->name('lupa_password_view');
 Route::post('login', [AuthController::class, 'login_post'])->name('login_post');
+Route::post('lupa-password', [AuthController::class, 'lupa_password_post'])->name('lupa_password_post');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 // Route::get('login', [PenggunaController::class, 'login'])->name('login');
@@ -60,8 +62,8 @@ Route::get('laporan/shri/{id}', [LaporanController::class, 'rekapitulasiSHRI'])-
 Route::get('laporan/ris', [LaporanController::class, 'rekapitulasiIndikatorRI'])->name('laporan_ris')->middleware(['role:ADMIN,KEPALA,PETUGAS', 'nochace']);
 Route::get('laporan/penyakit', [LaporanController::class, 'rekapitulasiLaporanPenyakit'])->name('laporan_penyakit')->middleware(['role:ADMIN,KEPALA,PETUGAS', 'nochace']);
 Route::get('laporan/ruangan', [LaporanController::class, 'laporanDataRuangan'])->name('laporan_ruangan')->middleware(['role:ADMIN,KEPALA,PETUGAS', 'nochace']);
-Route::get('laporan/export-penyakit/{tanggal}', [LaporanController::class, 'exportLaporanPenyakit'])->name('export-penyakit')->middleware(['role:ADMIN,KEPALA,PETUGAS', 'nochace']);
-Route::get('laporan/export-indikator-ri/{tanggal}', [LaporanController::class, 'exportLaporanIndikatorRI'])->name('export-indikator-ri')->middleware(['role:ADMIN,KEPALA,PETUGAS', 'nochace']);
+Route::get('laporan/export-penyakit/{tanggal}', [LaporanController::class, 'exportLaporanPenyakit'])->name('export-penyakit')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
+Route::get('laporan/export-indikator-ri/{tanggal}', [LaporanController::class, 'exportLaporanIndikatorRI'])->name('export-indikator-ri')->middleware(['role:ADMIN,KEPALA,PETUGAS']);
 
 Route::get('ganti-password', [AuthController::class, 'ganti_password'])->name('ganti_password_view')->middleware('auth', 'nochace');
 Route::post('ganti-password', [AuthController::class, 'ganti_password_store'])->name('ganti_password_store')->middleware('auth', 'nochace');

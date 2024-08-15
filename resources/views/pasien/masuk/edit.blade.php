@@ -21,13 +21,13 @@
         :options="$daftar_ruangan" />
       <div class="flex flex-col">
         <div class="form-group flex flex-col font-jakarta-sans gap-2">
-          <label for="nama_dokter" class="text-emerald-600 text-lg font-semibold">ID Dokter</label>
+          <label for="nama_dokter" class="text-emerald-600 text-lg font-semibold">Nama Dokter</label>
           <input id="nama_dokter" name="nama_dokter" type="text" list="daftar_dokter_fieldlist"
             class=" w-full border border-neutral-600 focus:border-emerald-600 font-medium rounded-lg py-2 px-4 outline-none"
             placeholder="Nama Dokter...">
           <datalist id="daftar_dokter_fieldlist">
             @foreach ($daftar_dokter as $key => $value)
-              <option value="{{ $value->id }}">
+              <option value="{{ $value->nama_dokter }}">
                 {{ $value->nama_dokter }}</option>
             @endforeach
           </datalist>

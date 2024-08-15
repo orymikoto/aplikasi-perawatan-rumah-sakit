@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   @vite('resources/css/app.css')
-  <title>Login Aplikasi Perawatan Rumah Sakit</title>
+  <title>Lupa Password</title>
 </head>
 
 
@@ -24,13 +24,13 @@
     <div class="md:w-[450px] w-[95vw] bg-white/40 items-center rounded-3xl overflow-hidden flex flex-col gap-4 px-4 py-2 mb-8">
       <img src="/logo.png" alt="Logo Rumah Sakit" class="w-32">
       <h2 class="font-josefin-sans font-bold text-center text-lg">RUMKIT TK. III BALADHIKA HUSADA JEMBER</h2>
-      <form action="{{ route('login_post') }}" class="mt-20 my-8 w-full flex flex-col gap-4 items-center " action="" method="POST">
+      <form action="{{ route('lupa_password_post') }}" class="my-8 w-full flex flex-col gap-4 items-center " action="" method="POST">
         @csrf
         <x-input-text title='Email' name="email" placeholder="EMAIL" type='email' class='w-full' value="" />
-        <x-input-text title='Password' name="password" placeholder="PASSWORD" type='password' class='w-full' value="" />
         <x-flash::message />
-        <x-button.submit-button title="Login" class="w-[150px]" />
-        <a href="/lupa-password" class="text-sm font-semibold text-white hover:text-blue-600 duration-200">Lupa Password?</a>
+        <x-button.submit-button title="Ajukan Reset Password" class="w-[200px]" />
+        <a href="/login" class="text-sm font-semibold text-white hover:text-blue-600 duration-200">Kembali ke login</a>
+
       </form>
     </div>
   </main>

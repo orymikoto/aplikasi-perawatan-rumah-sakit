@@ -1,6 +1,6 @@
 <table>
-  <tr>
-    <td colspan="4">DETASEMEN KESEHATAN WILAYAH MALANG</td>
+  <tr style="border: 0;">
+    <td colspan="4" style="border: 0;">DETASEMEN KESEHATAN WILAYAH MALANG</td>
   </tr>
   <tr>
     <td colspan="4">RUMAH SAKIT TINGKAT III BALADHIKA HUSADA</td>

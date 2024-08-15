@@ -30,6 +30,8 @@ class DokterController extends Controller
    */
   public function store(Request $request)
   {
+    $request->validate(['nama_dokter' => 'required|unique:dokters,nama_dokter']);
+
     Dokter::create([
       'nama_dokter' => $request->nama_dokter
     ]);
@@ -61,7 +63,8 @@ class DokterController extends Controller
    */
   public function update(Request $request, $id)
   {
-    //
+    $request->validate(['nama_dokter' => 'required|unique:dokters,nama_dokter,' . $id]);
+
     Dokter::whereId($id)->update([
       "nama_dokter" => $request->nama_dokter
     ]);

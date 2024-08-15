@@ -27,7 +27,8 @@ class LaporanIndikatorRIExport implements FromView
     )->first();
 
     return view('export.laporan-indikator-ri', [
-      'laporan' => $laporan, 'tanggal' => $this->tanggal
+      'laporan' => $laporan,
+      'tanggal' => $this->tanggal
     ]);
   }
 }

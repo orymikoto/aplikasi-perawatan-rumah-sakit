@@ -23,6 +23,7 @@ class Pengguna extends User
     'role',
     'password',
     'foto_profil',
+    'minta_reset_password',
   ];
 
   protected $hidden = [

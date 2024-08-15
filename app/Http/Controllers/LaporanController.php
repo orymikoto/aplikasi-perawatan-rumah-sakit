@@ -9,9 +9,11 @@ use App\Models\LaporanPenyakitPasien;
 use App\Models\PasienDirawat;
 use App\Models\RekapitulasiIndikatorRI;
 use App\Models\RekapitulasiSHRI;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\PDF;
 
 class LaporanController extends Controller
 {
@@ -101,23 +103,61 @@ class LaporanController extends Controller
     return view('laporan.ruangan', compact('data_ruangan', 'laporan_ruangan'));
   }
 
-  public function exportLaporanIndikatorRI($tanggal)
+  public function exportLaporanIndikatorRI($tanggal, Request $request)
   {
+    $jenis_file = $request->jenis_file;
+
+    if ($jenis_file == "pdf") {
+      $filename = "laporan-indikator-ri-" . $tanggal . ".pdf";
+      $laporan = RekapitulasiIndikatorRI::whereBetween(
+        'created_at',
+        [
+          Carbon::parse($tanggal)->startOfMonth(),
+          Carbon::parse($tanggal)->endOfMonth()
+        ]
+      )->first();
+
+      $pdf = FacadePdf::setOption(['dpi' => 1024])->loadView('export/pdf-laporan-indikator-ri', ['tanggal' => $tanggal, 'laporan' => $laporan]);
+
+      return $pdf->download($filename);
+    }
     $filename = "laporan-indikator-ri-" . $tanggal . '.xlsx';
     return Excel::download(new LaporanIndikatorRIExport($tanggal), $filename);
   }
 
-  public function exportLaporanPenyakit($tanggal)
+  public function exportLaporanPenyakit($tanggal, Request $request)
   {
-    // $laporan = LaporanPenyakitPasien::whereBetween(
-    //   'created_at',
-    //   [
-    //     Carbon::now()->startOfMonth(),
-    //     Carbon::now()->endOfMonth()
-    //   ]
-    // )->orderBy('jumlah_pasien', 'desc')->paginate(10);
+    $jenis_file = $request->jenis_file;
+    if ($jenis_file == "pdf") {
+      $filename = "laporan-penyakit-" . $tanggal . ".pdf";
+      $laporan = LaporanPenyakitPasien::whereBetween(
+        'created_at',
+        [
+          Carbon::parse($tanggal)->startOfMonth(),
+          Carbon::parse($tanggal)->endOfMonth()
+        ]
+      )->orderBy('jumlah_pasien', 'desc')->paginate(10);
 
-    // return view('export.laporan-penyakit', compact('laporan'));
+      $jumlah = ["tni_ad_mil" => 0, "tni_ad_pns" => 0, "tni_ad_kel" => 0, "tni_al_mil" => 0, "tni_al_pns" => 0, "tni_al_kel" => 0, "bpjs" => 0, "umum" => 0, "jumlah" => 0];
+
+      foreach ($laporan as $key => $value) {
+        $jumlah["tni_ad_mil"] += $value->tni_ad_mil;
+        $jumlah["tni_ad_kel"] += $value->tni_ad_kel;
+        $jumlah["tni_ad_pns"] += $value->tni_ad_pns;
+        $jumlah["tni_al_pns"] += $value->tni_al_pns;
+        $jumlah["tni_al_kel"] += $value->tni_al_kel;
+        $jumlah["tni_al_mil"] += $value->tni_al_mil;
+        $jumlah["bpjs"] += $value->bpjs;
+        $jumlah["umum"] += $value->pasien_umum;
+        $jumlah["jumlah"] += $value->tni_ad_mil + $value->tni_ad_kel + $value->tni_ad_pns + $value->tni_al_pns + $value->tni_al_kel + $value->tni_al_mil + $value->bpjs + $value->pasien_umum;
+      }
+
+
+      $pdf = FacadePdf::setOption(['dpi' => 1024])->loadView('export/pdf-laporan-penyakit', ['tanggal' => $tanggal, 'laporan' => $laporan, 'jumlah' => $jumlah]);
+
+      return $pdf->download($filename);
+    }
+
     $filename = "laporan-penyakit-" . $tanggal . '.xlsx';
     return Excel::download(new LaporanPenyakitExport($tanggal), $filename);
   }

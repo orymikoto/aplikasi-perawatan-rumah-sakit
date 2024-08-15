@@ -14,6 +14,7 @@
           <tr class="text-white font-josefin-sans font-medium h-16 text-lg bg-emerald-600">
             <th class="px-4 text-start">Nama Petugas</th>
             <th class="px-4 text-start">Email</th>
+            <th class="px-4 text-center min-w-40">Minta Reset Password</th>
             <th class="px-4 text-start min-w-44">Nomor Telepon</th>
             <th class="px-4 text-start w-40">Tipe</th>
             <th class="px-4 text-center min-w-52">Ruangan Perawat</th>
@@ -26,6 +27,8 @@
               class="h-12 text-lg font-josefin-sans font-medium text-neutral-800 border-b border-b-neutral-200/50">
               <td class="px-4">{{ $pengguna->nama }}</td>
               <td class="px-4">{{ $pengguna->email }}</td>
+              <td class="px-4 text-center {{ $pengguna->minta_reset_password ? 'text-yellow-600' : 'text-neutral-800' }}">
+                {{ $pengguna->minta_reset_password ? 'Iya' : 'Tidak' }}</td>
               <td class="px-4">{{ $pengguna->no_hp ?? '-' }}</td>
               <td class="px-4">{{ $pengguna->role }}</td>
               <td class="px-4 text-start">
