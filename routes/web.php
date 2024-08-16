@@ -28,10 +28,10 @@ Route::get('/', [DashboardController::class, 'dashboard'])->middleware(['auth', 
 
 // Route::group(['middleware' => ['login', 'admin', 'kepala', ]])
 
-Route::get('login', [AuthController::class, 'login_view'])->name('login_view');
-Route::get('lupa-password', [AuthController::class, 'lupa_password_view'])->name('lupa_password_view');
-Route::post('login', [AuthController::class, 'login_post'])->name('login_post');
-Route::post('lupa-password', [AuthController::class, 'lupa_password_post'])->name('lupa_password_post');
+Route::get('login', [AuthController::class, 'login_view'])->name('login_view')->middleware(['guest', 'nochace']);
+Route::get('lupa-password', [AuthController::class, 'lupa_password_view'])->name('lupa_password_view')->middleware(['guest', 'nochace']);
+Route::post('login', [AuthController::class, 'login_post'])->name('login_post')->middleware(['guest', 'nochace']);
+Route::post('lupa-password', [AuthController::class, 'lupa_password_post'])->name('lupa_password_post')->middleware(['guest', 'nochace']);
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 // Route::get('login', [PenggunaController::class, 'login'])->name('login');
