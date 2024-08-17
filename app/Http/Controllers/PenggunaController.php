@@ -106,12 +106,15 @@ class PenggunaController extends Controller
       'password_confirmation' => 'nullable|min:6'
     ]);
 
+    $old_pengguna = Pengguna::whereId($pengguna->id)->first();
+
     Pengguna::whereId($pengguna->id)->update([
       'nama' => $request->nama,
       'email' => $request->email,
       'no_hp' => $request->no_hp,
       'role' => $request->role,
       'password' => Hash::make($request->password),
+      'minta_reset_password' => $request->password ? false : $old_pengguna->minta_reset_password,
       'foto_profil' => ''
     ]);
 
