@@ -10,6 +10,9 @@
         <tr class="text-white font-josefin-sans font-medium h-16 text-lg bg-emerald-600">
           <th class="px-4 text-start w-16">No</th>
           <th class="px-4 text-start">Nama Dokter</th>
+          <th class="px-4 text-start">No Hp</th>
+          <th class="px-4 text-start">Alamat</th>
+          <th class="px-4 text-start">Dikum</th>
           <th class="px-4 text-center">Action</th>
         </tr>
       </thead>
@@ -18,6 +21,9 @@
           <tr data-entry-id="{{ $dokter->id }}" class="h-12 text-lg font-josefin-sans font-medium text-neutral-800 border-b border-b-neutral-200/50">
             <td class="px-4">{{ $key + 1 }}</td>
             <td class="px-4">{{ $dokter->nama_dokter }}</td>
+            <td class="px-4">{{ $dokter->No_hp}}</td>
+            <td class="px-4">{{ $dokter->Alamat }}</td>
+            <td class="px-4">{{ $dokter->DIKUM }}</td>
             <td class="px-4">
               <div class="flex gap-2 mx-auto justify-center">
                 <form action="{{ route('daftar-dokter.destroy', [$dokter->id]) }}" method="POST">

@@ -15,6 +15,10 @@ class Dokter extends Model
 
   protected $fillable = [
     'nama_dokter',
+    'No_hp',
+    'Alamat',
+    'DIKUM',
+    
   ];
 
   public function pasienDirawat(): HasMany

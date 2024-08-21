@@ -11,6 +11,9 @@
     <form class="flex flex-col gap-4 p-4 rounded-2xl shadow-md xl:w-[480px]" action="{{ route('daftar-dokter.store') }}" method="POST">
       @csrf
       <x-input.text title="Nama dokter dan spesialisasi" name="nama_dokter" placeholder="Nama Dokter, Spesialisasi..." value="" />
+      <x-input.text title="No HP" name="No_hp" placeholder="Nama Dokter, Spesialisasi..." value="" />
+      <x-input.text title="Alamat" name="Alamat" placeholder="Nama Dokter, Spesialisasi..." value="" />
+      <x-input.text title="DI" name="DIKUM" placeholder="Nama Dokter, Spesialisasi..." value="" />
       <div class="flex items-center self-end gap-4">
         <a href="{{ url()->previous() }}"
           class="py-2 px-4 font-jakarta-sans font-semibold rounded-lg bg-red-600 text-white hover:shadow-md hover:bg-white hover:shadow-red-600/50 hover:text-red-600 duration-200">Batal</a>

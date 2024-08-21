@@ -13,6 +13,12 @@
       @method('PUT')
       <x-input.text title="Nama dokter dan spesialisasi" name="nama_dokter" placeholder="Nama Dokter, Spesialisasi..."
         value="{{ $dokter->nama_dokter }}" />
+      <x-input.text title="No HP" name="No_hp" placeholder="Nama Dokter, Spesialisasi..."
+        value="{{ $dokter->No_hp }}" />
+      <x-input.text title="Alamat Dokter" name="Alamat" placeholder="Nama Dokter, Spesialisasi..."
+        value="{{ $dokter->Alamat }}" />
+      <x-input.text title="DIKUM" name="DIKUM" placeholder="Nama Dokter, Spesialisasi..."
+        value="{{ $dokter->DIKUM }}" />
       <div class="flex items-center self-end gap-4">
         <a href="{{ url()->previous() }}"
           class="py-2 px-4 font-jakarta-sans font-semibold rounded-lg bg-red-600 text-white hover:shadow-md hover:bg-white hover:shadow-red-600/50 hover:text-red-600 duration-200">Batal</a>

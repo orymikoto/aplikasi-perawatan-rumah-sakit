@@ -33,7 +33,10 @@ class DokterController extends Controller
     $request->validate(['nama_dokter' => 'required|unique:dokters,nama_dokter']);
 
     Dokter::create([
-      'nama_dokter' => $request->nama_dokter
+      'nama_dokter' => $request->nama_dokter,
+      'No_hp' => $request->No_hp,
+      'Alamat' => $request->Alamat,
+      'DIKUM' => $request->DIKUM,
     ]);
 
     flash()->success('Data dokter berhasil ditambahkan');
@@ -66,7 +69,10 @@ class DokterController extends Controller
     $request->validate(['nama_dokter' => 'required|unique:dokters,nama_dokter,' . $id]);
 
     Dokter::whereId($id)->update([
-      "nama_dokter" => $request->nama_dokter
+      "nama_dokter" => $request->nama_dokter,
+      "No_hp" => $request->No_hp,
+      "Alamat" => $request->Alamat,
+      "DIKUM" => $request->DIKUM,
     ]);
 
     flash()->success('Data dokter berhasil diperbarui');

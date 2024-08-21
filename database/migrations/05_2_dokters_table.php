@@ -14,6 +14,9 @@ return new class extends Migration
     Schema::create('dokters', function (Blueprint $table) {
       $table->id();
       $table->string('nama_dokter');
+      $table->string('No_hp');
+      $table->string('Alamat');
+      $table->string('DIKUM');
       $table->timestamps();
 
       $table->softDeletes();
